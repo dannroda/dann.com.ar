@@ -1,19 +1,14 @@
 {
-	"steam": [
-		"https://store.steampowered.com/app/2824960/Fracas/"
-	],
-	"itch": [
-		"https://dannroda.itch.io/purpura-profundo",
-		"https://dannroda.itch.io/robot-factory",
-		"https://dannroda.itch.io/tetris-cc",
-		"https://emarod.itch.io/little-eyes",
-		"https://emarod.itch.io/mr-duck",
-		"https://emarod.itch.io/rescue-signal"
-	],
-	"github": [
-		"dannroda/dann.com.ar",
-		"dannroda/itchy-api",
-		"dannroda/Godot-PHPmysql-example",
-		"dannroda/tauri-vue-vite-spotify"
-	]
+  "steam": [
+    "https://store.steampowered.com/app/2824960/Fracas/"
+  ],
+  "itch": [
+    "https://emarod.itch.io/mr-duck",
+    "https://dannroda.itch.io/robot-factory",
+    "https://emarod.itch.io/little-eyes",
+    "https://emarod.itch.io/rescue-signal"
+  ],
+  "github": [
+    "dannroda/dann.com.ar"
+  ]
 }
