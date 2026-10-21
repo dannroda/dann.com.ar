@@ -1,14 +1,14 @@
 {
-	"ai": "",
-	"authorship": [],
-	"featured": false,
-	"hidden": false,
-	"role": {
-		"en": "",
-		"es": ""
-	},
-	"summary": {
-		"en": "",
-		"es": ""
-	}
+  "ai": "",
+  "featured": false,
+  "hidden": false,
+  "role": {
+    "es": "Desarrollador",
+    "en": "Developer"
+  },
+  "summary": {
+    "es": "",
+    "en": ""
+  },
+  "authorship": []
 }
