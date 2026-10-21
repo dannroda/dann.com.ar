@@ -59,9 +59,14 @@ p { margin: 0; }
 .card p { color: var(--text-2); }
 
 .rows { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
-.row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; padding: 18px 4px; border-bottom: 1px solid var(--line); }
-.row .title { font-size: 19px; font-weight: 700; flex: 1 1 200px; }
-.row .meta { color: var(--text-2); flex: 1 1 220px; }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 9rem; align-items: center; gap: 4px 24px; padding: 18px 4px; border-bottom: 1px solid var(--line); }
+.row .title { font-size: 19px; font-weight: 700; }
+.row .meta { color: var(--text-2); }
+.row > :last-child:not(:first-child) { text-align: right; }
+@media (max-width: 640px) {
+	.row { grid-template-columns: minmax(0, 1fr); }
+	.row > :last-child:not(:first-child) { text-align: left; }
+}
 
 .detail { display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start; }
 .detail main { flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 40px; }

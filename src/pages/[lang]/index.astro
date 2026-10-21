@@ -74,7 +74,7 @@ const short = (g: (typeof published)[number]) => g.data.short?.[lang] ?? g.data.
 								{g.data.jam?.name}
 								{g.data.jam?.theme && ` · “${g.data.jam.theme}”`}
 							</span>
-							{g.data.jam?.results?.Overall && <span class="mono">{s.rank} #{g.data.jam.results.Overall.rank}</span>}
+							<span class="mono">{g.data.jam?.results?.Overall && `${s.rank} #${g.data.jam.results.Overall.rank}`}</span>
 						</a>
 					))}
 				</div>
@@ -92,7 +92,9 @@ const short = (g: (typeof published)[number]) => g.data.short?.[lang] ?? g.data.
 					{other.map((g) => (
 						<a class="row" href={url(`/${lang}/games/${g.id}/`)}>
 							<span class="title">{g.data.title}</span>
-							<span class="mono">{list(g.data.info?.['Made with'])}</span>
+							<span class="meta">{list(g.data.info?.['Made with'])}</span>
+							<span class="mono" />
+
 						</a>
 					))}
 				</div>
