@@ -1,0 +1,17 @@
+{
+  "checklist": [],
+  "code": "5.2",
+  "created_at": "2026-10-21T20:26:33.675Z",
+  "milestone": "m05",
+  "notes": "",
+  "order": 2,
+  "refs": [],
+  "size": "s",
+  "status": "todo",
+  "tags": [
+    "infra"
+  ],
+  "test": "",
+  "title": "CNAME y DNS hacia GitHub Pages",
+  "updated_at": "2026-10-21T20:26:33.675Z"
+}

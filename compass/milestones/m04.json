@@ -1,0 +1,10 @@
+{
+  "code": "M4",
+  "done_when": [
+    "Las fichas muestran tráiler, puesto sobre total y textos traducidos.",
+    "Compartir un link muestra imagen y título."
+  ],
+  "goal": "Detalles que mejoran la lectura y el compartir.",
+  "order": 4,
+  "title": "Pulido"
+}

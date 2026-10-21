@@ -1,0 +1,10 @@
+{
+  "code": "M1",
+  "done_when": [
+    "Cada juego tiene etiqueta de IA visible en la home y en su ficha.",
+    "Los datos propios se editan desde /admin sin tocar archivos a mano."
+  ],
+  "goal": "Editar los datos propios de cada juego desde /admin y mostrar cómo se usó la IA en cada uno.",
+  "order": 1,
+  "title": "CMS y etiquetas de IA"
+}

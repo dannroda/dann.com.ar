@@ -1,0 +1,18 @@
+{
+  "checklist": [],
+  "code": "0.5",
+  "created_at": "2026-10-21T20:26:28.943Z",
+  "done_at": "2026-10-21T20:26:28.943Z",
+  "milestone": "m00",
+  "notes": "",
+  "order": 5,
+  "refs": [],
+  "status": "done",
+  "tags": [
+    "web",
+    "bug"
+  ],
+  "test": "",
+  "title": "Alinear columnas de las filas de jams",
+  "updated_at": "2026-10-21T20:26:28.943Z"
+}

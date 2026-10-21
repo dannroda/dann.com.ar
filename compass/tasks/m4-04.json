@@ -1,0 +1,17 @@
+{
+  "checklist": [],
+  "code": "4.4",
+  "created_at": "2026-10-21T20:26:32.899Z",
+  "milestone": "m04",
+  "notes": "",
+  "order": 4,
+  "refs": [],
+  "size": "s",
+  "status": "todo",
+  "tags": [
+    "web"
+  ],
+  "test": "",
+  "title": "Imagen y metadatos Open Graph",
+  "updated_at": "2026-10-21T20:26:32.899Z"
+}

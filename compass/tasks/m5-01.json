@@ -1,0 +1,18 @@
+{
+  "checklist": [],
+  "code": "5.1",
+  "created_at": "2026-10-21T20:26:33.418Z",
+  "description": "Candidatos libres: dannroda.com, dannroda.dev, dann.games, dannroda.games; dann.gd fuera de Hostinger.",
+  "milestone": "m05",
+  "notes": "",
+  "order": 1,
+  "refs": [],
+  "size": "s",
+  "status": "todo",
+  "tags": [
+    "infra"
+  ],
+  "test": "",
+  "title": "Elegir y comprar dominio",
+  "updated_at": "2026-10-21T20:26:33.418Z"
+}

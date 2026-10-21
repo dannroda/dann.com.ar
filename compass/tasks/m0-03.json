@@ -1,0 +1,18 @@
+{
+  "checklist": [],
+  "code": "0.3",
+  "created_at": "2026-10-21T20:26:28.445Z",
+  "description": "Home, fichas de juego y links en /es/ y /en/, con redirección por idioma del navegador.",
+  "done_at": "2026-10-21T20:26:28.445Z",
+  "milestone": "m00",
+  "notes": "",
+  "order": 3,
+  "refs": [],
+  "status": "done",
+  "tags": [
+    "web"
+  ],
+  "test": "",
+  "title": "Sitio Astro bilingüe",
+  "updated_at": "2026-10-21T20:26:28.445Z"
+}

@@ -1,0 +1,19 @@
+{
+  "checklist": [],
+  "code": "1.6",
+  "created_at": "2026-10-21T20:26:30.433Z",
+  "description": "Solo como valor inicial; lo que cargues en el CMS manda.",
+  "milestone": "m01",
+  "notes": "",
+  "order": 6,
+  "priority": "low",
+  "refs": [],
+  "size": "s",
+  "status": "todo",
+  "tags": [
+    "datos"
+  ],
+  "test": "",
+  "title": "Sugerir etiqueta inicial desde el AI Disclosure de itch",
+  "updated_at": "2026-10-21T20:26:30.433Z"
+}

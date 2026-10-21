@@ -1,0 +1,18 @@
+{
+  "checklist": [],
+  "code": "1.4",
+  "created_at": "2026-10-21T20:26:29.929Z",
+  "milestone": "m01",
+  "notes": "",
+  "order": 4,
+  "priority": "high",
+  "refs": [],
+  "size": "s",
+  "status": "todo",
+  "tags": [
+    "web"
+  ],
+  "test": "",
+  "title": "Etiquetas de IA en tarjetas y filas",
+  "updated_at": "2026-10-21T20:26:29.929Z"
+}

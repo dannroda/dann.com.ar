@@ -1,0 +1,18 @@
+{
+  "checklist": [],
+  "code": "4.5",
+  "created_at": "2026-10-21T20:26:33.154Z",
+  "milestone": "m04",
+  "notes": "",
+  "order": 5,
+  "priority": "low",
+  "refs": [],
+  "size": "s",
+  "status": "todo",
+  "tags": [
+    "web"
+  ],
+  "test": "",
+  "title": "Página 404",
+  "updated_at": "2026-10-21T20:26:33.154Z"
+}

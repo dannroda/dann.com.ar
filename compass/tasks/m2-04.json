@@ -1,0 +1,18 @@
+{
+  "checklist": [],
+  "code": "2.4",
+  "created_at": "2026-10-21T20:26:31.418Z",
+  "milestone": "m02",
+  "notes": "",
+  "order": 4,
+  "priority": "low",
+  "refs": [],
+  "size": "s",
+  "status": "todo",
+  "tags": [
+    "blog"
+  ],
+  "test": "",
+  "title": "Tags del blog",
+  "updated_at": "2026-10-21T20:26:31.418Z"
+}

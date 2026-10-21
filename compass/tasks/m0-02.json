@@ -1,0 +1,18 @@
+{
+  "checklist": [],
+  "code": "0.2",
+  "created_at": "2026-10-21T20:26:28.213Z",
+  "description": "scripts/sync-games.mjs: datos de tienda a content/store/ e imágenes a public/games/. Lista de juegos en content/sources.json.",
+  "done_at": "2026-10-21T20:26:28.213Z",
+  "milestone": "m00",
+  "notes": "",
+  "order": 2,
+  "refs": [],
+  "status": "done",
+  "tags": [
+    "datos"
+  ],
+  "test": "",
+  "title": "Sync de tiendas: Steam, itch.io y Ludum Dare",
+  "updated_at": "2026-10-21T20:26:28.213Z"
+}

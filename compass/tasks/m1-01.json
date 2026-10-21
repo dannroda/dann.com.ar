@@ -1,0 +1,33 @@
+{
+  "checklist": [],
+  "code": "1.1",
+  "created_at": "2026-10-21T20:26:29.197Z",
+  "description": "Archivo por juego en content/games/ con etiqueta de IA, desglose \"Quién hizo qué\", rol, texto es/en, destacado y oculto. La sync nunca lo toca.",
+  "links": [
+    {
+      "task": "m1-02",
+      "type": "blocks"
+    },
+    {
+      "task": "m1-04",
+      "type": "blocks"
+    },
+    {
+      "task": "m1-05",
+      "type": "blocks"
+    }
+  ],
+  "milestone": "m01",
+  "notes": "",
+  "order": 1,
+  "priority": "high",
+  "refs": [],
+  "size": "m",
+  "status": "todo",
+  "tags": [
+    "datos"
+  ],
+  "test": "",
+  "title": "Modelo de datos propios por juego",
+  "updated_at": "2026-10-21T20:26:34.425Z"
+}

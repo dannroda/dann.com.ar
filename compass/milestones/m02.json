@@ -1,0 +1,10 @@
+{
+  "code": "M2",
+  "done_when": [
+    "Hay al menos un post publicado en cada idioma.",
+    "El RSS valida."
+  ],
+  "goal": "Posts en Markdown por idioma, con listado, tags y RSS.",
+  "order": 2,
+  "title": "Blog"
+}

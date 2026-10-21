@@ -1,0 +1,10 @@
+{
+  "code": "M0",
+  "done_when": [
+    "El sitio responde en dannroda.github.io/dann.com.ar en es y en.",
+    "El workflow sincroniza a diario y vuelve a publicar."
+  ],
+  "goal": "Sitio bilingüe en Astro con los juegos sincronizados desde las tiendas, publicado en GitHub Pages.",
+  "order": 0,
+  "title": "Base del sitio"
+}

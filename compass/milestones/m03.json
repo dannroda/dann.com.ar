@@ -1,0 +1,9 @@
+{
+  "code": "M3",
+  "done_when": [
+    "La home tiene secciones Proyectos y Lab con datos reales."
+  ],
+  "goal": "Mostrar proyectos que no son juegos y separar los vibe-coded en el Lab.",
+  "order": 3,
+  "title": "Proyectos y Lab"
+}
