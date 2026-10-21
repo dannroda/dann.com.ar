@@ -1,0 +1,20 @@
+{
+  "checklist": [],
+  "code": "3.3",
+  "created_at": "2026-10-21T21:24:20.515Z",
+  "description": "content/sources.json como sección del CMS (Sitio › Juegos y proyectos), con links validados; la sync acepta links y saca del sitio lo que se quita de la lista.",
+  "done_at": "2026-10-21T21:24:21.264Z",
+  "milestone": "m03",
+  "notes": "",
+  "order": 3,
+  "refs": [],
+  "size": "s",
+  "status": "done",
+  "tags": [
+    "cms",
+    "datos"
+  ],
+  "test": "Quitar un repo en el CMS: tras el deploy desaparece de Proyectos; su archivo en content/games/ queda.",
+  "title": "Lista de juegos y proyectos editable desde el CMS",
+  "updated_at": "2026-10-21T21:24:21.264Z"
+}

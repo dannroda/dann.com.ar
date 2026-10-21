@@ -1,11 +1,21 @@
 // Pulls store data (Steam, itch.io, GitHub) into content/store/<slug>.json and images into public/games/<slug>/.
 // Only store-owned fields live here; your own fields (AI label, authorship, texts) go in separate files the sync never touches.
 // Usage: node scripts/sync-games.mjs
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { basename } from 'node:path';
 
 const UA = { 'user-agent': 'dann.com.ar game sync' };
 const sources = JSON.parse(await readFile('content/sources.json', 'utf8'));
+
+// content/sources.json is edited in the CMS, so entries may be links or bare ids.
+export const steamId = (v) => Number(String(v).match(/(?:app\/)?(\d+)/)?.[1]);
+export const itchUrl = (v) => String(v).trim().replace(/\/$/, '');
+export const githubRepo = (v) => String(v).trim().replace(/^https:\/\/github\.com\//, '').replace(/\/$/, '');
+const wanted = {
+	steam: (sources.steam ?? []).map(steamId).filter(Boolean),
+	itch: (sources.itch ?? []).map(itchUrl).filter(Boolean),
+	github: (sources.github ?? []).map(githubRepo).filter(Boolean)
+};
 
 // The Actions GITHUB_TOKEN lifts the GitHub API's anonymous rate limit; optional locally.
 const auth = process.env.GITHUB_TOKEN ? { authorization: `Bearer ${process.env.GITHUB_TOKEN}` } : {};
@@ -193,7 +203,29 @@ async function save(game) {
 	console.log(`+ ${slug}`);
 }
 
+// Removing an entry from content/sources.json removes its store data and images.
+// Decided by the config, not by fetch results, so a store that is down never deletes anything.
+// The own file in content/games/ stays: re-adding the game brings its label and texts back.
+async function prune() {
+	const keep = (d) =>
+		d.source === 'steam' ? wanted.steam.includes(d.id)
+		: d.source === 'itch' ? wanted.itch.includes(d.url)
+		: wanted.github.some((r) => d.url.toLowerCase() === `https://github.com/${r}`.toLowerCase());
+	for (const f of await readdir('content/store').catch(() => [])) {
+		if (!f.endsWith('.json')) continue;
+		const d = JSON.parse(await readFile(`content/store/${f}`, 'utf8'));
+		if (keep(d)) continue;
+		const slug = f.replace(/\.json$/, '');
+		await rm(`content/store/${f}`);
+		await rm(`public/games/${slug}`, { recursive: true, force: true });
+		console.log(`- ${slug}`);
+	}
+}
+
 if (import.meta.url === `file://${process.argv[1]}`) {
+	console.assert(steamId('https://store.steampowered.com/app/2824960/Fracas/') === 2824960 && steamId(2824960) === 2824960);
+	console.assert(githubRepo('https://github.com/dannroda/itchy-api/') === 'dannroda/itchy-api');
+	console.assert(itchUrl(' https://emarod.itch.io/mr-duck/ ') === 'https://emarod.itch.io/mr-duck');
 	console.assert(pageTitle('<title>Bahía Game Jam 2022 - itch.io</title>') === 'Bahía Game Jam 2022');
 	console.assert(ogImage('<meta property="og:image" content="a.png"/>') === 'a.png');
 	console.assert(ogImage('<meta content="b.png" property="og:image"/>') === 'b.png');
@@ -216,8 +248,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 			console.error(`! ${label}: ${e.message}`);
 		}
 	};
-	for (const id of sources.steam ?? []) await run(`steam ${id}`, () => steam(id));
-	for (const url of sources.itch ?? []) await run(url, () => itch(url.replace(/\/$/, '')));
-	for (const repo of sources.github ?? []) await run(`github ${repo}`, () => github(repo));
+	for (const id of wanted.steam) await run(`steam ${id}`, () => steam(id));
+	for (const url of wanted.itch) await run(url, () => itch(url));
+	for (const repo of wanted.github) await run(`github ${repo}`, () => github(repo));
+	await prune();
 	process.exit(failed ? 1 : 0);
 }

@@ -144,7 +144,7 @@ Posts en Markdown por idioma, con listado, tags y RSS.
 
 M2 pide al menos un post publicado por idioma. Borrar el borrador de prueba content/blog/*/prueba.md.
 
-## M3 — Proyectos y Lab  (2/2)
+## M3 — Proyectos y Lab  (3/3)
 
 Mostrar proyectos que no son juegos y separar los vibe-coded en el Lab.
 
@@ -166,6 +166,14 @@ Mostrar proyectos que no son juegos y separar los vibe-coded en el Lab.
 **Prueba:** Marcar un proyecto como vibe-coded en /admin: pasa al Lab.
 
 **Notas:** Todo lo marcado vibe en el CMS (cualquier fuente) va al Lab y sale de las demás secciones. Hoy no hay nada marcado.
+
+### 3.3 Lista de juegos y proyectos editable desde el CMS · Hecho
+
+**Terminada:** 2026-10-21 · **Tamaño:** S · **Etiquetas:** `cms`, `datos`
+
+content/sources.json como sección del CMS (Sitio › Juegos y proyectos), con links validados; la sync acepta links y saca del sitio lo que se quita de la lista.
+
+**Prueba:** Quitar un repo en el CMS: tras el deploy desaparece de Proyectos; su archivo en content/games/ queda.
 
 ## M4 — Pulido  (6/6)
 

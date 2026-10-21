@@ -41,8 +41,8 @@ collections:
 
   # One file per game, created by the store sync; store data itself lives in content/store/ and is not editable here.
   - name: games
-    label: Juegos
-    label_singular: Juego
+    label: Juegos y proyectos
+    label_singular: Juego o proyecto
     folder: content/games
     extension: json
     format: json
@@ -109,6 +109,44 @@ collections:
   - name: settings
     label: Sitio
     files:
+      # Read by scripts/sync-games.mjs on every deploy: adding fetches the data, removing takes it off the site.
+      - name: sources
+        label: Juegos y proyectos (fuentes)
+        file: content/sources.json
+        fields:
+          - name: steam
+            label: Steam
+            label_singular: Juego en Steam
+            widget: list
+            required: false
+            hint: Link de la página de la tienda (o solo el número de la app).
+            field:
+              name: url
+              label: Link
+              widget: string
+              pattern: ['^\s*(\d+|https://store\.steampowered\.com/app/\d+\S*)\s*$', 'Un link de store.steampowered.com/app/… o el número de la app']
+          - name: itch
+            label: itch.io
+            label_singular: Juego en itch.io
+            widget: list
+            required: false
+            hint: Link del juego, de tu cuenta o de la de otro autor.
+            field:
+              name: url
+              label: Link
+              widget: string
+              pattern: ['^\s*https://[\w-]+\.itch\.io/[\w-]+/?\s*$', 'Un link de la forma https://usuario.itch.io/juego']
+          - name: github
+            label: GitHub
+            label_singular: Repositorio
+            widget: list
+            required: false
+            hint: Link del repositorio (o usuario/repo). Aparece en Proyectos.
+            field:
+              name: url
+              label: Link
+              widget: string
+              pattern: ['^\s*(https://github\.com/)?[\w.-]+/[\w.-]+/?\s*$', 'Un link de github.com/usuario/repo']
       - name: profile
         label: Links
         file: content/profile.json

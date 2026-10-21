@@ -1,5 +1,7 @@
 {
-	"steam": [2824960],
+	"steam": [
+		"https://store.steampowered.com/app/2824960/Fracas/"
+	],
 	"itch": [
 		"https://dannroda.itch.io/purpura-profundo",
 		"https://dannroda.itch.io/robot-factory",
@@ -8,5 +10,10 @@
 		"https://emarod.itch.io/mr-duck",
 		"https://emarod.itch.io/rescue-signal"
 	],
-	"github": ["dannroda/dann.com.ar", "dannroda/itchy-api", "dannroda/Godot-PHPmysql-example", "dannroda/tauri-vue-vite-spotify"]
+	"github": [
+		"dannroda/dann.com.ar",
+		"dannroda/itchy-api",
+		"dannroda/Godot-PHPmysql-example",
+		"dannroda/tauri-vue-vite-spotify"
+	]
 }
