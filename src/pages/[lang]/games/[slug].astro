@@ -1,0 +1,94 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { games, list, type Game } from '../../../games';
+import { t, url, langs, type Lang } from '../../../i18n';
+
+export async function getStaticPaths() {
+	const { all } = await games();
+	return langs.flatMap((lang) => all.map((game) => ({ params: { lang, slug: game.id }, props: { game } })));
+}
+
+const lang = Astro.params.lang as Lang;
+const s = t[lang];
+const { game } = Astro.props as { game: Game };
+const d = game.data;
+const short = d.short?.[lang] ?? d.short?.en;
+const fallback = d.short && !d.short[lang];
+const store = d.source === 'steam' ? 'Steam' : 'itch.io';
+
+// itch "More information" rows worth showing, in the order the page lists them.
+const itchFacts = [
+	[s.madeWith, 'Made with'],
+	[s.platforms, 'Platforms'],
+	[s.status, 'Status'],
+	[s.aiDisclosure, 'AI Disclosure'],
+	[s.aiDisclosure, 'Content']
+] as const;
+const facts = [
+	[s.developer, d.developers?.join(', ')],
+	[s.release, d.release_date],
+	[s.platforms, d.platforms?.join(', ')],
+	[s.price, d.price],
+	[s.authors, d.authors?.map((a) => a.name).join(', ')],
+	...itchFacts.map(([label, key]) => [label, list(d.info?.[key])])
+].filter(([, v]) => v) as [string, string][];
+const synced = new Date(d.synced_at).toLocaleDateString(lang === 'es' ? 'es-AR' : 'en-US', { dateStyle: 'long' });
+---
+
+<Base lang={lang} title={d.title} path={`games/${game.id}/`}>
+	<section class="hero">
+		<a class="mono" href={url(`/${lang}/`)}>← {s.back.toUpperCase()}</a>
+		<h1>{d.title}</h1>
+		{short && <p class="sub" lang={fallback ? 'en' : lang}>{short}</p>}
+		{fallback && <p class="mono">{s.onlyIn.toUpperCase()}</p>}
+		<div class="pills">
+			<a class="pill primary" href={d.url}>{s.play} {store} ↗</a>
+			{d.jam && <a class="pill" href={d.jam.url}>{d.jam.name} ↗</a>}
+		</div>
+	</section>
+
+	{d.local_images.cover && <img class="shot" src={url(d.local_images.cover)} alt="" />}
+
+	<div class="detail">
+		<main>
+			{
+				d.jam?.results && (
+					<section class="section" aria-labelledby="h-results">
+						<h2 id="h-results">{s.results}</h2>
+						{d.jam.theme && <p class="muted">{s.theme}: “{d.jam.theme}”</p>}
+						<div class="table-box">
+							<table>
+								<thead>
+									<tr><th scope="col">{s.category}</th><th scope="col">{s.rank}</th><th scope="col">{s.score}</th></tr>
+								</thead>
+								<tbody>
+									{Object.entries(d.jam.results).map(([cat, r]) => (
+										<tr><th scope="row">{cat}</th><td>#{r.rank}</td><td>{r.average.toFixed(2)}</td></tr>
+									))}
+								</tbody>
+							</table>
+						</div>
+					</section>
+				)
+			}
+			{
+				d.local_images.screenshots.length > 0 && (
+					<section class="gallery" aria-label="Screenshots">
+						{d.local_images.screenshots.map((src) => <img class="shot" src={url(src)} alt="" loading="lazy" />)}
+					</section>
+				)
+			}
+			<p class="mono">{s.synced} {synced}</p>
+		</main>
+
+		{
+			facts.length > 0 && (
+				<dl class="facts">
+					{facts.map(([k, v]) => (
+						<div><dt>{k}</dt><dd>{v}</dd></div>
+					))}
+				</dl>
+			)
+		}
+	</div>
+</Base>

@@ -1,0 +1,21 @@
+---
+import { url } from '../i18n';
+const es = url('/es/');
+const en = url('/en/');
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>dann</title>
+		<meta http-equiv="refresh" content={`1; url=${es}`} />
+		<script is:inline define:vars={{ es, en }}>
+			location.replace(navigator.language?.toLowerCase().startsWith('es') ? es : en);
+		</script>
+	</head>
+	<body style="background:#0f1115;color:#eceae4;font-family:system-ui;padding:24px">
+		<a href={es} style="color:inherit">Español</a> · <a href={en} style="color:inherit">English</a>
+	</body>
+</html>

@@ -1,0 +1,128 @@
+{
+	"source": "itch",
+	"id": 3022377,
+	"url": "https://emarod.itch.io/little-eyes",
+	"title": "Little Eyes",
+	"authors": [
+		{
+			"url": "https://emarod.itch.io",
+			"name": "emarod"
+		},
+		{
+			"url": "https://ema-art.itch.io",
+			"name": "EMA_art"
+		},
+		{
+			"url": "https://sergiogp11.itch.io",
+			"name": "Sergiogp11"
+		},
+		{
+			"url": "https://dannroda.itch.io",
+			"name": "DTO"
+		},
+		{
+			"url": "https://idontkillcoyotes.itch.io",
+			"name": "idontkillcoyotes"
+		},
+		{
+			"url": "https://the-fazzo.itch.io",
+			"name": "The_Fazzo"
+		},
+		{
+			"url": "https://vvizarddev.itch.io",
+			"name": "VVizardDev"
+		}
+	],
+	"tags": [
+		"action",
+		"godot",
+		"ludum-dare-56",
+		"no-ai",
+		"stealth"
+	],
+	"info": {
+		"Status": [
+			"Prototype"
+		],
+		"Platforms": [
+			"Windows",
+			"Linux"
+		],
+		"Rating": {
+			"average": 5,
+			"count": 2
+		},
+		"Authors": [
+			"emarod",
+			"EMA_art",
+			"Sergiogp11",
+			"DTO",
+			"idontkillcoyotes",
+			"The_Fazzo",
+			"VVizardDev"
+		],
+		"Genre": [
+			"Action"
+		],
+		"Tags": [
+			"Godot",
+			"Ludum Dare 56",
+			"Stealth"
+		],
+		"Links": [
+			"Ludum Dare"
+		],
+		"Content": [
+			"No generative AI was used"
+		]
+	},
+	"jam": {
+		"name": "Ludum Dare 56",
+		"url": "https://ldjam.com/events/ludum-dare/56/little-eyes",
+		"theme": "Tiny Creatures",
+		"format": "jam",
+		"results": {
+			"Overall": {
+				"rank": 690,
+				"average": 3.396
+			},
+			"Fun": {
+				"rank": 596,
+				"average": 3.333
+			},
+			"Innovation": {
+				"rank": 747,
+				"average": 3.042
+			},
+			"Theme": {
+				"rank": 962,
+				"average": 2.917
+			},
+			"Graphics": {
+				"rank": 686,
+				"average": 3.438
+			},
+			"Audio": {
+				"rank": 613,
+				"average": 2.848
+			},
+			"Humor": {
+				"rank": 738,
+				"average": 2.667
+			},
+			"Mood": {
+				"rank": 549,
+				"average": 3.5
+			}
+		}
+	},
+	"images": {
+		"cover": "https://img.itch.zone/aW1nLzE4MDc4NzgyLmpwZw==/original/Pg1H1J.jpg",
+		"screenshots": []
+	},
+	"local_images": {
+		"cover": "/games/little-eyes/cover.jpg",
+		"screenshots": []
+	},
+	"synced_at": "2026-10-21T20:07:54.030Z"
+}

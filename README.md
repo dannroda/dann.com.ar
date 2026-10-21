@@ -1,2 +1,8 @@
 # dann.com.ar
-Personal site
+
+Personal site: portfolio, links and blog. Astro, deployed to GitHub Pages.
+
+- `npm run dev`: local site at http://localhost:4321
+- `npm run sync`: pull game data from Steam, itch.io and Ludum Dare into `content/store/` and `public/games/` (games are listed in `content/sources.json`)
+
+The workflow in `.github/workflows/deploy.yml` syncs daily, commits any changes and redeploys.

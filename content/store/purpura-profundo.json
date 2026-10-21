@@ -1,0 +1,55 @@
+{
+	"source": "itch",
+	"id": 1789132,
+	"url": "https://dannroda.itch.io/purpura-profundo",
+	"title": "Purpura Profundo",
+	"authors": [
+		{
+			"url": "https://dannroda.itch.io",
+			"name": "DTO"
+		},
+		{
+			"url": "https://threshhg.itch.io",
+			"name": "ThreshHG"
+		},
+		{
+			"url": "https://ema-art.itch.io",
+			"name": "EMA_art"
+		}
+	],
+	"tags": [
+		"rhythm"
+	],
+	"info": {
+		"Status": [
+			"In development"
+		],
+		"Platforms": [
+			"HTML5"
+		],
+		"Authors": [
+			"DTO",
+			"ThreshHG",
+			"EMA_art"
+		],
+		"Genre": [
+			"Rhythm"
+		],
+		"Made with": [
+			"Godot"
+		]
+	},
+	"jam": {
+		"name": "Bahía Game Jam 2022",
+		"url": "https://itch.io/jam/bahia-work-jam-2022"
+	},
+	"images": {
+		"cover": "https://img.itch.zone/aW1nLzEwNTU0MjU5LnBuZw==/original/0grviU.png",
+		"screenshots": []
+	},
+	"local_images": {
+		"cover": "/games/purpura-profundo/cover.png",
+		"screenshots": []
+	},
+	"synced_at": "2026-10-21T20:07:46.543Z"
+}

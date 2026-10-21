@@ -1,0 +1,114 @@
+{
+	"source": "itch",
+	"id": 4497001,
+	"url": "https://emarod.itch.io/rescue-signal",
+	"title": "Rescue Signal",
+	"authors": [
+		{
+			"name": "emarod",
+			"url": "https://emarod.itch.io"
+		},
+		{
+			"name": "EMA_art",
+			"url": "https://ema-art.itch.io"
+		},
+		{
+			"name": "DTO",
+			"url": "https://dannroda.itch.io"
+		}
+	],
+	"tags": [
+		"ai-generated",
+		"ai-generated-code",
+		"ai-generated-graphics",
+		"godot",
+		"ludum-dare-59",
+		"puzzle"
+	],
+	"info": {
+		"Status": [
+			"Released"
+		],
+		"Platforms": [
+			"HTML5"
+		],
+		"Authors": [
+			"emarod",
+			"EMA_art",
+			"DTO"
+		],
+		"Genre": [
+			"Puzzle"
+		],
+		"Made with": [
+			"Godot"
+		],
+		"Tags": [
+			"Godot",
+			"Ludum Dare 59"
+		],
+		"Average session": [
+			"A few seconds"
+		],
+		"Inputs": [
+			"Keyboard"
+		],
+		"Links": [
+			"Ludum Dare"
+		],
+		"AI Disclosure": [
+			"AI Assisted",
+			"Code",
+			"Graphics"
+		]
+	},
+	"jam": {
+		"name": "Ludum Dare 59",
+		"url": "https://ldjam.com/events/ludum-dare/59/rescue-signal-2",
+		"theme": "Signal",
+		"format": "jam",
+		"results": {
+			"Overall": {
+				"rank": 800,
+				"average": 2.762
+			},
+			"Fun": {
+				"rank": 827,
+				"average": 2.275
+			},
+			"Innovation": {
+				"rank": 723,
+				"average": 2.81
+			},
+			"Theme": {
+				"rank": 671,
+				"average": 3.167
+			},
+			"Graphics": {
+				"rank": 510,
+				"average": 3.571
+			},
+			"Audio": {
+				"rank": 557,
+				"average": 2.429
+			}
+		}
+	},
+	"images": {
+		"cover": "https://img.itch.zone/aW1nLzI2ODA5ODM4LmpwZw==/original/F57RAK.jpg",
+		"screenshots": [
+			"https://img.itch.zone/aW1hZ2UvNDQ5NzAwMS8yNjgwOTkzNS5qcGc=/347x500/Adpf0U.jpg",
+			"https://img.itch.zone/aW1hZ2UvNDQ5NzAwMS8yNjgxMDkyMC5wbmc=/347x500/e2Q1FD.png",
+			"https://img.itch.zone/aW1hZ2UvNDQ5NzAwMS8yNjgxMDkxOS5wbmc=/347x500/mUs%2BIP.png"
+		]
+	},
+	"local_images": {
+		"cover": "/games/rescue-signal/cover.jpg",
+		"screenshots": [
+			"/games/rescue-signal/shot-1.jpg",
+			"/games/rescue-signal/shot-2.png",
+			"/games/rescue-signal/shot-3.png"
+		]
+	},
+	"synced_at": "2026-10-21T20:08:36.524Z"
+}

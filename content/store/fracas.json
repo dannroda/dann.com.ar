@@ -1,0 +1,59 @@
+{
+	"source": "steam",
+	"id": 2824960,
+	"url": "https://store.steampowered.com/app/2824960/",
+	"title": "Fracas",
+	"short": {
+		"en": "Fracas is a dungeon crawler that evokes a retro RPG experience and a complex story. In its short duration, it seeks to keep you intrigued as you solve the mystery behind this enigmatic character that has society on the brink of collapse.",
+		"es": null
+	},
+	"description_html": {
+		"en": "<p class=\"bb_paragraph\" >A peaceful temple is attacked by security forces. A military laboratory is invaded by terrorists. Everyone is looking for Hieman, a man with a mysterious illness and dangerous connections. </p><p class=\"bb_paragraph\" >You will explore multiple locations, gathering information, fighting enemies and solve simple puzzles. Be sure to level up and check every loot!</p><p class=\"bb_paragraph\" >Some locations change the character in your control, see their side of the story.</p><p class=\"bb_paragraph\" ></p>",
+		"es": null
+	},
+	"developers": [
+		"Rookbird Games"
+	],
+	"publishers": [
+		"Blacc Ski Weekend Industries"
+	],
+	"release_date": "Mar 3, 2025",
+	"platforms": [
+		"windows",
+		"linux"
+	],
+	"price": "$5.99",
+	"genres": [
+		"RPG"
+	],
+	"reviews": {
+		"positive": 1,
+		"total": 2,
+		"summary": "2 user reviews"
+	},
+	"trailer": {
+		"name": "Teaser Trailer",
+		"thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257087339/76934fb48e4778e17b2fbf47e1112a6f1042f0b2/movie_600x337.jpg?t=1736363672"
+	},
+	"images": {
+		"cover": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2824960/header.jpg?t=1741025503",
+		"screenshots": [
+			"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2824960/ss_eb7711c61129a76b385eaa39432a6f766b3e14cc.1920x1080.jpg?t=1741025503",
+			"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2824960/ss_b3ef637c316eae962652c68b45b41afc32da5aa1.1920x1080.jpg?t=1741025503",
+			"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2824960/ss_62c7900c60d7d48fa887efbfb797254953820277.1920x1080.jpg?t=1741025503",
+			"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2824960/ss_c361f4967c4a0d27562736420dccd1694f22f109.1920x1080.jpg?t=1741025503",
+			"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2824960/ss_702d0f32a4b338576d732c934689f758ce0b853e.1920x1080.jpg?t=1741025503"
+		]
+	},
+	"local_images": {
+		"cover": "/games/fracas/cover.jpg",
+		"screenshots": [
+			"/games/fracas/shot-1.jpg",
+			"/games/fracas/shot-2.jpg",
+			"/games/fracas/shot-3.jpg",
+			"/games/fracas/shot-4.jpg",
+			"/games/fracas/shot-5.jpg"
+		]
+	},
+	"synced_at": "2026-10-21T19:28:02.098Z"
+}

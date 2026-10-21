@@ -1,0 +1,102 @@
+---
+import Base from '../../layouts/Base.astro';
+import profile from '../../../content/profile.json';
+import { games, list } from '../../games';
+import { t, url, langPaths, type Lang } from '../../i18n';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const s = t[lang];
+const { published, jams, other } = await games();
+const short = (g: (typeof published)[number]) => g.data.short?.[lang] ?? g.data.short?.en;
+---
+
+<Base lang={lang}>
+	<section class="hero">
+		<p class="mono">DANIEL RODRIGUEZ AIRES · ARGENTINA</p>
+		<h1>{s.tagline}<span class="accent">.</span></h1>
+		<p class="sub">{s.sub}</p>
+		<div class="pills">
+			{profile.links.map((l) => <a class="pill" href={l.url}>{l.label} <span aria-hidden="true" class="muted">↗</span></a>)}
+		</div>
+	</section>
+
+	<section class="legend" aria-labelledby="legend">
+		<h2 id="legend" class="mono">{s.legendTitle.toUpperCase()}</h2>
+		<div class="legend-grid">
+			{
+				(['hand', 'assisted', 'vibe'] as const).map((k) => (
+					<div>
+						<span class={`tag ${k}`}>{s.legend[k][0]}</span>
+						<p>{s.legend[k][1]}</p>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	{
+		published.length > 0 && (
+			<section id="games" class="section" aria-labelledby="h-games">
+				<div class="section-head">
+					<h2 id="h-games">{s.published}</h2>
+				</div>
+				<div class="cards">
+					{published.map((g) => (
+						<article class="card">
+							{g.data.local_images.cover && <img class="shot" src={url(g.data.local_images.cover)} alt="" loading="lazy" />}
+							<p class="mono">{[...(g.data.genres ?? []), g.data.release_date?.slice(-4)].filter(Boolean).join(' · ').toUpperCase()}</p>
+							<h3>{g.data.title}</h3>
+							<p lang={g.data.short?.[lang] ? lang : 'en'}>{short(g)}</p>
+							<div class="pills">
+								<a class="pill" href={g.data.url}>Steam <span aria-hidden="true" class="muted">↗</span></a>
+								<a class="pill" href={url(`/${lang}/games/${g.id}/`)}>{s.details} →</a>
+							</div>
+						</article>
+					))}
+				</div>
+			</section>
+		)
+	}
+
+	{
+		jams.length > 0 && (
+			<section id="jams" class="section" aria-labelledby="h-jams">
+				<div class="section-head">
+					<h2 id="h-jams">{s.jams}</h2>
+					<a class="mono" href="https://dannroda.itch.io/">{s.allOnItch.toUpperCase()} ↗</a>
+				</div>
+				<div class="rows">
+					{jams.map((g) => (
+						<a class="row" href={url(`/${lang}/games/${g.id}/`)}>
+							<span class="title">{g.data.title}</span>
+							<span class="meta">
+								{g.data.jam?.name}
+								{g.data.jam?.theme && ` · “${g.data.jam.theme}”`}
+							</span>
+							{g.data.jam?.results?.Overall && <span class="mono">{s.rank} #{g.data.jam.results.Overall.rank}</span>}
+						</a>
+					))}
+				</div>
+			</section>
+		)
+	}
+
+	{
+		other.length > 0 && (
+			<section class="section" aria-labelledby="h-other">
+				<div class="section-head">
+					<h2 id="h-other">{s.other}</h2>
+				</div>
+				<div class="rows">
+					{other.map((g) => (
+						<a class="row" href={url(`/${lang}/games/${g.id}/`)}>
+							<span class="title">{g.data.title}</span>
+							<span class="mono">{list(g.data.info?.['Made with'])}</span>
+						</a>
+					))}
+				</div>
+			</section>
+		)
+	}
+</Base>

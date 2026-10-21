@@ -1,0 +1,99 @@
+{
+	"source": "itch",
+	"id": 2047839,
+	"url": "https://dannroda.itch.io/robot-factory",
+	"title": "Robot Factory",
+	"authors": [
+		{
+			"url": "https://dannroda.itch.io",
+			"name": "DTO"
+		},
+		{
+			"url": "https://emarod.itch.io",
+			"name": "emarod"
+		},
+		{
+			"url": "https://ema-art.itch.io",
+			"name": "EMA_art"
+		}
+	],
+	"tags": [
+		"ludum-dare-53"
+	],
+	"info": {
+		"Status": [
+			"Prototype"
+		],
+		"Platforms": [
+			"Windows",
+			"Linux"
+		],
+		"Authors": [
+			"DTO",
+			"emarod",
+			"EMA_art"
+		],
+		"Made with": [
+			"Blender",
+			"Godot"
+		],
+		"Tags": [
+			"Ludum Dare 53"
+		],
+		"Average session": [
+			"A few seconds"
+		],
+		"Inputs": [
+			"Keyboard",
+			"Gamepad (any)"
+		],
+		"Links": [
+			"Ludum Dare"
+		]
+	},
+	"jam": {
+		"name": "Ludum Dare 53",
+		"url": "https://ldjam.com/events/ludum-dare/53/robot-factory",
+		"theme": "Delivery",
+		"format": "jam",
+		"results": {
+			"Overall": {
+				"rank": 1218,
+				"average": 2.412
+			},
+			"Fun": {
+				"rank": 1221,
+				"average": 2.059
+			},
+			"Innovation": {
+				"rank": 1164,
+				"average": 2.456
+			},
+			"Theme": {
+				"rank": 1099,
+				"average": 3.118
+			},
+			"Graphics": {
+				"rank": 718,
+				"average": 3.485
+			},
+			"Audio": {
+				"rank": 648,
+				"average": 2.953
+			},
+			"Mood": {
+				"rank": 1084,
+				"average": 2.788
+			}
+		}
+	},
+	"images": {
+		"cover": "https://img.itch.zone/aW1nLzEyMDQ0NjMxLnBuZw==/original/t%2FjlD7.png",
+		"screenshots": []
+	},
+	"local_images": {
+		"cover": "/games/robot-factory/cover.png",
+		"screenshots": []
+	},
+	"synced_at": "2026-10-21T20:07:51.330Z"
+}
