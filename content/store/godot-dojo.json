@@ -1,0 +1,24 @@
+{
+	"archived": false,
+	"created": "2025-05-16",
+	"description": null,
+	"homepage": null,
+	"id": 984924842,
+	"images": {
+		"cover": "https://opengraph.githubassets.com/1/lonewolftechnology/godot-dojo",
+		"screenshots": []
+	},
+	"language": "C++",
+	"license": "MIT",
+	"local_images": {
+		"cover": "/games/godot-dojo/cover.jpg",
+		"screenshots": [],
+		"trailer": null
+	},
+	"source": "github",
+	"stars": 6,
+	"synced_at": "2026-10-21T23:08:29.572Z",
+	"title": "godot-dojo",
+	"topics": [],
+	"url": "https://github.com/lonewolftechnology/godot-dojo"
+}
