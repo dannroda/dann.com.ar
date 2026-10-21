@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { slugOf } from '../posts';
+import { t, url, fmtDate, type Lang } from '../i18n';
+
+interface Props {
+	lang: Lang;
+	posts: CollectionEntry<'blog'>[];
+}
+const { lang, posts } = Astro.props;
+---
+
+<div class="rows">
+	{
+		posts.map((p) => (
+			<a class="row post-row" href={url(`/${lang}/blog/${slugOf(p.id)}/`)}>
+				<span class="mono">{fmtDate(p.data.date, lang)}</span>
+				<span class="title">
+					{p.data.title}
+					{p.data.draft && <span class="tag vibe">{t[lang].draft}</span>}
+				</span>
+				<span class="mono">{p.data.tags.map((x) => `#${x}`).join(' ')}</span>
+			</a>
+		))
+	}
+</div>

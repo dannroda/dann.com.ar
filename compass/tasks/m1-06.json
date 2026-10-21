@@ -3,17 +3,18 @@
   "code": "1.6",
   "created_at": "2026-10-21T20:26:30.433Z",
   "description": "Solo como valor inicial; lo que cargues en el CMS manda.",
+  "done_at": "2026-10-21T20:35:16.051Z",
   "milestone": "m01",
-  "notes": "",
+  "notes": "suggestAi() en scripts/sync-games.mjs: 'No generative AI' -> hand; cualquier AI Disclosure -> assisted; si no, vacío. Solo al crear el archivo.",
   "order": 6,
   "priority": "low",
   "refs": [],
   "size": "s",
-  "status": "todo",
+  "status": "done",
   "tags": [
     "datos"
   ],
   "test": "",
   "title": "Sugerir etiqueta inicial desde el AI Disclosure de itch",
-  "updated_at": "2026-10-21T20:26:30.433Z"
+  "updated_at": "2026-10-21T20:35:16.051Z"
 }

@@ -1,0 +1,123 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+# Online: "Sign In with Token" with a GitHub fine-grained token (Contents: read/write on this repo).
+# Local: `npm run dev`, open http://localhost:4321/admin/index.html in a Chromium browser, "Work with Local Repository".
+
+backend:
+  name: github
+  repo: dannroda/dann.com.ar
+  branch: main
+  commit_messages:
+    create: 'content: create {{collection}} "{{slug}}"'
+    update: 'content: update {{collection}} "{{slug}}"'
+    delete: 'content: delete {{collection}} "{{slug}}"'
+    uploadMedia: 'content: upload "{{path}}"'
+    deleteMedia: 'content: delete "{{path}}"'
+
+media_folder: /public/media
+public_folder: /media
+
+i18n:
+  structure: multiple_folders
+  locales: [es, en]
+  default_locale: es
+
+collections:
+  - name: blog
+    label: Blog
+    label_singular: Post
+    folder: content/blog
+    create: true
+    i18n: true
+    slug: '{{slug}}'
+    sortable_fields: [date, title]
+    summary: '{{title}} · {{date | date("YYYY-MM-DD")}}'
+    fields:
+      - { name: title, label: Título, widget: string, i18n: true }
+      - { name: date, label: Fecha, widget: datetime, i18n: duplicate, default: '{{now}}' }
+      - { name: description, label: Bajada, widget: text, i18n: true, required: false }
+      - { name: tags, label: Tags, widget: list, i18n: duplicate, required: false }
+      - { name: draft, label: Borrador, widget: boolean, i18n: duplicate, default: false }
+      - { name: body, label: Texto, widget: markdown, i18n: true }
+
+  # One file per game, created by the store sync; store data itself lives in content/store/ and is not editable here.
+  - name: games
+    label: Juegos
+    label_singular: Juego
+    folder: content/games
+    extension: json
+    format: json
+    create: false
+    delete: false
+    identifier_field: ai
+    summary: '{{filename}}'
+    fields:
+      - name: ai
+        label: Uso de IA
+        widget: select
+        required: false
+        options:
+          - { label: Hecho a mano, value: hand }
+          - { label: Asistido por IA, value: assisted }
+          - { label: Vibe-coded, value: vibe }
+      - { name: featured, label: Destacado, widget: boolean, default: false }
+      - { name: hidden, label: Oculto, widget: boolean, default: false }
+      - name: role
+        label: Mi rol
+        widget: object
+        fields:
+          - { name: es, label: Español, widget: string, required: false }
+          - { name: en, label: English, widget: string, required: false }
+      - name: summary
+        label: Texto propio (reemplaza el de la tienda)
+        widget: object
+        fields:
+          - { name: es, label: Español, widget: text, required: false }
+          - { name: en, label: English, widget: text, required: false }
+      - name: authorship
+        label: Quién hizo qué
+        label_singular: Área
+        widget: list
+        required: false
+        summary: '{{fields.area}}: {{fields.who}}'
+        fields:
+          - name: area
+            label: Área
+            widget: select
+            options:
+              - { label: Diseño, value: design }
+              - { label: Código, value: code }
+              - { label: Arte, value: art }
+              - { label: Audio, value: audio }
+              - { label: Escritura, value: writing }
+              - { label: Herramientas, value: tools }
+              - { label: Depuración, value: debugging }
+          - name: who
+            label: Autoría
+            widget: select
+            options:
+              - { label: Yo, value: me }
+              - { label: IA + revisión, value: ai }
+              - { label: Equipo, value: team }
+              - { label: Terceros, value: third }
+          - name: note
+            label: Nota
+            widget: object
+            fields:
+              - { name: es, label: Español, widget: string, required: false }
+              - { name: en, label: English, widget: string, required: false }
+
+  - name: settings
+    label: Sitio
+    files:
+      - name: profile
+        label: Links
+        file: content/profile.json
+        fields:
+          - name: links
+            label: Links
+            label_singular: Link
+            widget: list
+            summary: '{{fields.label}}'
+            fields:
+              - { name: label, label: Texto, widget: string }
+              - { name: url, label: URL, widget: string }

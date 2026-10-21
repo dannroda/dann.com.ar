@@ -24,6 +24,7 @@ const pageTitle = title ? `${title} · dann` : 'dann';
 		<meta name="description" content={`${s.tagline}. ${s.sub}`} />
 		<link rel="alternate" hreflang={alt} href={new URL(url(`/${alt}/${path}`), Astro.site)} />
 		<link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+		<link rel="alternate" type="application/rss+xml" title={`dann · ${s.blog}`} href={url(`/${lang}/rss.xml`)} />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -39,6 +40,7 @@ const pageTitle = title ? `${title} · dann` : 'dann';
 						<nav class="nav" aria-label={lang === 'es' ? 'Principal' : 'Main'}>
 							<a href={url(`/${lang}/#games`)}>{s.nav.games}</a>
 							<a href={url(`/${lang}/#jams`)}>{s.nav.jams}</a>
+							<a href={url(`/${lang}/blog/`)}>{s.nav.blog}</a>
 							<a href={url(`/${lang}/links/`)}>{s.nav.links}</a>
 							<a class="lang" href={url(`/${alt}/${path}`)} hreflang={alt} lang={alt}>{alt.toUpperCase()}</a>
 						</nav>

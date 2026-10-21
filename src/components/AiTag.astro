@@ -1,0 +1,12 @@
+---
+import { t, type Lang } from '../i18n';
+
+interface Props {
+	lang: Lang;
+	level?: string | null;
+}
+const { lang, level } = Astro.props;
+const k = level === 'hand' || level === 'assisted' || level === 'vibe' ? level : null;
+---
+
+{k && <span class={`tag ${k}`}>{t[lang].legend[k][0]}</span>}

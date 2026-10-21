@@ -36,7 +36,7 @@ jobs:
         run: npm run sync
       - name: Commit synced data
         run: |
-          git add content/store public/games
+          git add content/store content/games public/games
           git diff --cached --quiet && exit 0
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'

@@ -5,7 +5,7 @@ export const t = {
 	es: {
 		tagline: 'Hago juegos en Godot',
 		sub: 'Y con IA, casi cualquier otra cosa. Acá separo bien una cosa de la otra.',
-		nav: { games: 'Juegos', jams: 'Jams', links: 'Links' },
+		nav: { games: 'Juegos', jams: 'Jams', blog: 'Blog', links: 'Links' },
 		legendTitle: 'Cómo leer este sitio',
 		legend: {
 			hand: ['Hecho a mano', 'Sin IA en ninguna etapa. Diseño y código míos.'],
@@ -35,12 +35,25 @@ export const t = {
 		synced: 'Datos de la tienda, actualizados el',
 		play: 'Jugar en',
 		portfolio: 'Portfolio completo',
-		linksTitle: 'Links'
+		linksTitle: 'Links',
+		role: 'Mi rol',
+		authorship: 'Quién hizo qué',
+		area: 'Área',
+		who: 'Autoría',
+		note: 'Nota',
+		areas: { design: 'Diseño', code: 'Código', art: 'Arte', audio: 'Audio', writing: 'Escritura', tools: 'Herramientas', debugging: 'Depuración' },
+		authors: { me: 'Yo', ai: 'IA + revisión', team: 'Equipo', third: 'Terceros' },
+		blog: 'Blog',
+		latest: 'Últimos posts',
+		allPosts: 'Todos los posts',
+		tagged: 'Posts con',
+		draft: 'Borrador',
+		dateLocale: 'es-AR'
 	},
 	en: {
 		tagline: 'I make games in Godot',
 		sub: 'And with AI, almost anything else. Here I keep one apart from the other.',
-		nav: { games: 'Games', jams: 'Jams', links: 'Links' },
+		nav: { games: 'Games', jams: 'Jams', blog: 'Blog', links: 'Links' },
 		legendTitle: 'How to read this site',
 		legend: {
 			hand: ['Handmade', 'No AI at any stage. My design, my code.'],
@@ -70,7 +83,20 @@ export const t = {
 		synced: 'Store data, updated on',
 		play: 'Play on',
 		portfolio: 'Full portfolio',
-		linksTitle: 'Links'
+		linksTitle: 'Links',
+		role: 'My role',
+		authorship: 'Who did what',
+		area: 'Area',
+		who: 'Made by',
+		note: 'Note',
+		areas: { design: 'Design', code: 'Code', art: 'Art', audio: 'Audio', writing: 'Writing', tools: 'Tools', debugging: 'Debugging' },
+		authors: { me: 'Me', ai: 'AI + review', team: 'Team', third: 'Third party' },
+		blog: 'Blog',
+		latest: 'Latest posts',
+		allPosts: 'All posts',
+		tagged: 'Posts tagged',
+		draft: 'Draft',
+		dateLocale: 'en-US'
 	}
 } satisfies Record<Lang, unknown>;
 
@@ -80,3 +106,5 @@ export const other = (lang: Lang): Lang => (lang === 'es' ? 'en' : 'es');
 export const url = (path: string) => import.meta.env.BASE_URL.replace(/\/$/, '') + path;
 
 export const langPaths = () => langs.map((lang) => ({ params: { lang } }));
+
+export const fmtDate = (d: Date, lang: Lang) => d.toLocaleDateString(t[lang].dateLocale, { dateStyle: 'long', timeZone: 'UTC' });

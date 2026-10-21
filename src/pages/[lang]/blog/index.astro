@@ -1,0 +1,23 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PostList from '../../../components/PostList.astro';
+import { posts } from '../../../posts';
+import { t, url, langPaths, type Lang } from '../../../i18n';
+
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const s = t[lang];
+const all = await posts(lang);
+const tags = [...new Set(all.flatMap((p) => p.data.tags))].sort();
+---
+
+<Base lang={lang} title={s.blog} path="blog/">
+	<section class="section">
+		<div class="section-head">
+			<h1 style="font-size: clamp(40px, 6vw, 72px); font-weight: 800">{s.blog}</h1>
+			<a class="mono" href={url(`/${lang}/rss.xml`)}>RSS</a>
+		</div>
+		{tags.length > 0 && <div class="pills">{tags.map((tag) => <a class="pill" href={url(`/${lang}/blog/tags/${tag}/`)}>#{tag}</a>)}</div>}
+		<PostList lang={lang} posts={all} />
+	</section>
+</Base>

@@ -1,0 +1,31 @@
+---
+import Base from '../../../../layouts/Base.astro';
+import PostList from '../../../../components/PostList.astro';
+import { posts } from '../../../../posts';
+import { t, url, langs, type Lang } from '../../../../i18n';
+
+export async function getStaticPaths() {
+	const paths = [];
+	for (const lang of langs) {
+		const all = await posts(lang);
+		for (const tag of new Set(all.flatMap((p) => p.data.tags))) {
+			paths.push({ params: { lang, tag }, props: { list: all.filter((p) => p.data.tags.includes(tag)) } });
+		}
+	}
+	return paths;
+}
+
+const lang = Astro.params.lang as Lang;
+const { tag } = Astro.params;
+const s = t[lang];
+const { list } = Astro.props;
+---
+
+<!-- Tags are per language, so the switch goes to the other blog's index. -->
+<Base lang={lang} title={`#${tag}`} path="blog/">
+	<section class="section">
+		<a class="mono" href={url(`/${lang}/blog/`)}>← {s.blog.toUpperCase()}</a>
+		<h1 style="font-size: clamp(36px, 5vw, 60px); font-weight: 800">{s.tagged} #{tag}</h1>
+		<PostList lang={lang} posts={list} />
+	</section>
+</Base>

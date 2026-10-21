@@ -1,0 +1,19 @@
+{
+  "checklist": [],
+  "code": "2.5",
+  "created_at": "2026-10-21T20:35:17.846Z",
+  "description": "M2 pide al menos un post publicado por idioma. Borrar el borrador de prueba content/blog/*/prueba.md.",
+  "milestone": "m02",
+  "notes": "",
+  "order": 5,
+  "refs": [],
+  "size": "s",
+  "status": "todo",
+  "tags": [
+    "blog",
+    "contenido"
+  ],
+  "test": "",
+  "title": "Escribir el primer post (es y en)",
+  "updated_at": "2026-10-21T20:35:17.846Z"
+}

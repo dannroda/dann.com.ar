@@ -108,8 +108,28 @@ const json = (v) => JSON.stringify(v, sorted, '\t');
 
 const slugOf = (g) => (g.source === 'itch' ? basename(g.url) : g.title.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
 
+// Only a starting value for a new game's own file; the CMS owns it afterwards.
+export function suggestAi(info = {}) {
+	if ([info.Content].flat().some((c) => /no generative ai/i.test(c ?? ''))) return 'hand';
+	return info['AI Disclosure'] ? 'assisted' : '';
+}
+
+const own = (game) => ({
+	ai: suggestAi(game.info),
+	authorship: [],
+	featured: false,
+	hidden: false,
+	role: { en: '', es: '' },
+	summary: { en: '', es: '' }
+});
+
 async function save(game) {
 	const slug = slugOf(game);
+	await mkdir('content/games', { recursive: true });
+	// 'wx' never overwrites: content/games/ is edited by hand or in the CMS.
+	await writeFile(`content/games/${slug}.json`, json(own(game)) + '\n', { flag: 'wx' }).catch((e) => {
+		if (e.code !== 'EEXIST') throw e;
+	});
 	const file = `content/store/${slug}.json`;
 	const prev = await readFile(file, 'utf8').then(JSON.parse, () => null);
 	const { synced_at, local_images, ...prevData } = prev ?? {};
@@ -144,6 +164,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 		'<div class="game_info_panel_widget"><table><tbody><tr><td>Published</td><td><abbr title="19 October 2026 @ 14:22 UTC">2 days ago</abbr></td></tr><tr><td>Publisher</td><td>Scope Overflow</td></tr><tr><td>Made with</td><td><a href="x">Blender</a>, <a href="y">Godot</a></td></tr></tbody></table>'
 	);
 	console.assert(JSON.stringify(info) === '{"Published":"19 October 2026 @ 14:22 UTC","Publisher":"Scope Overflow","Made with":["Blender","Godot"]}', info);
+	console.assert(suggestAi({ Content: ['No generative AI was used'] }) === 'hand');
+	console.assert(suggestAi({ 'AI Disclosure': ['AI Assisted', 'Code'] }) === 'assisted');
+	console.assert(suggestAi(undefined) === '');
 
 	// A failing source keeps its previous file untouched; the exit code still flags it.
 	let failed = false;

@@ -1,5 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import AiTag from '../../../components/AiTag.astro';
 import { games, list, type Game } from '../../../games';
 import { t, url, langs, type Lang } from '../../../i18n';
 
@@ -12,8 +13,11 @@ const lang = Astro.params.lang as Lang;
 const s = t[lang];
 const { game } = Astro.props as { game: Game };
 const d = game.data;
-const short = d.short?.[lang] ?? d.short?.en;
-const fallback = d.short && !d.short[lang];
+const own = game.own;
+const short = own?.summary[lang] || d.short?.[lang] || d.short?.en;
+const fallback = !own?.summary[lang] && d.short && !d.short[lang];
+const role = own?.role[lang];
+const authorship = own?.authorship ?? [];
 const store = d.source === 'steam' ? 'Steam' : 'itch.io';
 
 // itch "More information" rows worth showing, in the order the page lists them.
@@ -38,6 +42,10 @@ const synced = new Date(d.synced_at).toLocaleDateString(lang === 'es' ? 'es-AR' 
 <Base lang={lang} title={d.title} path={`games/${game.id}/`}>
 	<section class="hero">
 		<a class="mono" href={url(`/${lang}/`)}>← {s.back.toUpperCase()}</a>
+		<div class="pills">
+			<AiTag lang={lang} level={own?.ai} />
+			{role && <span class="mono">{s.role.toUpperCase()}: {role}</span>}
+		</div>
 		<h1>{d.title}</h1>
 		{short && <p class="sub" lang={fallback ? 'en' : lang}>{short}</p>}
 		{fallback && <p class="mono">{s.onlyIn.toUpperCase()}</p>}
@@ -51,6 +59,29 @@ const synced = new Date(d.synced_at).toLocaleDateString(lang === 'es' ? 'es-AR' 
 
 	<div class="detail">
 		<main>
+			{
+				authorship.length > 0 && (
+					<section class="section" aria-labelledby="h-authorship">
+						<h2 id="h-authorship">{s.authorship}</h2>
+						<div class="table-box">
+							<table>
+								<thead>
+									<tr><th scope="col">{s.area}</th><th scope="col">{s.who}</th><th scope="col">{s.note}</th></tr>
+								</thead>
+								<tbody>
+									{authorship.map((a) => (
+										<tr>
+											<th scope="row">{s.areas[a.area]}</th>
+											<td><span class:list={['tag', a.who === 'me' ? 'hand' : a.who === 'ai' ? 'assisted' : 'other']}>{s.authors[a.who]}</span></td>
+											<td>{a.note[lang] || a.note[lang === 'es' ? 'en' : 'es']}</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</div>
+					</section>
+				)
+			}
 			{
 				d.jam?.results && (
 					<section class="section" aria-labelledby="h-results">

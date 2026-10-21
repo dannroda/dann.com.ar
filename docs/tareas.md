@@ -39,7 +39,7 @@ Home, fichas de juego y links en /es/ y /en/, con redirección por idioma del na
 
 **Terminada:** 2026-10-21 · **Etiquetas:** `web`, `bug`
 
-## M1 — CMS y etiquetas de IA  (0/6)
+## M1 — CMS y etiquetas de IA  (6/6, 1 en revisión)
 
 Editar los datos propios de cada juego desde /admin y mostrar cómo se usó la IA en cada uno.
 
@@ -47,49 +47,70 @@ Editar los datos propios de cada juego desde /admin y mostrar cómo se usó la I
 - Cada juego tiene etiqueta de IA visible en la home y en su ficha.
 - Los datos propios se editan desde /admin sin tocar archivos a mano.
 
-### 1.1 Modelo de datos propios por juego · Pendiente
+### 1.1 Modelo de datos propios por juego · Hecho
 
-**Prioridad:** alta · **Tamaño:** M · **Etiquetas:** `datos`
+**Terminada:** 2026-10-21 · **Prioridad:** alta · **Tamaño:** M · **Etiquetas:** `datos`
 
 Archivo por juego en content/games/ con etiqueta de IA, desglose "Quién hizo qué", rol, texto es/en, destacado y oculto. La sync nunca lo toca.
 
+**Prueba:** npm run sync crea los faltantes; editar uno y volver a sincronizar no lo cambia.
+
+**Notas:** content/games/<slug>.json; la sync lo crea si falta (flag wx) y nunca lo pisa. Esquema en src/content.config.ts.
+
 **Bloquea a:** 1.2 Sveltia CMS en /admin; 1.4 Etiquetas de IA en tarjetas y filas; 1.5 Tabla "Quién hizo qué" en la ficha
 
-### 1.2 Sveltia CMS en /admin · Pendiente
+### 1.2 Sveltia CMS en /admin · Revisión
 
 **Prioridad:** alta · **Tamaño:** L · **Etiquetas:** `cms`
 
 Editar los datos propios (y luego posts) desde el navegador; cada cambio es un commit.
 
-**Bloqueada por:** 1.1 Modelo de datos propios por juego; 1.3 Login con GitHub vía Cloudflare Worker
+**Prueba:** Abrir /admin/, entrar (token o repo local), editar un juego y un post, ver el commit y el cambio publicado.
 
-### 1.3 Login con GitHub vía Cloudflare Worker · Pendiente
+**Notas:** public/admin/index.html + config.yml (validado contra el JSON Schema de Sveltia; la pantalla de login carga sin errores en Chromium headless). Colecciones: blog (i18n multiple_folders), juegos (content/games, sin crear/borrar), links (content/profile.json).
 
-**Tamaño:** M · **Etiquetas:** `cms`, `infra`
+**Bloqueada por:** 1.1 Modelo de datos propios por juego; 1.3 Login al CMS (token de GitHub)
+
+### 1.3 Login al CMS (token de GitHub) · Hecho
+
+**Terminada:** 2026-10-21 · **Tamaño:** M · **Etiquetas:** `cms`, `infra`
 
 Sveltia necesita un servicio de OAuth para entrar desde el navegador; el worker de Sveltia es gratis.
 
+**Decisiones:**
+- ! Entrar al CMS con token personal de GitHub en lugar del Worker de Cloudflare · sin revisar
+  Por qué: Un solo editor técnico: el token evita desplegar un Worker y crear una OAuth app. Sveltia lo soporta con 'Sign In with Token'.
+  Descartado: Sveltia CMS Authenticator en Cloudflare Workers + OAuth app (sigue disponible si se suma otro editor).
+
+**Notas:** Crear un fine-grained token en GitHub con Contents read/write solo sobre dannroda/dann.com.ar.
+
 **Bloquea a:** 1.2 Sveltia CMS en /admin
 
-### 1.4 Etiquetas de IA en tarjetas y filas · Pendiente
+### 1.4 Etiquetas de IA en tarjetas y filas · Hecho
 
-**Prioridad:** alta · **Tamaño:** S · **Etiquetas:** `web`
+**Terminada:** 2026-10-21 · **Prioridad:** alta · **Tamaño:** S · **Etiquetas:** `web`
 
-**Bloqueada por:** 1.1 Modelo de datos propios por juego
-
-### 1.5 Tabla "Quién hizo qué" en la ficha · Pendiente
-
-**Tamaño:** M · **Etiquetas:** `web`
+**Prueba:** Home: la etiqueta aparece en la tarjeta y en las filas cuando el juego tiene 'ai'.
 
 **Bloqueada por:** 1.1 Modelo de datos propios por juego
 
-### 1.6 Sugerir etiqueta inicial desde el AI Disclosure de itch · Pendiente
+### 1.5 Tabla "Quién hizo qué" en la ficha · Hecho
 
-**Prioridad:** baja · **Tamaño:** S · **Etiquetas:** `datos`
+**Terminada:** 2026-10-21 · **Tamaño:** M · **Etiquetas:** `web`
+
+**Prueba:** Ficha: con 'authorship' cargado aparece la tabla; sin datos no se muestra.
+
+**Bloqueada por:** 1.1 Modelo de datos propios por juego
+
+### 1.6 Sugerir etiqueta inicial desde el AI Disclosure de itch · Hecho
+
+**Terminada:** 2026-10-21 · **Prioridad:** baja · **Tamaño:** S · **Etiquetas:** `datos`
 
 Solo como valor inicial; lo que cargues en el CMS manda.
 
-## M2 — Blog  (0/4)
+**Notas:** suggestAi() en scripts/sync-games.mjs: 'No generative AI' -> hand; cualquier AI Disclosure -> assisted; si no, vacío. Solo al crear el archivo.
+
+## M2 — Blog  (4/5)
 
 Posts en Markdown por idioma, con listado, tags y RSS.
 
@@ -97,21 +118,31 @@ Posts en Markdown por idioma, con listado, tags y RSS.
 - Hay al menos un post publicado en cada idioma.
 - El RSS valida.
 
-### 2.1 Colección de posts por idioma · Pendiente
+### 2.1 Colección de posts por idioma · Hecho
 
-**Tamaño:** M · **Etiquetas:** `blog`
+**Terminada:** 2026-10-21 · **Tamaño:** M · **Etiquetas:** `blog`
 
-### 2.2 Listado y página de post · Pendiente
+**Notas:** content/blog/<lang>/<slug>.md, colección blog en src/content.config.ts. Borradores solo en dev.
 
-**Tamaño:** M · **Etiquetas:** `blog`
+### 2.2 Listado y página de post · Hecho
 
-### 2.3 RSS por idioma · Pendiente
+**Terminada:** 2026-10-21 · **Tamaño:** M · **Etiquetas:** `blog`
 
-**Tamaño:** S · **Etiquetas:** `blog`
+### 2.3 RSS por idioma · Hecho
 
-### 2.4 Tags del blog · Pendiente
+**Terminada:** 2026-10-21 · **Tamaño:** S · **Etiquetas:** `blog`
 
-**Prioridad:** baja · **Tamaño:** S · **Etiquetas:** `blog`
+**Prueba:** dist/<lang>/rss.xml se genera con items y language; borradores excluidos.
+
+### 2.4 Tags del blog · Hecho
+
+**Terminada:** 2026-10-21 · **Prioridad:** baja · **Tamaño:** S · **Etiquetas:** `blog`
+
+### 2.5 Escribir el primer post (es y en) · Pendiente
+
+**Tamaño:** S · **Etiquetas:** `blog`, `contenido`
+
+M2 pide al menos un post publicado por idioma. Borrar el borrador de prueba content/blog/*/prueba.md.
 
 ## M3 — Proyectos y Lab  (0/2)
 

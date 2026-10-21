@@ -37,4 +37,36 @@ const store = defineCollection({
 	})
 });
 
-export const collections = { store };
+// Your own data per game, edited in the CMS (/admin). The sync only creates missing files.
+const text = z.object({ en: z.string().default(''), es: z.string().default('') }).default({ en: '', es: '' });
+export const aiLevels = ['hand', 'assisted', 'vibe'] as const;
+export const areas = ['design', 'code', 'art', 'audio', 'writing', 'tools', 'debugging'] as const;
+export const authors = ['me', 'ai', 'team', 'third'] as const;
+const games = defineCollection({
+	loader: glob({ pattern: '*.json', base: './content/games' }),
+	schema: z.object({
+		ai: z.enum(aiLevels).or(z.literal('')).nullish(),
+		featured: z.boolean().default(false),
+		hidden: z.boolean().default(false),
+		role: text,
+		summary: text,
+		authorship: z
+			.array(z.object({ area: z.enum(areas), who: z.enum(authors), note: text }))
+			.nullish()
+			.transform((v) => v ?? [])
+	})
+});
+
+// content/blog/<lang>/<slug>.md, the layout Sveltia's multiple_folders i18n writes.
+const blog = defineCollection({
+	loader: glob({ pattern: '*/*.md', base: './content/blog' }),
+	schema: z.object({
+		title: z.string(),
+		date: z.coerce.date(),
+		description: z.string().optional(),
+		tags: z.array(z.string()).nullish().transform((v) => v ?? []),
+		draft: z.boolean().default(false)
+	})
+});
+
+export const collections = { store, games, blog };

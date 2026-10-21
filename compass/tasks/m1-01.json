@@ -3,6 +3,7 @@
   "code": "1.1",
   "created_at": "2026-10-21T20:26:29.197Z",
   "description": "Archivo por juego en content/games/ con etiqueta de IA, desglose \"Quién hizo qué\", rol, texto es/en, destacado y oculto. La sync nunca lo toca.",
+  "done_at": "2026-10-21T20:35:13.183Z",
   "links": [
     {
       "task": "m1-02",
@@ -18,16 +19,16 @@
     }
   ],
   "milestone": "m01",
-  "notes": "",
+  "notes": "content/games/<slug>.json; la sync lo crea si falta (flag wx) y nunca lo pisa. Esquema en src/content.config.ts.",
   "order": 1,
   "priority": "high",
   "refs": [],
   "size": "m",
-  "status": "todo",
+  "status": "done",
   "tags": [
     "datos"
   ],
-  "test": "",
+  "test": "npm run sync crea los faltantes; editar uno y volver a sincronizar no lo cambia.",
   "title": "Modelo de datos propios por juego",
-  "updated_at": "2026-10-21T20:26:34.425Z"
+  "updated_at": "2026-10-21T20:35:13.183Z"
 }
