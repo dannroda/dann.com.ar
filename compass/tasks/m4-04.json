@@ -2,16 +2,17 @@
   "checklist": [],
   "code": "4.4",
   "created_at": "2026-10-21T20:26:32.899Z",
+  "done_at": "2026-10-21T20:48:14.799Z",
   "milestone": "m04",
-  "notes": "",
+  "notes": "og:*/twitter:card en Base.astro; public/og.png generado con Chromium headless; las fichas usan su portada.",
   "order": 4,
   "refs": [],
   "size": "s",
-  "status": "todo",
+  "status": "done",
   "tags": [
     "web"
   ],
   "test": "",
   "title": "Imagen y metadatos Open Graph",
-  "updated_at": "2026-10-21T20:26:32.899Z"
+  "updated_at": "2026-10-21T20:48:14.799Z"
 }

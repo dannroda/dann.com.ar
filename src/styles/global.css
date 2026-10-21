@@ -53,11 +53,20 @@ p { margin: 0; }
 .section-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; }
 .section-head h2 { font-size: 36px; font-weight: 800; }
 
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); gap: 24px; }
 .card { display: flex; flex-direction: column; gap: 14px; }
 .shot { aspect-ratio: 16 / 9; width: 100%; object-fit: cover; border-radius: 12px; border: 1px solid var(--line); background: var(--surface-2); }
 .card h3 { font-size: 26px; }
 .card p { color: var(--text-2); }
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.tile { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.tile-title { font-size: 22px; font-weight: 700; }
+
+.lab { display: flex; flex-direction: column; gap: 24px; padding: 32px; border: 1px dashed #4a5160; border-radius: 16px; }
+.lab-title { font-family: var(--mono); font-size: 24px; font-weight: 500; color: var(--text-2); }
+.lab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); border-top: 1px dashed #3a404d; }
+.lab-grid a { display: flex; flex-direction: column; gap: 6px; padding: 16px 4px; border-bottom: 1px dashed #3a404d; font-family: var(--mono); color: var(--text-2); }
 
 .rows { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
 .row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 8rem 11rem; align-items: center; gap: 4px 24px; padding: 18px 4px; border-bottom: 1px solid var(--line); }
@@ -90,6 +99,8 @@ p { margin: 0; }
 table { width: 100%; border-collapse: collapse; font-size: 15px; }
 th, td { padding: 12px 16px; text-align: left; border-top: 1px solid var(--line); }
 thead th { border-top: 0; background: var(--surface); font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--muted); }
+.trailer { position: relative; display: block; }
+.trailer .pill { position: absolute; left: 16px; bottom: 16px; }
 .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
 
 .footer { padding-top: 32px; border-top: 1px solid var(--line); }

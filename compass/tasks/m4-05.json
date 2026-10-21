@@ -2,17 +2,18 @@
   "checklist": [],
   "code": "4.5",
   "created_at": "2026-10-21T20:26:33.154Z",
+  "done_at": "2026-10-21T20:48:15.162Z",
   "milestone": "m04",
   "notes": "",
   "order": 5,
   "priority": "low",
   "refs": [],
   "size": "s",
-  "status": "todo",
+  "status": "done",
   "tags": [
     "web"
   ],
   "test": "",
   "title": "Página 404",
-  "updated_at": "2026-10-21T20:26:33.154Z"
+  "updated_at": "2026-10-21T20:48:15.162Z"
 }

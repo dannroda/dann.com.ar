@@ -3,13 +3,13 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 const i18n = z.object({ en: z.string().nullable(), es: z.string().nullable() });
-const images = z.object({ cover: z.string().nullable(), screenshots: z.array(z.string()) });
+const images = z.object({ cover: z.string().nullable(), trailer: z.string().nullable().optional(), screenshots: z.array(z.string()) });
 
 // Written by scripts/sync-games.mjs; never edit by hand.
 const store = defineCollection({
 	loader: glob({ pattern: '*.json', base: './content/store' }),
 	schema: z.object({
-		source: z.enum(['steam', 'itch']),
+		source: z.enum(['steam', 'itch', 'github']),
 		id: z.number(),
 		url: z.string().url(),
 		title: z.string(),
@@ -22,6 +22,16 @@ const store = defineCollection({
 		platforms: z.array(z.string()).optional(),
 		price: z.string().nullable().optional(),
 		genres: z.array(z.string()).optional(),
+		trailer: z.object({ name: z.string() }).nullable().optional(),
+		// github
+		description: z.string().nullable().optional(),
+		homepage: z.string().nullable().optional(),
+		language: z.string().nullable().optional(),
+		topics: z.array(z.string()).optional(),
+		stars: z.number().optional(),
+		archived: z.boolean().optional(),
+		license: z.string().nullable().optional(),
+		created: z.string().optional(),
 		// itch
 		authors: z.array(z.object({ name: z.string(), url: z.string() })).optional(),
 		info: z.record(z.string(), z.unknown()).optional(),
@@ -30,6 +40,7 @@ const store = defineCollection({
 				name: z.string().nullable(),
 				url: z.string(),
 				theme: z.string().nullable().optional(),
+				entries: z.number().nullable().optional(),
 				results: z.record(z.string(), z.object({ rank: z.number(), average: z.number() })).nullable().optional()
 			})
 			.nullable()

@@ -2,16 +2,17 @@
   "checklist": [],
   "code": "3.2",
   "created_at": "2026-10-21T20:26:31.898Z",
+  "done_at": "2026-10-21T20:48:11.232Z",
   "milestone": "m03",
-  "notes": "",
+  "notes": "Todo lo marcado vibe en el CMS (cualquier fuente) va al Lab y sale de las demás secciones. Hoy no hay nada marcado.",
   "order": 2,
   "refs": [],
   "size": "m",
-  "status": "todo",
+  "status": "done",
   "tags": [
     "web"
   ],
-  "test": "",
+  "test": "Marcar un proyecto como vibe-coded en /admin: pasa al Lab.",
   "title": "Sección Lab para lo vibe-coded",
-  "updated_at": "2026-10-21T20:26:31.898Z"
+  "updated_at": "2026-10-21T20:48:11.232Z"
 }

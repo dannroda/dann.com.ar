@@ -1,4 +1,4 @@
-// Pulls store data (Steam, itch.io) into content/store/<slug>.json and images into public/games/<slug>/.
+// Pulls store data (Steam, itch.io, GitHub) into content/store/<slug>.json and images into public/games/<slug>/.
 // Only store-owned fields live here; your own fields (AI label, authorship, texts) go in separate files the sync never touches.
 // Usage: node scripts/sync-games.mjs
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -7,8 +7,16 @@ import { basename } from 'node:path';
 const UA = { 'user-agent': 'dann.com.ar game sync' };
 const sources = JSON.parse(await readFile('content/sources.json', 'utf8'));
 
-async function get(url, as = 'json') {
-	const res = await fetch(url, { headers: UA });
+// The Actions GITHUB_TOKEN lifts the GitHub API's anonymous rate limit; optional locally.
+const auth = process.env.GITHUB_TOKEN ? { authorization: `Bearer ${process.env.GITHUB_TOKEN}` } : {};
+
+async function get(url, as = 'json', retries = 3) {
+	const res = await fetch(url, { headers: url.startsWith('https://api.github.com/') ? { ...UA, ...auth } : UA });
+	// GitHub's preview-image service rate-limits bursts; back off and retry.
+	if (res.status === 429 && retries > 0) {
+		await new Promise((r) => setTimeout(r, (4 - retries) * 3000));
+		return get(url, as, retries - 1);
+	}
 	if (!res.ok) throw new Error(`${res.status} ${url}`);
 	return as === 'json' ? res.json() : as === 'text' ? res.text() : Buffer.from(await res.arrayBuffer());
 }
@@ -37,8 +45,9 @@ async function steam(appid) {
 		price: en.is_free ? 'Free' : (en.price_overview?.final_formatted ?? null),
 		genres: (en.genres ?? []).map((g) => g.description),
 		reviews: reviews ? { positive: reviews.total_positive, total: reviews.total_reviews, summary: reviews.review_score_desc } : null,
-		trailer: en.movies?.[0] ? { name: en.movies[0].name, thumbnail: en.movies[0].thumbnail } : null,
-		images: { cover: en.header_image, screenshots: (en.screenshots ?? []).map((s) => s.path_full) }
+		// Steam only serves trailers as HLS/DASH streams; the site shows the poster and links to the store.
+		trailer: en.movies?.[0] ? { name: en.movies[0].name } : null,
+		images: { cover: en.header_image, trailer: en.movies?.[0]?.thumbnail ?? null, screenshots: (en.screenshots ?? []).map((s) => s.path_full) }
 	};
 }
 
@@ -81,6 +90,8 @@ async function ludumDare(path) {
 		url: `https://ldjam.com${game.path}`,
 		theme: event.meta['event-theme'] ?? null,
 		format: game.subsubtype,
+		// entries in the same format (jam or compo), to read the rank against
+		entries: (await get(`https://api.ldjam.com/vx/stats/${event.id}`)).stats?.[game.subsubtype] ?? null,
 		results: Object.keys(results).length ? results : null
 	};
 }
@@ -102,11 +113,31 @@ async function itch(url) {
 	};
 }
 
+// "owner/repo". No pushed_at: it changes on every push and would make each sync a new commit.
+async function github(repo) {
+	const r = await get(`https://api.github.com/repos/${repo}`);
+	return {
+		source: 'github',
+		id: r.id,
+		url: r.html_url,
+		title: r.name,
+		description: r.description,
+		homepage: r.homepage || null,
+		language: r.language,
+		topics: r.topics ?? [],
+		stars: r.stargazers_count,
+		archived: r.archived,
+		license: r.license?.spdx_id ?? null,
+		created: r.created_at.slice(0, 10),
+		images: { cover: `https://opengraph.githubassets.com/1/${r.full_name}`, screenshots: [] }
+	};
+}
+
 // itch.io also shuffles JSON key order per response; sorted keys keep comparisons and git diffs stable.
 const sorted = (_, v) => (v && typeof v === 'object' && !Array.isArray(v) ? Object.fromEntries(Object.entries(v).sort(([a], [b]) => a.localeCompare(b))) : v);
 const json = (v) => JSON.stringify(v, sorted, '\t');
 
-const slugOf = (g) => (g.source === 'itch' ? basename(g.url) : g.title.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+const slugOf = (g) => (g.source !== 'steam' ? basename(g.url).toLowerCase() : g.title.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
 
 // Only a starting value for a new game's own file; the CMS owns it afterwards.
 export function suggestAi(info = {}) {
@@ -147,6 +178,7 @@ async function save(game) {
 		...game,
 		local_images: {
 			cover: imgs.cover ? await local(imgs.cover, 'cover') : null,
+			trailer: imgs.trailer ? await local(imgs.trailer, 'trailer') : null,
 			screenshots: await Promise.all(imgs.screenshots.map((u, i) => local(u, `shot-${i + 1}`)))
 		},
 		synced_at: new Date().toISOString()
@@ -180,5 +212,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 	};
 	for (const id of sources.steam ?? []) await run(`steam ${id}`, () => steam(id));
 	for (const url of sources.itch ?? []) await run(url, () => itch(url.replace(/\/$/, '')));
+	for (const repo of sources.github ?? []) await run(`github ${repo}`, () => github(repo));
 	process.exit(failed ? 1 : 0);
 }

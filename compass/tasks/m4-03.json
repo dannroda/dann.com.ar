@@ -2,16 +2,17 @@
   "checklist": [],
   "code": "4.3",
   "created_at": "2026-10-21T20:26:32.638Z",
+  "done_at": "2026-10-21T20:48:13.816Z",
   "milestone": "m04",
-  "notes": "",
+  "notes": "Steam ya no da MP4, solo HLS/DASH. Se muestra el póster del tráiler (descargado) con link a Steam en lugar de un reproductor.",
   "order": 3,
   "refs": [],
   "size": "s",
-  "status": "todo",
+  "status": "done",
   "tags": [
     "web"
   ],
   "test": "",
   "title": "Tráiler de Steam en la ficha",
-  "updated_at": "2026-10-21T20:26:32.638Z"
+  "updated_at": "2026-10-21T20:48:13.816Z"
 }

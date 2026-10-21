@@ -2,17 +2,18 @@
   "checklist": [],
   "code": "4.2",
   "created_at": "2026-10-21T20:26:32.384Z",
+  "done_at": "2026-10-21T20:48:13.231Z",
   "milestone": "m04",
-  "notes": "",
+  "notes": "term() en src/i18n.ts: estados, AI disclosure y categorías de LD; lo desconocido se muestra tal cual.",
   "order": 2,
   "refs": [],
   "size": "s",
-  "status": "todo",
+  "status": "done",
   "tags": [
     "web",
     "i18n"
   ],
   "test": "",
   "title": "Traducir las filas de itch (Made with, etc.)",
-  "updated_at": "2026-10-21T20:26:32.384Z"
+  "updated_at": "2026-10-21T20:48:13.231Z"
 }

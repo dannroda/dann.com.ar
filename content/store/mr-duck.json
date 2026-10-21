@@ -1,34 +1,111 @@
 {
-	"source": "itch",
-	"id": 5184114,
-	"url": "https://emarod.itch.io/mr-duck",
-	"title": "Mr. Duck",
 	"authors": [
 		{
-			"url": "https://emarod.itch.io",
-			"name": "emarod"
+			"name": "emarod",
+			"url": "https://emarod.itch.io"
 		},
 		{
-			"url": "https://sergiogp11.itch.io",
-			"name": "Sergiogp11"
+			"name": "Sergiogp11",
+			"url": "https://sergiogp11.itch.io"
 		},
 		{
-			"url": "https://dannroda.itch.io",
-			"name": "DTO"
+			"name": "DTO",
+			"url": "https://dannroda.itch.io"
 		},
 		{
-			"url": "https://the-fazzo.itch.io",
-			"name": "The_Fazzo"
+			"name": "The_Fazzo",
+			"url": "https://the-fazzo.itch.io"
 		},
 		{
-			"url": "https://ema-art.itch.io",
-			"name": "EMA_art"
+			"name": "EMA_art",
+			"url": "https://ema-art.itch.io"
 		},
 		{
-			"url": "https://gabo-salcedo.itch.io",
-			"name": "Gabo-Salcedo"
+			"name": "Gabo-Salcedo",
+			"url": "https://gabo-salcedo.itch.io"
 		}
 	],
+	"id": 5184114,
+	"images": {
+		"cover": "https://img.itch.zone/aW1nLzMxMDg3OTI4LnBuZw==/original/fnCL%2Bz.png",
+		"screenshots": []
+	},
+	"info": {
+		"AI Disclosure": [
+			"AI Assisted",
+			"Code"
+		],
+		"Authors": [
+			"emarod",
+			"Sergiogp11",
+			"DTO",
+			"The_Fazzo",
+			"EMA_art",
+			"Gabo-Salcedo"
+		],
+		"Average session": [
+			"A few seconds"
+		],
+		"Genre": [
+			"Platformer",
+			"Rhythm"
+		],
+		"Inputs": [
+			"Keyboard",
+			"Gamepad (any)"
+		],
+		"Languages": [
+			"English"
+		],
+		"Links": [
+			"Ludum Dare"
+		],
+		"Made with": [
+			"Blender",
+			"Aseprite",
+			"Godot"
+		],
+		"Platforms": [
+			"HTML5",
+			"Windows",
+			"macOS",
+			"Linux"
+		],
+		"Published": "19 October 2026 @ 14:22 UTC",
+		"Publisher": "Scope Overflow",
+		"Rating": {
+			"average": 5,
+			"count": 1
+		},
+		"Status": [
+			"In development"
+		],
+		"Tags": [
+			"2D",
+			"3D",
+			"Ludum Dare",
+			"Ludum Dare 60",
+			"Pixel Art",
+			"Retro",
+			"Side Scroller",
+			"Singleplayer"
+		]
+	},
+	"jam": {
+		"entries": 736,
+		"format": "jam",
+		"name": "Ludum Dare 60",
+		"results": null,
+		"theme": "Old Tech",
+		"url": "https://ldjam.com/events/ludum-dare/60/mr-duck"
+	},
+	"local_images": {
+		"cover": "/games/mr-duck/cover.png",
+		"screenshots": [],
+		"trailer": null
+	},
+	"source": "itch",
+	"synced_at": "2026-10-21T20:45:26.316Z",
 	"tags": [
 		"2d",
 		"3d",
@@ -43,81 +120,6 @@
 		"side-scroller",
 		"singleplayer"
 	],
-	"info": {
-		"Published": "19 October 2026 @ 14:22 UTC",
-		"Status": [
-			"In development"
-		],
-		"Platforms": [
-			"HTML5",
-			"Windows",
-			"macOS",
-			"Linux"
-		],
-		"Publisher": "Scope Overflow",
-		"Rating": {
-			"average": 5,
-			"count": 1
-		},
-		"Authors": [
-			"emarod",
-			"Sergiogp11",
-			"DTO",
-			"The_Fazzo",
-			"EMA_art",
-			"Gabo-Salcedo"
-		],
-		"Genre": [
-			"Platformer",
-			"Rhythm"
-		],
-		"Made with": [
-			"Blender",
-			"Aseprite",
-			"Godot"
-		],
-		"Tags": [
-			"2D",
-			"3D",
-			"Ludum Dare",
-			"Ludum Dare 60",
-			"Pixel Art",
-			"Retro",
-			"Side Scroller",
-			"Singleplayer"
-		],
-		"Average session": [
-			"A few seconds"
-		],
-		"Languages": [
-			"English"
-		],
-		"Inputs": [
-			"Keyboard",
-			"Gamepad (any)"
-		],
-		"Links": [
-			"Ludum Dare"
-		],
-		"AI Disclosure": [
-			"AI Assisted",
-			"Code"
-		]
-	},
-	"jam": {
-		"name": "Ludum Dare 60",
-		"url": "https://ldjam.com/events/ludum-dare/60/mr-duck",
-		"theme": "Old Tech",
-		"format": "jam",
-		"results": null
-	},
-	"images": {
-		"cover": "https://img.itch.zone/aW1nLzMxMDg3OTI4LnBuZw==/original/fnCL%2Bz.png",
-		"screenshots": []
-	},
-	"local_images": {
-		"cover": "/games/mr-duck/cover.png",
-		"screenshots": []
-	},
-	"synced_at": "2026-10-21T20:07:56.253Z"
+	"title": "Mr. Duck",
+	"url": "https://emarod.itch.io/mr-duck"
 }

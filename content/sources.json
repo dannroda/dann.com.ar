@@ -7,5 +7,6 @@
 		"https://emarod.itch.io/little-eyes",
 		"https://emarod.itch.io/mr-duck",
 		"https://emarod.itch.io/rescue-signal"
-	]
+	],
+	"github": ["dannroda/dann.com.ar", "dannroda/itchy-api", "dannroda/Godot-PHPmysql-example", "dannroda/tauri-vue-vite-spotify"]
 }

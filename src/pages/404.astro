@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import { t, url, langs } from '../i18n';
+---
+
+<!-- GitHub Pages serves this for any missing path, so it speaks both languages. -->
+<Base lang="es" title="404" bare>
+	<div class="links" style="justify-content: center">
+		<p class="brand" style="font-size: 72px; font-family: 'Archivo', sans-serif; font-weight: 800">404<span>_</span></p>
+		{
+			langs.map((lang) => (
+				<p lang={lang}>
+					{t[lang].notFound} <a class="accent" href={url(`/${lang}/`)}>{t[lang].home} →</a>
+				</p>
+			))
+		}
+	</div>
+</Base>

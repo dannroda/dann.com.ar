@@ -9,13 +9,20 @@ export async function games() {
 		.map((g) => ({ ...g, own: own.get(g.id) }))
 		.filter((g) => !g.own?.hidden)
 		.sort((a, b) => Number(!!b.own?.featured) - Number(!!a.own?.featured) || b.data.id - a.data.id);
+	// Vibe-coded work only shows in the Lab, whatever its source.
+	const lab = all.filter((g) => g.own?.ai === 'vibe');
+	const rest = all.filter((g) => g.own?.ai !== 'vibe');
 	return {
 		all,
-		published: all.filter((g) => g.data.source === 'steam'),
-		jams: all.filter((g) => g.data.source === 'itch' && g.data.jam),
-		other: all.filter((g) => g.data.source === 'itch' && !g.data.jam)
+		lab,
+		published: rest.filter((g) => g.data.source === 'steam'),
+		jams: rest.filter((g) => g.data.source === 'itch' && g.data.jam),
+		other: rest.filter((g) => g.data.source === 'itch' && !g.data.jam),
+		projects: rest.filter((g) => g.data.source === 'github')
 	};
 }
+
+export const storeName = { steam: 'Steam', itch: 'itch.io', github: 'GitHub' } as const;
 
 // itch "More information" rows are strings or string lists.
 export const list = (v: unknown) => (Array.isArray(v) ? v.join(', ') : typeof v === 'string' ? v : null);

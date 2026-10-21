@@ -1,8 +1,8 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import AiTag from '../../../components/AiTag.astro';
-import { games, list, type Game } from '../../../games';
-import { t, url, langs, type Lang } from '../../../i18n';
+import { games, list, storeName, type Game } from '../../../games';
+import { t, url, langs, term, fmtDate, type Lang } from '../../../i18n';
 
 export async function getStaticPaths() {
 	const { all } = await games();
@@ -14,11 +14,12 @@ const s = t[lang];
 const { game } = Astro.props as { game: Game };
 const d = game.data;
 const own = game.own;
-const short = own?.summary[lang] || d.short?.[lang] || d.short?.en;
+const storeText = d.short?.[lang] || d.short?.en || d.description;
+const short = own?.summary[lang] || storeText;
 const fallback = !own?.summary[lang] && d.short && !d.short[lang];
 const role = own?.role[lang];
 const authorship = own?.authorship ?? [];
-const store = d.source === 'steam' ? 'Steam' : 'itch.io';
+const tr = (v: unknown) => [v].flat().filter(Boolean).map((x) => term(lang, String(x))).join(', ') || null;
 
 // itch "More information" rows worth showing, in the order the page lists them.
 const itchFacts = [
@@ -31,15 +32,20 @@ const itchFacts = [
 const facts = [
 	[s.developer, d.developers?.join(', ')],
 	[s.release, d.release_date],
-	[s.platforms, d.platforms?.join(', ')],
+	[s.platforms, d.platforms?.map((p) => ({ windows: 'Windows', mac: 'macOS', linux: 'Linux' })[p] ?? p).join(', ')],
 	[s.price, d.price],
 	[s.authors, d.authors?.map((a) => a.name).join(', ')],
-	...itchFacts.map(([label, key]) => [label, list(d.info?.[key])])
+	[s.language, d.language],
+	[s.license, d.license],
+	[s.created, d.created && fmtDate(new Date(d.created), lang)],
+	[s.status, d.archived ? s.archived : null],
+	...itchFacts.map(([label, key]) => [label, key === 'Made with' ? list(d.info?.[key]) : tr(d.info?.[key])])
 ].filter(([, v]) => v) as [string, string][];
-const synced = new Date(d.synced_at).toLocaleDateString(lang === 'es' ? 'es-AR' : 'en-US', { dateStyle: 'long' });
+const synced = new Date(d.synced_at).toLocaleDateString(s.dateLocale, { dateStyle: 'long' });
+const entries = d.jam?.entries;
 ---
 
-<Base lang={lang} title={d.title} path={`games/${game.id}/`}>
+<Base lang={lang} title={d.title} description={short ?? undefined} image={d.local_images.cover ?? undefined} path={`games/${game.id}/`}>
 	<section class="hero">
 		<a class="mono" href={url(`/${lang}/`)}>← {s.back.toUpperCase()}</a>
 		<div class="pills">
@@ -50,7 +56,8 @@ const synced = new Date(d.synced_at).toLocaleDateString(lang === 'es' ? 'es-AR' 
 		{short && <p class="sub" lang={fallback ? 'en' : lang}>{short}</p>}
 		{fallback && <p class="mono">{s.onlyIn.toUpperCase()}</p>}
 		<div class="pills">
-			<a class="pill primary" href={d.url}>{s.play} {store} ↗</a>
+			<a class="pill primary" href={d.url}>{d.source === 'github' ? s.viewOn : s.play} {storeName[d.source]} ↗</a>
+			{d.homepage && <a class="pill" href={d.homepage}>{s.website} ↗</a>}
 			{d.jam && <a class="pill" href={d.jam.url}>{d.jam.name} ↗</a>}
 		</div>
 	</section>
@@ -83,6 +90,17 @@ const synced = new Date(d.synced_at).toLocaleDateString(lang === 'es' ? 'es-AR' 
 				)
 			}
 			{
+				d.local_images.trailer && (
+					<section class="section" aria-labelledby="h-trailer">
+						<h2 id="h-trailer">{s.trailer}</h2>
+						<a class="trailer" href={d.url}>
+							<img class="shot" src={url(d.local_images.trailer)} alt={d.trailer?.name ?? s.trailer} loading="lazy" />
+							<span class="pill primary">▶ {s.viewOn} {storeName[d.source]}</span>
+						</a>
+					</section>
+				)
+			}
+			{
 				d.jam?.results && (
 					<section class="section" aria-labelledby="h-results">
 						<h2 id="h-results">{s.results}</h2>
@@ -94,7 +112,11 @@ const synced = new Date(d.synced_at).toLocaleDateString(lang === 'es' ? 'es-AR' 
 								</thead>
 								<tbody>
 									{Object.entries(d.jam.results).map(([cat, r]) => (
-										<tr><th scope="row">{cat}</th><td>#{r.rank}</td><td>{r.average.toFixed(2)}</td></tr>
+										<tr>
+											<th scope="row">{term(lang, cat)}</th>
+											<td>#{r.rank}{entries && <span class="muted"> {s.of} {entries}</span>}</td>
+											<td>{r.average.toFixed(2)}</td>
+										</tr>
 									))}
 								</tbody>
 							</table>

@@ -9,10 +9,11 @@ import { t, url, fmtDate, langPaths, type Lang } from '../../i18n';
 export const getStaticPaths = langPaths;
 const lang = Astro.params.lang as Lang;
 const s = t[lang];
-const { published, jams, other } = await games();
+const { published, jams, other, projects, lab } = await games();
 const latest = (await posts(lang)).slice(0, 3);
 // Your own summary wins over the store's; the store text may only exist in English.
-const blurb = (g: Game) => g.own?.summary[lang] || g.data.short?.[lang] || g.data.short?.en;
+const blurb = (g: Game) => g.own?.summary[lang] || g.data.short?.[lang] || g.data.short?.en || g.data.description;
+const href = (g: Game) => url(`/${lang}/games/${g.id}/`);
 ---
 
 <Base lang={lang}>
@@ -109,6 +110,49 @@ const blurb = (g: Game) => g.own?.summary[lang] || g.data.short?.[lang] || g.dat
 			</section>
 		)
 	}
+
+	{
+		projects.length > 0 && (
+			<section id="projects" class="section" aria-labelledby="h-projects">
+				<div class="section-head">
+					<h2 id="h-projects">{s.projects}</h2>
+					<p class="mono">{s.projectsSub.toUpperCase()}</p>
+				</div>
+				<div class="tiles">
+					{projects.map((g) => (
+						<a class="tile" href={href(g)}>
+							<AiTag lang={lang} level={g.own?.ai} />
+							<span class="tile-title">{g.data.title}</span>
+							<span class="muted">{blurb(g)}</span>
+							<span class="mono">{[g.data.language, ...(g.data.topics ?? [])].filter(Boolean).join(' · ').toUpperCase()}</span>
+						</a>
+					))}
+				</div>
+			</section>
+		)
+	}
+
+	<section id="lab" class="lab" aria-labelledby="h-lab">
+		<div class="section-head">
+			<div style="display: flex; flex-direction: column; gap: 10px; max-width: 60ch">
+				<h2 id="h-lab" class="lab-title">Lab/<span class="muted">vibe-coded</span></h2>
+				<p class="muted">{s.labIntro}</p>
+			</div>
+			<span class="tag vibe">{s.legend.vibe[0]}</span>
+		</div>
+		{
+			lab.length > 0 && (
+				<div class="lab-grid">
+					{lab.map((g) => (
+						<a href={href(g)}>
+							<span>{g.data.title}</span>
+							<span class="mono">{[g.data.language, g.data.created?.slice(0, 4)].filter(Boolean).join(' · ')}</span>
+						</a>
+					))}
+				</div>
+			)
+		}
+	</section>
 
 	{
 		latest.length > 0 && (

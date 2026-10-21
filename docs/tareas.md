@@ -39,7 +39,7 @@ Home, fichas de juego y links en /es/ y /en/, con redirección por idioma del na
 
 **Terminada:** 2026-10-21 · **Etiquetas:** `web`, `bug`
 
-## M1 — CMS y etiquetas de IA  (6/6, 1 en revisión)
+## M1 — CMS y etiquetas de IA  (6/6)
 
 Editar los datos propios de cada juego desde /admin y mostrar cómo se usó la IA en cada uno.
 
@@ -59,9 +59,9 @@ Archivo por juego en content/games/ con etiqueta de IA, desglose "Quién hizo qu
 
 **Bloquea a:** 1.2 Sveltia CMS en /admin; 1.4 Etiquetas de IA en tarjetas y filas; 1.5 Tabla "Quién hizo qué" en la ficha
 
-### 1.2 Sveltia CMS en /admin · Revisión
+### 1.2 Sveltia CMS en /admin · Hecho
 
-**Prioridad:** alta · **Tamaño:** L · **Etiquetas:** `cms`
+**Terminada:** 2026-10-21 · **Prioridad:** alta · **Tamaño:** L · **Etiquetas:** `cms`
 
 Editar los datos propios (y luego posts) desde el navegador; cada cambio es un commit.
 
@@ -144,22 +144,30 @@ Posts en Markdown por idioma, con listado, tags y RSS.
 
 M2 pide al menos un post publicado por idioma. Borrar el borrador de prueba content/blog/*/prueba.md.
 
-## M3 — Proyectos y Lab  (0/2)
+## M3 — Proyectos y Lab  (2/2)
 
 Mostrar proyectos que no son juegos y separar los vibe-coded en el Lab.
 
 **Hecho cuando:**
 - La home tiene secciones Proyectos y Lab con datos reales.
 
-### 3.1 Proyectos que no son juegos, con repos de GitHub como fuente · Pendiente
+### 3.1 Proyectos que no son juegos, con repos de GitHub como fuente · Hecho
 
-**Tamaño:** L · **Etiquetas:** `datos`, `web`
+**Terminada:** 2026-10-21 · **Tamaño:** L · **Etiquetas:** `datos`, `web`
 
-### 3.2 Sección Lab para lo vibe-coded · Pendiente
+**Prueba:** Home muestra la sección Proyectos con los repos; cada uno tiene ficha con lenguaje, licencia y link.
 
-**Tamaño:** M · **Etiquetas:** `web`
+**Notas:** GitHub como fuente en content/sources.json (owner/repo). Sin pushed_at para no generar un commit por día. Elegidos: dann.com.ar, itchy-api, Godot-PHPmysql-example, tauri-vue-vite-spotify; editar la lista a gusto.
 
-## M4 — Pulido  (0/5)
+### 3.2 Sección Lab para lo vibe-coded · Hecho
+
+**Terminada:** 2026-10-21 · **Tamaño:** M · **Etiquetas:** `web`
+
+**Prueba:** Marcar un proyecto como vibe-coded en /admin: pasa al Lab.
+
+**Notas:** Todo lo marcado vibe en el CMS (cualquier fuente) va al Lab y sale de las demás secciones. Hoy no hay nada marcado.
+
+## M4 — Pulido  (5/5)
 
 Detalles que mejoran la lectura y el compartir.
 
@@ -167,25 +175,33 @@ Detalles que mejoran la lectura y el compartir.
 - Las fichas muestran tráiler, puesto sobre total y textos traducidos.
 - Compartir un link muestra imagen y título.
 
-### 4.1 Puesto de Ludum Dare sobre total de entradas · Pendiente
+### 4.1 Puesto de Ludum Dare sobre total de entradas · Hecho
 
-**Tamaño:** S · **Etiquetas:** `datos`
+**Terminada:** 2026-10-21 · **Tamaño:** S · **Etiquetas:** `datos`
 
-### 4.2 Traducir las filas de itch (Made with, etc.) · Pendiente
+**Notas:** api.ldjam.com/vx/stats/<evento>: entradas de la misma modalidad (jam/compo).
 
-**Tamaño:** S · **Etiquetas:** `web`, `i18n`
+### 4.2 Traducir las filas de itch (Made with, etc.) · Hecho
 
-### 4.3 Tráiler de Steam en la ficha · Pendiente
+**Terminada:** 2026-10-21 · **Tamaño:** S · **Etiquetas:** `web`, `i18n`
 
-**Tamaño:** S · **Etiquetas:** `web`
+**Notas:** term() en src/i18n.ts: estados, AI disclosure y categorías de LD; lo desconocido se muestra tal cual.
 
-### 4.4 Imagen y metadatos Open Graph · Pendiente
+### 4.3 Tráiler de Steam en la ficha · Hecho
 
-**Tamaño:** S · **Etiquetas:** `web`
+**Terminada:** 2026-10-21 · **Tamaño:** S · **Etiquetas:** `web`
 
-### 4.5 Página 404 · Pendiente
+**Notas:** Steam ya no da MP4, solo HLS/DASH. Se muestra el póster del tráiler (descargado) con link a Steam en lugar de un reproductor.
 
-**Prioridad:** baja · **Tamaño:** S · **Etiquetas:** `web`
+### 4.4 Imagen y metadatos Open Graph · Hecho
+
+**Terminada:** 2026-10-21 · **Tamaño:** S · **Etiquetas:** `web`
+
+**Notas:** og:*/twitter:card en Base.astro; public/og.png generado con Chromium headless; las fichas usan su portada.
+
+### 4.5 Página 404 · Hecho
+
+**Terminada:** 2026-10-21 · **Prioridad:** baja · **Tamaño:** S · **Etiquetas:** `web`
 
 ## M5 — Dominio propio  (0/2)
 

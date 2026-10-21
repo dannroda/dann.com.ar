@@ -8,11 +8,16 @@ interface Props {
 	// path after /<lang>/, so the language switch lands on the same page
 	path?: string;
 	bare?: boolean;
+	description?: string;
+	// site-relative image for link previews; defaults to the site card
+	image?: string;
 }
-const { lang, title, path = '', bare = false } = Astro.props;
+const { lang, title, path = '', bare = false, description, image = '/og.png' } = Astro.props;
 const s = t[lang];
 const alt = other(lang);
 const pageTitle = title ? `${title} · dann` : 'dann';
+const desc = description ?? `${s.tagline}. ${s.sub}`;
+const canonical = new URL(url(`/${lang}/${path}`), Astro.site);
 ---
 
 <!doctype html>
@@ -21,7 +26,16 @@ const pageTitle = title ? `${title} · dann` : 'dann';
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>{pageTitle}</title>
-		<meta name="description" content={`${s.tagline}. ${s.sub}`} />
+		<meta name="description" content={desc} />
+		<link rel="canonical" href={canonical} />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="dann" />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={desc} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={new URL(url(image), Astro.site)} />
+		<meta property="og:locale" content={lang === 'es' ? 'es_AR' : 'en_US'} />
+		<meta name="twitter:card" content="summary_large_image" />
 		<link rel="alternate" hreflang={alt} href={new URL(url(`/${alt}/${path}`), Astro.site)} />
 		<link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
 		<link rel="alternate" type="application/rss+xml" title={`dann · ${s.blog}`} href={url(`/${lang}/rss.xml`)} />
@@ -40,6 +54,8 @@ const pageTitle = title ? `${title} · dann` : 'dann';
 						<nav class="nav" aria-label={lang === 'es' ? 'Principal' : 'Main'}>
 							<a href={url(`/${lang}/#games`)}>{s.nav.games}</a>
 							<a href={url(`/${lang}/#jams`)}>{s.nav.jams}</a>
+							<a href={url(`/${lang}/#projects`)}>{s.nav.projects}</a>
+							<a href={url(`/${lang}/#lab`)} class="muted">{s.nav.lab}</a>
 							<a href={url(`/${lang}/blog/`)}>{s.nav.blog}</a>
 							<a href={url(`/${lang}/links/`)}>{s.nav.links}</a>
 							<a class="lang" href={url(`/${alt}/${path}`)} hreflang={alt} lang={alt}>{alt.toUpperCase()}</a>

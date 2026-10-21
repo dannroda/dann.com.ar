@@ -1,0 +1,23 @@
+{
+	"archived": false,
+	"created": "2022-08-27",
+	"description": "Spotify client build with tauri, vue, tailwindcss, typescript",
+	"homepage": null,
+	"id": 529632295,
+	"images": {
+		"cover": "https://opengraph.githubassets.com/1/dannroda/tauri-vue-vite-spotify",
+		"screenshots": []
+	},
+	"language": null,
+	"license": "MIT",
+	"local_images": {
+		"cover": "/games/tauri-vue-vite-spotify/cover.jpg",
+		"screenshots": []
+	},
+	"source": "github",
+	"stars": 0,
+	"synced_at": "2026-10-21T20:43:47.071Z",
+	"title": "tauri-vue-vite-spotify",
+	"topics": [],
+	"url": "https://github.com/dannroda/tauri-vue-vite-spotify"
+}

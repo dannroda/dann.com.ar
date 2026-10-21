@@ -1,0 +1,23 @@
+{
+	"archived": false,
+	"created": "2021-06-25",
+	"description": null,
+	"homepage": null,
+	"id": 380351845,
+	"images": {
+		"cover": "https://opengraph.githubassets.com/1/dannroda/Godot-PHPmysql-example",
+		"screenshots": []
+	},
+	"language": "PHP",
+	"license": null,
+	"local_images": {
+		"cover": "/games/godot-phpmysql-example/cover.jpg",
+		"screenshots": []
+	},
+	"source": "github",
+	"stars": 1,
+	"synced_at": "2026-10-21T20:43:46.067Z",
+	"title": "Godot-PHPmysql-example",
+	"topics": [],
+	"url": "https://github.com/dannroda/Godot-PHPmysql-example"
+}
