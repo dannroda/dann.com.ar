@@ -1,176 +1,170 @@
 ---
 import Base from '../../layouts/Base.astro';
 import AiTag from '../../components/AiTag.astro';
+import Monument from '../../components/Monument.astro';
 import profile from '../../../content/profile.json';
 import { games, list, type Game } from '../../games';
 import { posts, slugOf } from '../../posts';
-import { t, url, fmtDate, langPaths, type Lang } from '../../i18n';
+import { t, url, other, langPaths, type Lang } from '../../i18n';
 
 export const getStaticPaths = langPaths;
 const lang = Astro.params.lang as Lang;
 const s = t[lang];
-const { published, jams, other, projects, lab } = await games();
-const latest = (await posts(lang)).slice(0, 3);
-// Your own summary wins over the store's; the store text may only exist in English.
-const blurb = (g: Game) => g.own?.summary[lang] || g.data.short?.[lang] || g.data.short?.en || g.data.description;
+const alt = other(lang);
+const { all, published, jams, other: otherGames, projects, lab } = await games();
+const latest = (await posts(lang))[0];
 const href = (g: Game) => url(`/${lang}/games/${g.id}/`);
+const ai = (g: Game) => g.own?.ai || 'none';
+const blurb = (g: Game) => g.own?.summary[lang] || g.data.short?.[lang] || g.data.short?.en || g.data.description;
+
+const lead = published[0];
+const shots = lead ? [...lead.data.local_images.screenshots, lead.data.local_images.cover].filter(Boolean).slice(0, 4) as string[] : [];
+const counts = { all: all.length, hand: all.filter((g) => g.own?.ai === 'hand').length, ai: all.filter((g) => g.own?.ai === 'assisted' || g.own?.ai === 'vibe').length };
+const jamPhoto = jams.find((g) => g.data.local_images.cover)?.data.local_images.cover;
+const names = [...projects, ...otherGames];
 ---
 
-<Base lang={lang}>
-	<section class="hero">
-		<p class="mono">DANIEL RODRIGUEZ AIRES · ARGENTINA</p>
-		<h1>{s.tagline}<span class="accent">.</span></h1>
-		<p class="sub">{s.sub}</p>
-		<div class="pills">
-			{profile.links.map((l) => <a class="pill" href={l.url}>{l.label} <span aria-hidden="true" class="muted">↗</span></a>)}
-		</div>
-	</section>
-
-	<section class="legend" aria-labelledby="legend">
-		<h2 id="legend" class="mono">{s.legendTitle.toUpperCase()}</h2>
-		<div class="legend-grid">
-			{
-				(['hand', 'assisted', 'vibe'] as const).map((k) => (
-					<div>
-						<span class={`tag ${k}`}>{s.legend[k][0]}</span>
-						<p>{s.legend[k][1]}</p>
-					</div>
-				))
-			}
-		</div>
-	</section>
-
-	{
-		published.length > 0 && (
-			<section id="games" class="section" aria-labelledby="h-games">
-				<div class="section-head">
-					<h2 id="h-games">{s.published}</h2>
+<Base lang={lang} mode="home">
+	<div class="home">
+		<section class="hero" aria-label="dann">
+			<div class="hero-top">
+				<div class="hero-intro">
+					<p>{s.heroIntro}</p>
+					<a class="pill" href="#games">{s.seeGames}</a>
 				</div>
-				<div class="cards">
-					{published.map((g) => (
-						<article class="card">
-							{g.data.local_images.cover && <img class="shot" src={url(g.data.local_images.cover)} alt="" loading="lazy" />}
-							<div class="pills">
-								<AiTag lang={lang} level={g.own?.ai} />
-								<span class="mono">{[...(g.data.genres ?? []), g.data.release_date?.slice(-4)].filter(Boolean).join(' · ').toUpperCase()}</span>
-							</div>
-							<h3>{g.data.title}</h3>
-							<p>{blurb(g)}</p>
-							<div class="pills">
-								<a class="pill" href={g.data.url}>Steam <span aria-hidden="true" class="muted">↗</span></a>
-								<a class="pill" href={url(`/${lang}/games/${g.id}/`)}>{s.details} →</a>
-							</div>
-						</article>
-					))}
-				</div>
-			</section>
-		)
-	}
-
-	{
-		jams.length > 0 && (
-			<section id="jams" class="section" aria-labelledby="h-jams">
-				<div class="section-head">
-					<h2 id="h-jams">{s.jams}</h2>
-					<a class="mono" href="https://dannroda.itch.io/">{s.allOnItch.toUpperCase()} ↗</a>
-				</div>
-				<div class="rows">
-					{jams.map((g) => (
-						<a class="row" href={url(`/${lang}/games/${g.id}/`)}>
-							<span class="title">{g.data.title}</span>
-							<span class="meta">
-								{g.data.jam?.name}
-								{g.data.jam?.theme && ` · “${g.data.jam.theme}”`}
-							</span>
-							<span class="mono">{g.data.jam?.results?.Overall && `${s.rank} #${g.data.jam.results.Overall.rank}`}</span>
-							<span><AiTag lang={lang} level={g.own?.ai} /></span>
-						</a>
-					))}
-				</div>
-			</section>
-		)
-	}
-
-	{
-		other.length > 0 && (
-			<section class="section" aria-labelledby="h-other">
-				<div class="section-head">
-					<h2 id="h-other">{s.other}</h2>
-				</div>
-				<div class="rows">
-					{other.map((g) => (
-						<a class="row" href={url(`/${lang}/games/${g.id}/`)}>
-							<span class="title">{g.data.title}</span>
-							<span class="meta">{list(g.data.info?.['Made with'])}</span>
-							<span class="mono" />
-							<span><AiTag lang={lang} level={g.own?.ai} /></span>
-						</a>
-					))}
-				</div>
-			</section>
-		)
-	}
-
-	{
-		projects.length > 0 && (
-			<section id="projects" class="section" aria-labelledby="h-projects">
-				<div class="section-head">
-					<h2 id="h-projects">{s.projects}</h2>
-					<p class="mono">{s.projectsSub.toUpperCase()}</p>
-				</div>
-				<div class="tiles">
-					{projects.map((g) => (
-						<a class="tile" href={href(g)}>
-							<AiTag lang={lang} level={g.own?.ai} />
-							<span class="tile-title">{g.data.title}</span>
-							<span class="muted">{blurb(g)}</span>
-							<span class="mono">{[g.data.language, ...(g.data.topics ?? [])].filter(Boolean).join(' · ').toUpperCase()}</span>
-						</a>
-					))}
-				</div>
-			</section>
-		)
-	}
-
-	<section id="lab" class="lab" aria-labelledby="h-lab">
-		<div class="section-head">
-			<div style="display: flex; flex-direction: column; gap: 10px; max-width: 60ch">
-				<h2 id="h-lab" class="lab-title">Lab/<span class="muted">vibe-coded</span></h2>
-				<p class="muted">{s.labIntro}</p>
+				<nav class="nav" aria-label={s.navLabel}>
+					<a href="#games">{s.nav.games}</a>
+					<a href="#projects">{s.nav.projects}</a>
+					<a href={url(`/${lang}/blog/`)}>{s.nav.blog}</a>
+					<a href={url(`/${alt}/`)} hreflang={alt} lang={alt}>{alt.toUpperCase()}</a>
+				</nav>
 			</div>
-			<span class="tag vibe">{s.legend.vibe[0]}</span>
-		</div>
+			<Monument as="h1" label={s.tagline} />
+			{shots[0] && <img class="hero-cover" src={url(shots[0])} alt={lead?.data.title ?? ''} width="390" height="488" />}
+			<div class="hero-bottom">
+				<p>{s.place}</p>
+				<div class="hero-links">{profile.links.map((l) => <a href={l.url}>{l.label} ↗</a>)}</div>
+			</div>
+		</section>
+
+		<section class="legend-sec" aria-labelledby="h-legend">
+			<div class="legend-text">
+				<h2 id="h-legend" data-rise>{s.legendTitle}</h2>
+				<p class="lead" data-rise>{s.legendLead}</p>
+				{
+					(['hand', 'assisted', 'vibe'] as const).map((k) => (
+						<p data-rise>
+							<span class={`tag ${k}`}>{s.legend[k][0]}</span>
+							{s.legend[k][1]}
+						</p>
+					))
+				}
+			</div>
+			<div class="filter" role="group" aria-labelledby="filter-label" hidden>
+				<p id="filter-label" class="small filter-label">{s.filterLabel}</p>
+				<button type="button" data-filter="all" aria-pressed="true" data-rise><span>{s.filterAll}</span><span>{counts.all}</span></button>
+				<button type="button" data-filter="hand" aria-pressed="false" data-rise><span>{s.filterHand}</span><span>{counts.hand}</span></button>
+				<button type="button" data-filter="ai" aria-pressed="false" data-rise><span>{s.filterAi}</span><span>{counts.ai}</span></button>
+			</div>
+		</section>
+
 		{
-			lab.length > 0 && (
-				<div class="lab-grid">
-					{lab.map((g) => (
-						<a href={href(g)}>
-							<span>{g.data.title}</span>
-							<span class="mono">{[g.data.language, g.data.created?.slice(0, 4)].filter(Boolean).join(' · ')}</span>
-						</a>
-					))}
-				</div>
+			lead && (
+				<section id="games" class="band-sec" aria-labelledby="h-games" data-ai={ai(lead)}>
+					<h2 id="h-games" data-rise>{s.published}</h2>
+					<div class="band">
+						{shots.map((src, i) => (
+							<a href={href(lead)} style={`--g: ${[5, 2, 3, 2][i]}`} tabindex={i ? -1 : undefined} aria-label={i ? undefined : lead.data.title}>
+								<img src={url(src)} alt="" loading="lazy" width="800" height="450" />
+								{i === 0 && <span class="band-title">{lead.data.title}</span>}
+							</a>
+						))}
+					</div>
+					<div class="band-caption">
+						<AiTag lang={lang} level={lead.own?.ai} />
+						<span class="cap-text" lang={lead.own?.summary[lang] || lead.data.short?.[lang] ? lang : 'en'}>{blurb(lead)}</span>
+						<span class="pills">
+							<a class="pill primary" href={lead.data.url}>Steam ↗</a>
+							<a class="pill" href={href(lead)}>{s.details} →</a>
+						</span>
+					</div>
+				</section>
 			)
 		}
-	</section>
 
-	{
-		latest.length > 0 && (
-			<section id="blog" class="section" aria-labelledby="h-blog">
-				<div class="section-head">
-					<h2 id="h-blog">{s.latest}</h2>
-					<a class="mono" href={url(`/${lang}/blog/`)}>{s.allPosts.toUpperCase()} →</a>
+		{
+			jams.length > 0 && (
+				<section id="jams" class="jams-sec" aria-labelledby="h-jams">
+					<h2 id="h-jams" data-rise>{s.jamsHeading}</h2>
+					{jamPhoto && <img class="jams-photo" src={url(jamPhoto)} alt="" loading="lazy" width="480" height="600" />}
+					<div class="jams-table">
+						{jams.map((g) => (
+							<a class="jam" href={href(g)} data-ai={ai(g)} data-rise>
+								<span class="jam-game">{g.data.title}</span>
+								<span class="jam-rank">
+									{g.data.jam?.results?.Overall
+										? `#${g.data.jam.results.Overall.rank}${g.data.jam.entries ? ` ${s.of} ${g.data.jam.entries}` : ''}`
+										: ''}
+								</span>
+								<span class="jam-where">
+									{g.data.jam?.name}
+									{g.data.jam?.theme && ` · “${g.data.jam.theme}”`}
+								</span>
+								<AiTag lang={lang} level={g.own?.ai} />
+							</a>
+						))}
+					</div>
+				</section>
+			)
+		}
+
+		{
+			names.length > 0 && (
+				<section id="projects" class="names-sec" aria-labelledby="h-projects">
+					<h2 id="h-projects" data-rise>{s.projects}</h2>
+					<ul class="names">
+						{names.map((g) => (
+							<li data-rise data-ai={ai(g)}>
+								<a href={href(g)}>{g.data.title}</a>
+								<span class="small">{[g.data.language ?? list(g.data.info?.['Made with']), g.data.created?.slice(0, 4)].filter(Boolean).join(' · ')}</span>
+								{blurb(g) && <span class="desc">{blurb(g)}</span>}
+							</li>
+						))}
+					</ul>
+					<p class="small" data-rise>{s.projectsCount(projects.length, otherGames.length)}</p>
+				</section>
+			)
+		}
+
+		<section id="lab" class="lab-sec" aria-labelledby="h-lab">
+			<h2 id="h-lab" class="lab-word" data-rise>Lab</h2>
+			<div class="lab-side">
+				<span class="tag vibe" data-rise>{s.legend.vibe[0]}</span>
+				<p data-rise>{s.labIntro}</p>
+				<div class="lab-bars" data-rise>
+					{
+						lab.length > 0
+							? lab.map((g) => (
+									<a href={href(g)} data-ai="vibe">
+										<span>{g.data.title}</span>
+										<span>→</span>
+									</a>
+								))
+							: <p class="lab-empty">{s.labEmpty}</p>
+					}
 				</div>
-				<div class="rows">
-					{latest.map((p) => (
-						<a class="row post-row" href={url(`/${lang}/blog/${slugOf(p.id)}/`)}>
-							<span class="mono">{fmtDate(p.data.date, lang)}</span>
-							<span class="title">{p.data.title}</span>
-							<span class="mono">{p.data.tags.map((x) => `#${x}`).join(' ')}</span>
-						</a>
-					))}
-				</div>
-			</section>
-		)
-	}
+			</div>
+		</section>
+
+		<section class="about-sec" aria-labelledby="h-about">
+			<div class="about-facts">
+				<h2 id="h-about" data-rise>{s.about}</h2>
+				{s.facts.map(([k, v]) => <p data-rise><span>{k}</span>{v}</p>)}
+				{latest && <p data-rise><span>{s.blog}</span><a href={url(`/${lang}/blog/${slugOf(latest.id)}/`)}>{latest.data.title}</a></p>}
+			</div>
+			<div class="about-text">
+				{s.aboutText.map((p) => <p data-rise>{p}</p>)}
+			</div>
+		</section>
+	</div>
 </Base>

@@ -1,32 +1,26 @@
 {
-	"source": "itch",
-	"id": 1789132,
-	"url": "https://dannroda.itch.io/purpura-profundo",
-	"title": "Purpura Profundo",
 	"authors": [
 		{
-			"url": "https://dannroda.itch.io",
-			"name": "DTO"
+			"name": "DTO",
+			"url": "https://dannroda.itch.io"
 		},
 		{
-			"url": "https://threshhg.itch.io",
-			"name": "ThreshHG"
+			"name": "ThreshHG",
+			"url": "https://threshhg.itch.io"
 		},
 		{
-			"url": "https://ema-art.itch.io",
-			"name": "EMA_art"
+			"name": "EMA_art",
+			"url": "https://ema-art.itch.io"
 		}
 	],
-	"tags": [
-		"rhythm"
-	],
+	"id": 1789132,
+	"images": {
+		"cover": "https://img.itch.zone/aW1nLzEwNTU0MjU5LnBuZw==/original/0grviU.png",
+		"screenshots": [
+			"https://img.itch.zone/aW1nLzEwNTU0MjU5LnBuZw==/original/0grviU.png"
+		]
+	},
 	"info": {
-		"Status": [
-			"In development"
-		],
-		"Platforms": [
-			"HTML5"
-		],
 		"Authors": [
 			"DTO",
 			"ThreshHG",
@@ -37,19 +31,30 @@
 		],
 		"Made with": [
 			"Godot"
+		],
+		"Platforms": [
+			"HTML5"
+		],
+		"Status": [
+			"In development"
 		]
 	},
 	"jam": {
 		"name": "Bahía Game Jam 2022",
 		"url": "https://itch.io/jam/bahia-work-jam-2022"
 	},
-	"images": {
-		"cover": "https://img.itch.zone/aW1nLzEwNTU0MjU5LnBuZw==/original/0grviU.png",
-		"screenshots": []
-	},
 	"local_images": {
 		"cover": "/games/purpura-profundo/cover.png",
-		"screenshots": []
+		"screenshots": [
+			"/games/purpura-profundo/shot-1.png"
+		],
+		"trailer": null
 	},
-	"synced_at": "2026-10-21T20:07:46.543Z"
+	"source": "itch",
+	"synced_at": "2026-10-21T21:12:09.404Z",
+	"tags": [
+		"rhythm"
+	],
+	"title": "Purpura Profundo",
+	"url": "https://dannroda.itch.io/purpura-profundo"
 }

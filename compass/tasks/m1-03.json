@@ -6,6 +6,7 @@
     {
       "alternatives": "Sveltia CMS Authenticator en Cloudflare Workers + OAuth app (sigue disponible si se suma otro editor).",
       "at": "2026-10-21T20:35:13.446Z",
+      "review": "ok",
       "text": "Entrar al CMS con token personal de GitHub en lugar del Worker de Cloudflare",
       "why": "Un solo editor técnico: el token evita desplegar un Worker y crear una OAuth app. Sveltia lo soporta con 'Sign In with Token'."
     }
@@ -30,5 +31,5 @@
   ],
   "test": "",
   "title": "Login al CMS (token de GitHub)",
-  "updated_at": "2026-10-21T20:35:23.300Z"
+  "updated_at": "2026-10-21T20:53:56.658Z"
 }

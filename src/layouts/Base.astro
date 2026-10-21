@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Footer from '../components/Footer.astro';
 import { t, other, url, type Lang } from '../i18n';
 
 interface Props {
@@ -7,21 +8,22 @@ interface Props {
 	title?: string;
 	// path after /<lang>/, so the language switch lands on the same page
 	path?: string;
-	bare?: boolean;
+	// 'page': bar + content + footer; 'home': the page builds its own first screen; 'bare': content only
+	mode?: 'page' | 'home' | 'bare';
 	description?: string;
 	// site-relative image for link previews; defaults to the site card
 	image?: string;
 }
-const { lang, title, path = '', bare = false, description, image = '/og.png' } = Astro.props;
+const { lang, title, path = '', mode = 'page', description, image = '/og.png' } = Astro.props;
 const s = t[lang];
 const alt = other(lang);
-const pageTitle = title ? `${title} · dann` : 'dann';
+const pageTitle = title ? `${title} · dann` : `dann · ${s.tagline}`;
 const desc = description ?? `${s.tagline}. ${s.sub}`;
 const canonical = new URL(url(`/${lang}/${path}`), Astro.site);
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} id="top">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -39,32 +41,45 @@ const canonical = new URL(url(`/${lang}/${path}`), Astro.site);
 		<link rel="alternate" hreflang={alt} href={new URL(url(`/${alt}/${path}`), Astro.site)} />
 		<link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
 		<link rel="alternate" type="application/rss+xml" title={`dann · ${s.blog}`} href={url(`/${lang}/rss.xml`)} />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+		<link rel="preconnect" href="https://api.fontshare.com" />
+		<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+		<link href="https://api.fontshare.com/v2/css?f[]=panchang@700&f[]=switzer@400,500&display=swap" rel="stylesheet" />
+		<script is:inline>document.documentElement.classList.add('js');</script>
 	</head>
 	<body>
 		{
-			bare ? (
-				<slot />
-			) : (
-				<div class="wrap">
-					<header class="header">
-						<a class="brand" href={url(`/${lang}/`)}>dann<span>_</span></a>
-						<nav class="nav" aria-label={lang === 'es' ? 'Principal' : 'Main'}>
-							<a href={url(`/${lang}/#games`)}>{s.nav.games}</a>
-							<a href={url(`/${lang}/#jams`)}>{s.nav.jams}</a>
-							<a href={url(`/${lang}/#projects`)}>{s.nav.projects}</a>
-							<a href={url(`/${lang}/#lab`)} class="muted">{s.nav.lab}</a>
-							<a href={url(`/${lang}/blog/`)}>{s.nav.blog}</a>
-							<a href={url(`/${lang}/links/`)}>{s.nav.links}</a>
-							<a class="lang" href={url(`/${alt}/${path}`)} hreflang={alt} lang={alt}>{alt.toUpperCase()}</a>
-						</nav>
-					</header>
-					<slot />
-					<footer class="footer mono">© {new Date().getFullYear()} Daniel Rodriguez Aires</footer>
-				</div>
+			mode === 'page' && (
+				<header class="bar">
+					<a class="wordmark" href={url(`/${lang}/`)}>dann</a>
+					<nav class="nav" aria-label={s.navLabel}>
+						<a href={url(`/${lang}/#games`)}>{s.nav.games}</a>
+						<a href={url(`/${lang}/#projects`)}>{s.nav.projects}</a>
+						<a href={url(`/${lang}/blog/`)}>{s.nav.blog}</a>
+						<a href={url(`/${alt}/${path}`)} hreflang={alt} lang={alt}>{alt.toUpperCase()}</a>
+					</nav>
+				</header>
 			)
 		}
+		{mode === 'page' ? <main class="page"><slot /></main> : <slot />}
+		{mode !== 'bare' && <Footer lang={lang} />}
+		<script is:inline>
+			// Entrances: the parts of each block rise in turn, once. Content stays visible without this script.
+			const io = new IntersectionObserver((entries) => {
+				for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+			}, { rootMargin: '0px 0px -10% 0px' });
+			document.querySelectorAll('[data-rise]').forEach((el) => {
+				const i = [...el.parentElement.children].filter((c) => c.hasAttribute('data-rise')).indexOf(el);
+				el.style.setProperty('--d', `${i * 80}ms`);
+				io.observe(el);
+			});
+			// Provenance filter: dims the works that don't match.
+			document.querySelectorAll('[data-filter]').forEach((b, _, all) => {
+				b.closest('[hidden]')?.removeAttribute('hidden');
+				b.addEventListener('click', () => {
+					document.documentElement.dataset.show = b.dataset.filter;
+					all.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+				});
+			});
+		</script>
 	</body>
 </html>

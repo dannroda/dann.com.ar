@@ -1,0 +1,10 @@
+---
+// The name set edge to edge. Its size is derived from the text width (see .monument in global.css).
+interface Props {
+	as?: 'h1' | 'div';
+	label?: string;
+}
+const { as: Tag = 'div', label } = Astro.props;
+---
+
+<Tag class="monument">DANN{label && <span class="sr-only"> · {label}</span>}</Tag>

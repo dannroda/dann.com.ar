@@ -54,6 +54,11 @@ async function steam(appid) {
 // itch.io serves meta attributes in either order.
 export const ogImage = (html) =>
 	html.match(/<meta[^>]*property="og:image"[^>]*content="([^"]+)"/)?.[1] ?? html.match(/<meta[^>]*content="([^"]+)"[^>]*property="og:image"/)?.[1] ?? null;
+// data.json often has no screenshots; the page's own list links the originals.
+export const itchShots = (html) => {
+	const list = html.split('class="screenshot_list"')[1]?.split('</div>')[0] ?? '';
+	return [...list.matchAll(/href="(https:\/\/img\.itch\.zone\/[^"]+)"/g)].map((m) => m[1]);
+};
 // "<title>Bahía Game Jam 2022 - itch.io</title>" -> "Bahía Game Jam 2022"
 export const pageTitle = (html) => html.match(/<title>([^<]*?)(?: - itch\.io)?<\/title>/)?.[1] ?? null;
 
@@ -109,7 +114,7 @@ async function itch(url) {
 		tags: data.tags ?? [],
 		info: itchInfo(page),
 		jam: ldPath ? await ludumDare(ldPath) : jamUrl ? { name: pageTitle(await get(jamUrl, 'text')), url: jamUrl } : null,
-		images: { cover: ogImage(page) || data.cover_image || null, screenshots: data.screenshots ?? [] }
+		images: { cover: ogImage(page) || data.cover_image || null, screenshots: data.screenshots?.length ? data.screenshots : itchShots(page) }
 	};
 }
 
@@ -199,6 +204,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 	console.assert(suggestAi({ Content: ['No generative AI was used'] }) === 'hand');
 	console.assert(suggestAi({ 'AI Disclosure': ['AI Assisted', 'Code'] }) === 'assisted');
 	console.assert(suggestAi(undefined) === '');
+	console.assert(itchShots('<div class="screenshot_list"><a target="_blank" href="https://img.itch.zone/a/original/x.jpg"><img/></a></div>')[0] === 'https://img.itch.zone/a/original/x.jpg');
 
 	// A failing source keeps its previous file untouched; the exit code still flags it.
 	let failed = false;

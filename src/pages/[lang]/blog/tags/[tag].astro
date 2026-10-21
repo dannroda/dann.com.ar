@@ -24,8 +24,7 @@ const { list } = Astro.props;
 <!-- Tags are per language, so the switch goes to the other blog's index. -->
 <Base lang={lang} title={`#${tag}`} path="blog/">
 	<section class="section">
-		<a class="mono" href={url(`/${lang}/blog/`)}>← {s.blog.toUpperCase()}</a>
-		<h1 style="font-size: clamp(36px, 5vw, 60px); font-weight: 800">{s.tagged} #{tag}</h1>
+		<h1 class="lede-h1">{s.tagged} #{tag}</h1>
 		<PostList lang={lang} posts={list} />
 	</section>
 </Base>

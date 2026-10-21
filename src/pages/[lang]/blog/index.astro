@@ -14,9 +14,10 @@ const tags = [...new Set(all.flatMap((p) => p.data.tags))].sort();
 <Base lang={lang} title={s.blog} path="blog/">
 	<section class="section">
 		<div class="section-head">
-			<h1 style="font-size: clamp(40px, 6vw, 72px); font-weight: 800">{s.blog}</h1>
-			<a class="mono" href={url(`/${lang}/rss.xml`)}>RSS</a>
+			<h1 class="lede-h1" data-rise>{s.blog}</h1>
+			<a class="small" href={url(`/${lang}/rss.xml`)}>RSS</a>
 		</div>
+		<p class="lead-text" data-rise>{s.blogIntro}</p>
 		{tags.length > 0 && <div class="pills">{tags.map((tag) => <a class="pill" href={url(`/${lang}/blog/tags/${tag}/`)}>#{tag}</a>)}</div>}
 		<PostList lang={lang} posts={all} />
 	</section>

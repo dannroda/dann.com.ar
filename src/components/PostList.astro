@@ -10,16 +10,16 @@ interface Props {
 const { lang, posts } = Astro.props;
 ---
 
-<div class="rows">
+<div class="list">
 	{
 		posts.map((p) => (
-			<a class="row post-row" href={url(`/${lang}/blog/${slugOf(p.id)}/`)}>
-				<span class="mono">{fmtDate(p.data.date, lang)}</span>
+			<a class="list-row" href={url(`/${lang}/blog/${slugOf(p.id)}/`)}>
+				<span class="small">{fmtDate(p.data.date, lang)}</span>
 				<span class="title">
 					{p.data.title}
 					{p.data.draft && <span class="tag vibe">{t[lang].draft}</span>}
 				</span>
-				<span class="mono">{p.data.tags.map((x) => `#${x}`).join(' ')}</span>
+				<span class="small">{p.data.tags.map((x) => `#${x}`).join(' ')}</span>
 			</a>
 		))
 	}

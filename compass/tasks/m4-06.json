@@ -1,0 +1,20 @@
+{
+  "checklist": [],
+  "code": "4.6",
+  "created_at": "2026-10-21T21:14:48.047Z",
+  "description": "Dirección 'name-as-monument' (taste-skill): DANN a todo el ancho, grafito y naranja, Panchang + Switzer; sin monoespaciada, líneas finas ni etiquetas en mayúsculas. Filtro de procedencia como elemento interactivo.",
+  "done_at": "2026-10-21T21:14:49.906Z",
+  "milestone": "m04",
+  "notes": "Quedan avisos por contenido: fichas de itch/GitHub con 1-2 imágenes, blog sin posts, sin video (Steam solo da HLS).",
+  "order": 6,
+  "refs": [],
+  "size": "l",
+  "status": "done",
+  "tags": [
+    "diseño",
+    "web"
+  ],
+  "test": "inspect.mjs de taste-skill: 0 FAIL en /es/ y /en/ a 1440, 768 y 390.",
+  "title": "Rediseño: que no parezca hecho con IA",
+  "updated_at": "2026-10-21T21:14:49.906Z"
+}

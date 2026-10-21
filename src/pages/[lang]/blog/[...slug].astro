@@ -26,10 +26,9 @@ const slug = slugOf(post.id);
 <!-- A post may exist in one language only; then the switch goes to the other blog's index. -->
 <Base lang={lang} title={post.data.title} path={translated ? `blog/${slug}/` : 'blog/'}>
 	<article class="section">
-		<a class="mono" href={url(`/${lang}/blog/`)}>← {s.blog.toUpperCase()}</a>
-		<p class="mono">{fmtDate(post.data.date, lang)}{post.data.draft && ` · ${s.draft.toUpperCase()}`}</p>
-		<h1 style="font-size: clamp(36px, 5vw, 60px); font-weight: 800; max-width: 22ch">{post.data.title}</h1>
-		{post.data.description && <p class="sub muted" style="font-size: 21px; max-width: 52ch">{post.data.description}</p>}
+		<h1 class="lede-h1">{post.data.title}</h1>
+		<p class="small">{fmtDate(post.data.date, lang)}{post.data.draft && ` · ${s.draft}`}</p>
+		{post.data.description && <p class="sub">{post.data.description}</p>}
 		<div class="prose"><Content /></div>
 		{
 			post.data.tags.length > 0 && (

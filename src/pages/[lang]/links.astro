@@ -9,14 +9,14 @@ const s = t[lang];
 const alt = other(lang);
 ---
 
-<Base lang={lang} title={s.linksTitle} path="links/" bare>
-	<div class="links">
-		<a class="brand" href={url(`/${lang}/`)} style="font-size: 34px; font-family: 'Archivo', sans-serif; font-weight: 800">dann<span>_</span></a>
+<Base lang={lang} title={s.linksTitle} path="links/" mode="bare">
+	<div class="links-page">
+		<h1><a class="wordmark" href={url(`/${lang}/`)}>dann</a></h1>
 		<p class="muted">{s.tagline}.</p>
-		<nav aria-label={s.linksTitle}>
+		<nav aria-label={s.linksTitle} data-rise>
 			{profile.links.map((l) => <a href={l.url}><span>{l.label}</span><span aria-hidden="true">↗</span></a>)}
 			<a href={url(`/${lang}/`)}><span>{s.portfolio}</span><span aria-hidden="true">→</span></a>
 		</nav>
-		<a class="mono" style="margin-top: auto; padding: 12px 0" href={url(`/${alt}/links/`)} hreflang={alt} lang={alt}>{alt.toUpperCase()}</a>
+		<a class="small" style="margin-top: auto; padding: 12px 0" href={url(`/${alt}/links/`)} hreflang={alt} lang={alt}>{alt.toUpperCase()}</a>
 	</div>
 </Base>

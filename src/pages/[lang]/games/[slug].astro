@@ -15,7 +15,8 @@ const { game } = Astro.props as { game: Game };
 const d = game.data;
 const own = game.own;
 const storeText = d.short?.[lang] || d.short?.en || d.description;
-const short = own?.summary[lang] || storeText;
+const jamLine = d.jam && [d.jam.name, d.jam.theme && `${s.theme}: “${d.jam.theme}”`].filter(Boolean).join(' · ');
+const short = own?.summary[lang] || storeText || jamLine;
 const fallback = !own?.summary[lang] && d.short && !d.short[lang];
 const role = own?.role[lang];
 const authorship = own?.authorship ?? [];
@@ -46,29 +47,29 @@ const entries = d.jam?.entries;
 ---
 
 <Base lang={lang} title={d.title} description={short ?? undefined} image={d.local_images.cover ?? undefined} path={`games/${game.id}/`}>
-	<section class="hero">
-		<a class="mono" href={url(`/${lang}/`)}>← {s.back.toUpperCase()}</a>
-		<div class="pills">
-			<AiTag lang={lang} level={own?.ai} />
-			{role && <span class="mono">{s.role.toUpperCase()}: {role}</span>}
+	<section class="detail-hero">
+		<div class="intro-block">
+			<h1 class="lede-h1" data-rise>{d.title}</h1>
+			<div class="pills" data-rise>
+				<AiTag lang={lang} level={own?.ai} />
+				{role && <span class="small">{s.role}: {role}</span>}
+			</div>
+			{short && <p class="lead-text" lang={fallback ? 'en' : lang} data-rise>{short}</p>}
+			{fallback && <p class="small">{s.onlyIn}</p>}
+			<div class="pills" data-rise>
+				<a class="pill primary" href={d.url}>{d.source === 'github' ? s.viewOn : s.play} {storeName[d.source]} ↗</a>
+				{d.homepage && <a class="pill" href={d.homepage}>{s.website} ↗</a>}
+				{d.jam && <a class="pill" href={d.jam.url}>{d.jam.name} ↗</a>}
+			</div>
 		</div>
-		<h1>{d.title}</h1>
-		{short && <p class="sub" lang={fallback ? 'en' : lang}>{short}</p>}
-		{fallback && <p class="mono">{s.onlyIn.toUpperCase()}</p>}
-		<div class="pills">
-			<a class="pill primary" href={d.url}>{d.source === 'github' ? s.viewOn : s.play} {storeName[d.source]} ↗</a>
-			{d.homepage && <a class="pill" href={d.homepage}>{s.website} ↗</a>}
-			{d.jam && <a class="pill" href={d.jam.url}>{d.jam.name} ↗</a>}
-		</div>
+		{d.local_images.cover && <img class:list={["detail-cover", { wide: d.source === "github" }]} src={url(d.local_images.cover)} alt="" data-rise />}
 	</section>
-
-	{d.local_images.cover && <img class="shot" src={url(d.local_images.cover)} alt="" />}
 
 	<div class="detail">
 		<main>
 			{
 				authorship.length > 0 && (
-					<section class="section" aria-labelledby="h-authorship">
+					<section class="section" aria-labelledby="h-authorship" data-rise>
 						<h2 id="h-authorship">{s.authorship}</h2>
 						<div class="table-box">
 							<table>
@@ -91,7 +92,7 @@ const entries = d.jam?.entries;
 			}
 			{
 				d.local_images.trailer && (
-					<section class="section" aria-labelledby="h-trailer">
+					<section class="section" aria-labelledby="h-trailer" data-rise>
 						<h2 id="h-trailer">{s.trailer}</h2>
 						<a class="trailer" href={d.url}>
 							<img class="shot" src={url(d.local_images.trailer)} alt={d.trailer?.name ?? s.trailer} loading="lazy" />
@@ -102,7 +103,7 @@ const entries = d.jam?.entries;
 			}
 			{
 				d.jam?.results && (
-					<section class="section" aria-labelledby="h-results">
+					<section class="section" aria-labelledby="h-results" data-rise>
 						<h2 id="h-results">{s.results}</h2>
 						{d.jam.theme && <p class="muted">{s.theme}: “{d.jam.theme}”</p>}
 						<div class="table-box">
@@ -127,18 +128,18 @@ const entries = d.jam?.entries;
 			{
 				d.local_images.screenshots.length > 0 && (
 					<section class="gallery" aria-label="Screenshots">
-						{d.local_images.screenshots.map((src) => <img class="shot" src={url(src)} alt="" loading="lazy" />)}
+						{d.local_images.screenshots.map((src) => <img class="shot" src={url(src)} alt="" loading="lazy" data-rise />)}
 					</section>
 				)
 			}
-			<p class="mono">{s.synced} {synced}</p>
+			<p class="small">{s.synced} {synced}</p>
 		</main>
 
 		{
 			facts.length > 0 && (
 				<dl class="facts">
 					{facts.map(([k, v]) => (
-						<div><dt>{k}</dt><dd>{v}</dd></div>
+						<div data-rise><dt>{k}</dt><dd>{v}</dd></div>
 					))}
 				</dl>
 			)

@@ -32,7 +32,9 @@
 	"id": 3022377,
 	"images": {
 		"cover": "https://img.itch.zone/aW1nLzE4MDc4NzgyLmpwZw==/original/Pg1H1J.jpg",
-		"screenshots": []
+		"screenshots": [
+			"https://img.itch.zone/aW1nLzE4MDc4NzgyLmpwZw==/original/Pg1H1J.jpg"
+		]
 	},
 	"info": {
 		"Authors": [
@@ -113,11 +115,13 @@
 	},
 	"local_images": {
 		"cover": "/games/little-eyes/cover.jpg",
-		"screenshots": [],
+		"screenshots": [
+			"/games/little-eyes/shot-1.jpg"
+		],
 		"trailer": null
 	},
 	"source": "itch",
-	"synced_at": "2026-10-21T20:45:24.257Z",
+	"synced_at": "2026-10-21T21:12:15.921Z",
 	"tags": [
 		"action",
 		"godot",

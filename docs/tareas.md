@@ -78,7 +78,7 @@ Editar los datos propios (y luego posts) desde el navegador; cada cambio es un c
 Sveltia necesita un servicio de OAuth para entrar desde el navegador; el worker de Sveltia es gratis.
 
 **Decisiones:**
-- ! Entrar al CMS con token personal de GitHub en lugar del Worker de Cloudflare · sin revisar
+- ✓ Entrar al CMS con token personal de GitHub en lugar del Worker de Cloudflare
   Por qué: Un solo editor técnico: el token evita desplegar un Worker y crear una OAuth app. Sveltia lo soporta con 'Sign In with Token'.
   Descartado: Sveltia CMS Authenticator en Cloudflare Workers + OAuth app (sigue disponible si se suma otro editor).
 
@@ -167,7 +167,7 @@ Mostrar proyectos que no son juegos y separar los vibe-coded en el Lab.
 
 **Notas:** Todo lo marcado vibe en el CMS (cualquier fuente) va al Lab y sale de las demás secciones. Hoy no hay nada marcado.
 
-## M4 — Pulido  (5/5)
+## M4 — Pulido  (6/6)
 
 Detalles que mejoran la lectura y el compartir.
 
@@ -202,6 +202,16 @@ Detalles que mejoran la lectura y el compartir.
 ### 4.5 Página 404 · Hecho
 
 **Terminada:** 2026-10-21 · **Prioridad:** baja · **Tamaño:** S · **Etiquetas:** `web`
+
+### 4.6 Rediseño: que no parezca hecho con IA · Hecho
+
+**Terminada:** 2026-10-21 · **Tamaño:** L · **Etiquetas:** `diseño`, `web`
+
+Dirección 'name-as-monument' (taste-skill): DANN a todo el ancho, grafito y naranja, Panchang + Switzer; sin monoespaciada, líneas finas ni etiquetas en mayúsculas. Filtro de procedencia como elemento interactivo.
+
+**Prueba:** inspect.mjs de taste-skill: 0 FAIL en /es/ y /en/ a 1440, 768 y 390.
+
+**Notas:** Quedan avisos por contenido: fichas de itch/GitHub con 1-2 imágenes, blog sin posts, sin video (Steam solo da HLS).
 
 ## M5 — Dominio propio  (0/2)
 

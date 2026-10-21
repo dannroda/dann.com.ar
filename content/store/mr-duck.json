@@ -28,7 +28,9 @@
 	"id": 5184114,
 	"images": {
 		"cover": "https://img.itch.zone/aW1nLzMxMDg3OTI4LnBuZw==/original/fnCL%2Bz.png",
-		"screenshots": []
+		"screenshots": [
+			"https://img.itch.zone/aW1nLzMxMDY0MDc4LnBuZw==/original/%2B39uKT.png"
+		]
 	},
 	"info": {
 		"AI Disclosure": [
@@ -101,11 +103,13 @@
 	},
 	"local_images": {
 		"cover": "/games/mr-duck/cover.png",
-		"screenshots": [],
+		"screenshots": [
+			"/games/mr-duck/shot-1.png"
+		],
 		"trailer": null
 	},
 	"source": "itch",
-	"synced_at": "2026-10-21T20:45:26.316Z",
+	"synced_at": "2026-10-21T21:12:18.170Z",
 	"tags": [
 		"2d",
 		"3d",
