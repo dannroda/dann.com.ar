@@ -4,7 +4,7 @@
 
 backend:
   name: github
-  repo: dannroda/dann.com.ar
+  repo: dannroda/dannroda.github.io
   branch: main
   commit_messages:
     create: 'content: create {{collection}} "{{slug}}"'
