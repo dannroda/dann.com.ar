@@ -163,7 +163,7 @@ collections:
             label_singular: Repositorio
             widget: list
             required: false
-            hint: Link del repositorio (o usuario/repo). Aparece en Proyectos; si el README tiene imágenes, la primera es la portada.
+            hint: Link del repositorio (o usuario/repo). Aparece en Proyectos; si el README tiene imágenes, la primera es la portada. Un repo privado no aparece; se publica en el primer deploy después de hacerlo público.
             field:
               name: url
               label: Link

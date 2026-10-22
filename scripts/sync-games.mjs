@@ -147,8 +147,18 @@ export function readmeImages(md, base, root) {
 		.filter((u) => /^https:/.test(u) && !/shields\.io|badge|\/workflows\/|\.svg(\?|$)/i.test(u));
 }
 
+// Repos listed but not public yet (the API answers 404 for private ones): skipped without failing, and their old data is pruned.
+const unpublished = new Set();
 async function github(repo) {
-	const r = await get(`https://api.github.com/repos/${repo}`);
+	const r = await get(`https://api.github.com/repos/${repo}`).catch((e) => {
+		if (!e.message.startsWith('404 ')) throw e;
+	});
+	// A token that can read the repo would still see it; private never gets published.
+	if (!r || r.private) {
+		unpublished.add(repo.toLowerCase());
+		console.log(`· github ${repo}: not public, waits for a later sync`);
+		return [];
+	}
 	const readme = await get(`https://api.github.com/repos/${repo}/readme`).catch(() => null);
 	const root = `https://raw.githubusercontent.com/${r.full_name}/${r.default_branch}/`;
 	const pics = readme ? readmeImages(Buffer.from(readme.content, 'base64').toString(), root + readme.path, root) : [];
@@ -303,7 +313,7 @@ async function prune() {
 		d.source === 'steam' ? wanted.steam.includes(d.id)
 		: d.source === 'itch' ? wanted.itch.includes(d.url)
 		: d.source === 'assetlib' ? wanted.assetlib.includes(d.id)
-		: wanted.github.some((r) => d.url.toLowerCase() === `https://github.com/${r}`.toLowerCase());
+		: wanted.github.some((r) => !unpublished.has(r.toLowerCase()) && d.url.toLowerCase() === `https://github.com/${r}`.toLowerCase());
 	for (const f of await readdir('content/store').catch(() => [])) {
 		if (!f.endsWith('.json')) continue;
 		const d = JSON.parse(await readFile(`content/store/${f}`, 'utf8'));
