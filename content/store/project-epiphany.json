@@ -1,0 +1,24 @@
+{
+	"archived": false,
+	"created": "2026-09-28",
+	"description": null,
+	"homepage": null,
+	"id": 1393953523,
+	"images": {
+		"cover": "https://opengraph.githubassets.com/1/dannroda/project-epiphany",
+		"screenshots": []
+	},
+	"language": "GDScript",
+	"license": null,
+	"local_images": {
+		"cover": "/games/project-epiphany/cover.jpg",
+		"screenshots": [],
+		"trailer": null
+	},
+	"source": "github",
+	"stars": 0,
+	"synced_at": "2026-10-22T21:32:43.647Z",
+	"title": "project-epiphany",
+	"topics": [],
+	"url": "https://github.com/dannroda/project-epiphany"
+}
