@@ -89,12 +89,6 @@ collections:
         fields:
           - { name: es, label: Español, widget: text, required: false }
           - { name: en, label: English, widget: text, required: false }
-      - name: repo
-        label: Código en GitHub
-        widget: string
-        required: false
-        hint: Opcional, para un juego de itch o Steam con el código público. Link del repo (o usuario/repo); la ficha lo linkea y, si el repo también está en las fuentes, no se repite en Proyectos.
-        pattern: ['^\s*(https://github\.com/)?[\w.-]+/[\w.-]+/?\s*$', 'Un link de github.com/usuario/repo']
       - name: authorship
         label: Quién hizo qué
         label_singular: Área
@@ -153,11 +147,18 @@ collections:
             widget: list
             required: false
             hint: Link del juego, de tu cuenta o de la de otro autor.
-            field:
-              name: url
-              label: Link
-              widget: string
-              pattern: ['^\s*https://[\w-]+\.itch\.io/[\w-]+/?\s*$', 'Un link de la forma https://usuario.itch.io/juego']
+            summary: '{{fields.url}}'
+            fields:
+              - name: url
+                label: Link
+                widget: string
+                pattern: ['^\s*https://[\w-]+\.itch\.io/[\w-]+/?\s*$', 'Un link de la forma https://usuario.itch.io/juego']
+              - name: repo
+                label: Código en GitHub
+                widget: string
+                required: false
+                hint: Opcional, si el código es público. Link del repo (o usuario/repo); la ficha lo linkea y, si el repo también está en GitHub, no se repite en Proyectos.
+                pattern: ['^\s*(https://github\.com/)?[\w.-]+/[\w.-]+/?\s*$', 'Un link de github.com/usuario/repo']
           - name: github
             label: GitHub
             label_singular: Repositorio

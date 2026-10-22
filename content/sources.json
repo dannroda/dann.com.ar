@@ -3,10 +3,18 @@
     "https://store.steampowered.com/app/2824960/Fracas/"
   ],
   "itch": [
-    "https://emarod.itch.io/mr-duck",
-    "https://dannroda.itch.io/robot-factory",
-    "https://emarod.itch.io/little-eyes",
-    "https://emarod.itch.io/rescue-signal"
+    {
+      "url": "https://emarod.itch.io/mr-duck"
+    },
+    {
+      "url": "https://dannroda.itch.io/robot-factory"
+    },
+    {
+      "url": "https://emarod.itch.io/little-eyes"
+    },
+    {
+      "url": "https://emarod.itch.io/rescue-signal"
+    }
   ],
   "github": [
     "dannroda/dannroda.github.io",

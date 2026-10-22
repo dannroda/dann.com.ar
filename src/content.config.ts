@@ -41,6 +41,8 @@ const store = defineCollection({
 		// itch
 		authors: z.array(z.object({ name: z.string(), url: z.string().optional() })).optional(),
 		info: z.record(z.string(), z.unknown()).optional(),
+		// "owner/repo" of its public source, set next to the itch link in content/sources.json
+		repo: z.string().optional(),
 		jam: z
 			.object({
 				name: z.string().nullable(),
@@ -67,8 +69,6 @@ const games = defineCollection({
 		hidden: z.boolean().default(false),
 		role: text,
 		summary: text,
-		// public source of a game published elsewhere: "owner/repo" or its github.com link
-		repo: z.string().nullish(),
 		authorship: z
 			.array(z.object({ area: z.enum(areas), who: z.enum(authors), note: text }))
 			.nullish()

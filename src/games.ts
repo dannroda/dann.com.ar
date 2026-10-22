@@ -24,8 +24,7 @@ export async function games() {
 	};
 }
 
-// "owner/repo", lowercased, from the CMS field that takes a link or a bare repo.
-export const repoOf = (g: Game) => g.own?.repo?.trim().replace(/^https:\/\/github\.com\//, '').replace(/\/$/, '').toLowerCase() || null;
+export const repoOf = (g: Game) => g.data.repo?.toLowerCase() || null;
 
 // GitHub's generated preview: 2:1 with the repo name on its left, so it is cropped from that side.
 export const isCard = (g: Game) => !!g.data.images?.cover?.startsWith('https://opengraph.githubassets.com/');

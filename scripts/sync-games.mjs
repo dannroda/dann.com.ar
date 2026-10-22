@@ -20,7 +20,8 @@ export function wikiSource(v) {
 }
 const wanted = {
 	steam: (sources.steam ?? []).map(steamId).filter(Boolean),
-	itch: (sources.itch ?? []).map(itchUrl).filter(Boolean),
+	// { url, repo? }: the repo is the game's public source, if any.
+	itch: (sources.itch ?? []).map((v) => ({ url: itchUrl(v.url ?? v), repo: v.repo?.trim() ? githubRepo(v.repo) : null })).filter((e) => e.url),
 	github: (sources.github ?? []).map(githubRepo).filter(Boolean),
 	assetlib: (sources.assetlib ?? []).map(assetId).filter(Boolean),
 	wikis: (sources.wikis ?? []).map(wikiSource).filter(Boolean)
@@ -120,7 +121,7 @@ async function ludumDare(path) {
 	};
 }
 
-async function itch(url) {
+async function itch(url, repo) {
 	const [data, page] = [await get(`${url}/data.json`), await get(url, 'text')];
 	const jamUrl = page.match(/href="(https:\/\/itch\.io\/jam\/[^"/]+)\/rate\/\d+"/)?.[1] ?? null;
 	const ldPath = page.match(/ldjam\.com\/events\/ludum-dare\/(\d+\/[a-z0-9-]+)/)?.[1];
@@ -133,6 +134,8 @@ async function itch(url) {
 		authors: data.authors ?? [],
 		tags: data.tags ?? [],
 		info: itchInfo(page),
+		// only when set, so adding the field doesn't rewrite every game's data
+		...(repo && { repo }),
 		jam: ldPath ? await ludumDare(ldPath) : jamUrl ? { name: pageTitle(await get(jamUrl, 'text')), url: jamUrl } : null,
 		// The page's list often repeats the cover as its first picture.
 		images: { cover, screenshots: (data.screenshots?.length ? data.screenshots : itchShots(page)).filter((u) => u !== cover) }
@@ -311,7 +314,7 @@ async function save(game) {
 async function prune() {
 	const keep = (d) =>
 		d.source === 'steam' ? wanted.steam.includes(d.id)
-		: d.source === 'itch' ? wanted.itch.includes(d.url)
+		: d.source === 'itch' ? wanted.itch.some((e) => e.url === d.url)
 		: d.source === 'assetlib' ? wanted.assetlib.includes(d.id)
 		: wanted.github.some((r) => !unpublished.has(r.toLowerCase()) && d.url.toLowerCase() === `https://github.com/${r}`.toLowerCase());
 	for (const f of await readdir('content/store').catch(() => [])) {
@@ -369,7 +372,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 		}
 	};
 	for (const id of wanted.steam) await run(`steam ${id}`, () => steam(id));
-	for (const url of wanted.itch) await run(url, () => itch(url));
+	for (const { url, repo } of wanted.itch) await run(url, () => itch(url, repo));
 	for (const repo of wanted.github) await run(`github ${repo}`, () => github(repo));
 	for (const id of wanted.assetlib) await run(`assetlib ${id}`, () => assetlib(id));
 	for (const w of wanted.wikis) await run(`wiki ${w.repo}`, async () => (await saveWiki(w, await wiki(w)), []));
