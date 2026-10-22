@@ -133,14 +133,13 @@ a.work:hover, .work.lead:hover { background: var(--surface-2); color: var(--ink)
 	.work.lead .work-img { flex: none; aspect-ratio: 16 / 9; min-height: 0; }
 }
 
-.lab-sec { background: var(--field); color: var(--field-ink); padding: clamp(64px, 8vw, 120px) var(--m) !important; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px 24px; container-type: inline-size; }
+.lab-sec { background: var(--field); color: var(--field-ink); padding: clamp(64px, 8vw, 120px) var(--m) !important; display: flex; flex-direction: column; gap: 40px; container-type: inline-size; }
+.lab-head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px 24px; }
 .home .lab-word { grid-column: 1 / span 6; color: var(--field-ink); margin: 0; font-family: var(--display); font-weight: 700; text-transform: uppercase; font-size: 14cqw; line-height: 0.8; letter-spacing: -0.04em; }
 .lab-side { grid-column: 8 / span 5; display: flex; flex-direction: column; gap: 20px; align-self: end; }
 .lab-side p { color: var(--field-muted); }
 .lab-side .tag.vibe { color: var(--field-muted); }
-.lab-bars { display: flex; flex-direction: column; gap: 6px; }
-.lab-bars a, .lab-empty { display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 18px; background: var(--field-2); font-weight: 500; }
-.lab-bars a:hover { background: var(--field-ink); color: var(--field); }
+.lab-empty { display: flex; align-items: center; min-height: 56px; padding: 0 18px; background: var(--field-2); font-weight: 500; }
 
 .about-sec { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; }
 .about-facts { grid-column: 1 / span 2; display: flex; flex-direction: column; gap: 18px; font-size: var(--step-small); }

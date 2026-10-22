@@ -34,6 +34,7 @@ const names = [...projects, ...otherGames];
 				<nav class="nav" aria-label={s.navLabel}>
 					<a href="#games">{s.nav.games}</a>
 					<a href="#projects">{s.nav.projects}</a>
+					<a href="#lab">{s.nav.lab}</a>
 					<a href={url(`/${lang}/blog/`)}>{s.nav.blog}</a>
 					<a href={url(`/${alt}/`)} hreflang={alt} lang={alt}>{alt.toUpperCase()}</a>
 				</nav>
@@ -130,25 +131,32 @@ const names = [...projects, ...otherGames];
 			)
 		}
 
-		{
-			lab.length > 0 && (
-				<section id="lab" class="lab-sec" aria-labelledby="h-lab">
-					<h2 id="h-lab" class="lab-word" data-rise>Lab</h2>
-					<div class="lab-side">
-						<span class="tag vibe" data-rise>{s.legend.vibe[0]}</span>
-						<p data-rise>{s.labIntro}</p>
-						<div class="lab-bars" data-rise>
-							{lab.map((g) => (
-								<a href={href(g)} data-ai="vibe">
-									<span>{g.data.title}</span>
-									<span>→</span>
-								</a>
-							))}
-						</div>
+		<section id="lab" class="lab-sec" aria-labelledby="h-lab">
+			<div class="lab-head">
+				<h2 id="h-lab" class="lab-word" data-rise>Lab</h2>
+				<div class="lab-side">
+					<span class="tag vibe" data-rise>{s.legend.vibe[0]}</span>
+					<p data-rise>{s.labIntro}</p>
+				</div>
+			</div>
+			{
+				lab.length > 0 ? (
+					<div class="works">
+						{lab.map((g) => (
+							<a class="work" href={href(g)} data-ai="vibe" data-rise>
+								<span class="work-img">
+									{g.data.local_images.cover && <img class:list={{ card: isCard(g) }} src={url(g.data.local_images.cover)} alt="" loading="lazy" width="630" height="500" />}
+								</span>
+								<span class="work-name">{g.data.title}</span>
+								<span class="small">{[storeName[g.data.source], g.data.language ?? list(g.data.info?.['Made with']), g.data.created?.slice(0, 4)].filter(Boolean).join(' · ')}</span>
+							</a>
+						))}
 					</div>
-				</section>
-			)
-		}
+				) : (
+					<p class="lab-empty">{s.labEmpty}</p>
+				)
+			}
+		</section>
 
 		<section class="about-sec" aria-labelledby="h-about">
 			<div class="about-facts">

@@ -54,6 +54,7 @@ const canonical = new URL(url(`/${lang}/${path}`), Astro.site);
 					<nav class="nav" aria-label={s.navLabel}>
 						<a href={url(`/${lang}/#games`)}>{s.nav.games}</a>
 						<a href={url(`/${lang}/#projects`)}>{s.nav.projects}</a>
+						<a href={url(`/${lang}/#lab`)}>{s.nav.lab}</a>
 						<a href={url(`/${lang}/blog/`)}>{s.nav.blog}</a>
 						<a href={url(`/${alt}/${path}`)} hreflang={alt} lang={alt}>{alt.toUpperCase()}</a>
 					</nav>
