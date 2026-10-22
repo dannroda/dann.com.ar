@@ -20,7 +20,6 @@ const blurb = (g: Game) => g.own?.summary[lang] || g.data.short?.[lang] || g.dat
 const lead = published[0];
 const shots = lead ? [...lead.data.local_images.screenshots, lead.data.local_images.cover].filter(Boolean).slice(0, 4) as string[] : [];
 const counts = { all: all.length, hand: all.filter((g) => g.own?.ai === 'hand').length, ai: all.filter((g) => g.own?.ai === 'assisted' || g.own?.ai === 'vibe').length };
-const jamPhoto = jams.find((g) => g.data.local_images.cover)?.data.local_images.cover;
 const names = [...projects, ...otherGames];
 ---
 
@@ -30,7 +29,6 @@ const names = [...projects, ...otherGames];
 			<div class="hero-top">
 				<div class="hero-intro">
 					<p>{s.heroIntro}</p>
-					<a class="pill" href="#games">{s.seeGames}</a>
 				</div>
 				<nav class="nav" aria-label={s.navLabel}>
 					<a href="#games">{s.nav.games}</a>
@@ -40,121 +38,126 @@ const names = [...projects, ...otherGames];
 				</nav>
 			</div>
 			<Monument as="h1" label={s.tagline} />
-			{shots[0] && <img class="hero-cover" src={url(shots[0])} alt={lead?.data.title ?? ''} width="390" height="488" />}
 			<div class="hero-bottom">
 				<p>{s.place}</p>
 				<div class="hero-links">{profile.links.map((l) => <a href={l.url}>{l.label} ↗</a>)}</div>
 			</div>
 		</section>
 
-		<section class="legend-sec" aria-labelledby="h-legend">
-			<div class="legend-text">
-				<h2 id="h-legend" data-rise>{s.legendTitle}</h2>
-				<p class="lead" data-rise>{s.legendLead}</p>
+		<section id="games" class="works-sec" aria-labelledby="h-games">
+			<div class="works-head">
+				<h2 id="h-games" data-rise>{s.nav.games}</h2>
+				<div class="filter" role="group" aria-labelledby="filter-label" hidden>
+					<span id="filter-label" class="small">{s.filterLabel}</span>
+					<button type="button" data-filter="all" aria-pressed="true">{s.filterAll} <span>{counts.all}</span></button>
+					<button type="button" data-filter="hand" aria-pressed="false">{s.filterHand} <span>{counts.hand}</span></button>
+					<button type="button" data-filter="ai" aria-pressed="false">{s.filterAi} <span>{counts.ai}</span></button>
+				</div>
+			</div>
+			<div class="legend">
+				<p class="legend-lead">{s.legendLead}</p>
 				{
 					(['hand', 'assisted', 'vibe'] as const).map((k) => (
-						<p data-rise>
+						<p>
 							<span class={`tag ${k}`}>{s.legend[k][0]}</span>
-							{s.legend[k][1]}
+							<span class="small">{s.legend[k][1]}</span>
 						</p>
 					))
 				}
 			</div>
-			<div class="filter" role="group" aria-labelledby="filter-label" hidden>
-				<p id="filter-label" class="small filter-label">{s.filterLabel}</p>
-				<button type="button" data-filter="all" aria-pressed="true" data-rise><span>{s.filterAll}</span><span>{counts.all}</span></button>
-				<button type="button" data-filter="hand" aria-pressed="false" data-rise><span>{s.filterHand}</span><span>{counts.hand}</span></button>
-				<button type="button" data-filter="ai" aria-pressed="false" data-rise><span>{s.filterAi}</span><span>{counts.ai}</span></button>
+			<div class="works">
+				{
+					lead && (
+						<article class="work lead" data-ai={ai(lead)} data-rise>
+							<a class="work-img" href={href(lead)} tabindex="-1" aria-hidden="true">
+								<img src={url(shots[0])} alt="" width="1600" height="900" />
+							</a>
+							<div class="work-body">
+								<div class="work-title">
+									<h3><a href={href(lead)}>{lead.data.title}</a></h3>
+									<AiTag lang={lang} level={lead.own?.ai} />
+								</div>
+								<p class="small">{s.published} · {lead.data.release_date?.slice(-4)}</p>
+								<p class="work-text" lang={lead.own?.summary[lang] || lead.data.short?.[lang] ? lang : 'en'}>{blurb(lead)}</p>
+								<span class="pills">
+									<a class="pill primary" href={lead.data.url}>Steam ↗</a>
+									<a class="pill" href={href(lead)}>{s.details} →</a>
+								</span>
+							</div>
+						</article>
+					)
+				}
+				{
+					jams.map((g) => (
+						<a class="work" href={href(g)} data-ai={ai(g)} data-rise>
+							<span class="work-img">
+								{g.data.local_images.cover && <img src={url(g.data.local_images.cover)} alt="" loading="lazy" width="630" height="500" />}
+								{g.data.jam?.results?.Overall && (
+									<span class="work-rank">
+										#{g.data.jam.results.Overall.rank}
+										{g.data.jam.entries && <span> {s.of} {g.data.jam.entries}</span>}
+									</span>
+								)}
+							</span>
+							<span class="work-title">
+								<span class="work-name">{g.data.title}</span>
+								<AiTag lang={lang} level={g.own?.ai} />
+							</span>
+							<span class="small">
+								{g.data.jam?.name}
+								{g.data.jam?.theme && ` · “${g.data.jam.theme}”`}
+							</span>
+						</a>
+					))
+				}
 			</div>
 		</section>
-
-		{
-			lead && (
-				<section id="games" class="band-sec" aria-labelledby="h-games" data-ai={ai(lead)}>
-					<h2 id="h-games" data-rise>{s.published}</h2>
-					<div class="band">
-						{shots.map((src, i) => (
-							<a href={href(lead)} style={`--g: ${[5, 2, 3, 2][i]}`} tabindex={i ? -1 : undefined} aria-label={i ? undefined : lead.data.title}>
-								<img src={url(src)} alt="" loading="lazy" width="800" height="450" />
-								{i === 0 && <span class="band-title">{lead.data.title}</span>}
-							</a>
-						))}
-					</div>
-					<div class="band-caption">
-						<AiTag lang={lang} level={lead.own?.ai} />
-						<span class="cap-text" lang={lead.own?.summary[lang] || lead.data.short?.[lang] ? lang : 'en'}>{blurb(lead)}</span>
-						<span class="pills">
-							<a class="pill primary" href={lead.data.url}>Steam ↗</a>
-							<a class="pill" href={href(lead)}>{s.details} →</a>
-						</span>
-					</div>
-				</section>
-			)
-		}
-
-		{
-			jams.length > 0 && (
-				<section id="jams" class="jams-sec" aria-labelledby="h-jams">
-					<h2 id="h-jams" data-rise>{s.jamsHeading}</h2>
-					{jamPhoto && <img class="jams-photo" src={url(jamPhoto)} alt="" loading="lazy" width="480" height="600" />}
-					<div class="jams-table">
-						{jams.map((g) => (
-							<a class="jam" href={href(g)} data-ai={ai(g)} data-rise>
-								<span class="jam-game">{g.data.title}</span>
-								<span class="jam-rank">
-									{g.data.jam?.results?.Overall
-										? `#${g.data.jam.results.Overall.rank}${g.data.jam.entries ? ` ${s.of} ${g.data.jam.entries}` : ''}`
-										: ''}
-								</span>
-								<span class="jam-where">
-									{g.data.jam?.name}
-									{g.data.jam?.theme && ` · “${g.data.jam.theme}”`}
-								</span>
-								<AiTag lang={lang} level={g.own?.ai} />
-							</a>
-						))}
-					</div>
-				</section>
-			)
-		}
 
 		{
 			names.length > 0 && (
-				<section id="projects" class="names-sec" aria-labelledby="h-projects">
-					<h2 id="h-projects" data-rise>{s.projects}</h2>
-					<ul class="names">
+				<section id="projects" class="works-sec" aria-labelledby="h-projects">
+					<div class="works-head">
+						<h2 id="h-projects" data-rise>{s.projects}</h2>
+						<p class="small">{s.projectsCount(projects.length, otherGames.length)}</p>
+					</div>
+					<div class="works projects">
 						{names.map((g) => (
-							<li data-rise data-ai={ai(g)}>
-								<a href={href(g)}>{g.data.title}</a>
+							<a class="work" href={href(g)} data-ai={ai(g)} data-rise>
+								<span class="work-img">
+									{g.data.local_images.cover && <img src={url(g.data.local_images.cover)} alt="" loading="lazy" width="1200" height="600" />}
+								</span>
+								<span class="work-title">
+									<span class="work-name">{g.data.title}</span>
+									<AiTag lang={lang} level={g.own?.ai} />
+								</span>
 								<span class="small">{[g.data.language ?? list(g.data.info?.['Made with']), g.data.created?.slice(0, 4)].filter(Boolean).join(' · ')}</span>
-								{blurb(g) && <span class="desc">{blurb(g)}</span>}
-							</li>
+								{blurb(g) && <span class="work-text">{blurb(g)}</span>}
+							</a>
 						))}
-					</ul>
-					<p class="small" data-rise>{s.projectsCount(projects.length, otherGames.length)}</p>
+					</div>
 				</section>
 			)
 		}
 
-		<section id="lab" class="lab-sec" aria-labelledby="h-lab">
-			<h2 id="h-lab" class="lab-word" data-rise>Lab</h2>
-			<div class="lab-side">
-				<span class="tag vibe" data-rise>{s.legend.vibe[0]}</span>
-				<p data-rise>{s.labIntro}</p>
-				<div class="lab-bars" data-rise>
-					{
-						lab.length > 0
-							? lab.map((g) => (
-									<a href={href(g)} data-ai="vibe">
-										<span>{g.data.title}</span>
-										<span>→</span>
-									</a>
-								))
-							: <p class="lab-empty">{s.labEmpty}</p>
-					}
-				</div>
-			</div>
-		</section>
+		{
+			lab.length > 0 && (
+				<section id="lab" class="lab-sec" aria-labelledby="h-lab">
+					<h2 id="h-lab" class="lab-word" data-rise>Lab</h2>
+					<div class="lab-side">
+						<span class="tag vibe" data-rise>{s.legend.vibe[0]}</span>
+						<p data-rise>{s.labIntro}</p>
+						<div class="lab-bars" data-rise>
+							{lab.map((g) => (
+								<a href={href(g)} data-ai="vibe">
+									<span>{g.data.title}</span>
+									<span>→</span>
+								</a>
+							))}
+						</div>
+					</div>
+				</section>
+			)
+		}
 
 		<section class="about-sec" aria-labelledby="h-about">
 			<div class="about-facts">
