@@ -9,4 +9,4 @@ const { lang, level } = Astro.props;
 const k = level === 'hand' || level === 'assisted' || level === 'vibe' ? level : null;
 ---
 
-{k && <span class={`tag ${k}`}>{t[lang].legend[k][0]}</span>}
+{k && <span class={`tag ${k}`} data-tip={t[lang].legend[k][1]}>{t[lang].legend[k][0]}<span class="sr-only">: {t[lang].legend[k][1]}</span></span>}
