@@ -310,7 +310,7 @@ async function save(game) {
 
 // Removing an entry from content/sources.json removes its store data and images.
 // Decided by the config, not by fetch results, so a store that is down never deletes anything.
-// The own file in content/games/ stays: re-adding the game brings its label and texts back.
+// Its own file in content/games/ goes too, so the CMS only lists games that are on the site.
 async function prune() {
 	const keep = (d) =>
 		d.source === 'steam' ? wanted.steam.includes(d.id)
@@ -325,6 +325,13 @@ async function prune() {
 		await rm(`content/store/${f}`);
 		await rm(`public/games/${slug}`, { recursive: true, force: true });
 		console.log(`- ${slug}`);
+	}
+	// Also own files left from before they were pruned with the store data.
+	const stored = await readdir('content/store').catch(() => []);
+	for (const f of await readdir('content/games').catch(() => [])) {
+		if (!f.endsWith('.json') || stored.includes(f)) continue;
+		await rm(`content/games/${f}`);
+		console.log(`- own ${f}`);
 	}
 	for (const d of await readdir('content/wiki').catch(() => [])) {
 		if (wanted.wikis.some((w) => w.slug === d)) continue;
