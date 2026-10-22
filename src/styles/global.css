@@ -171,17 +171,18 @@ a.work:hover, .work.lead:hover { background: var(--surface-2); color: var(--ink)
 .section-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; }
 .section h2 { font-size: var(--step-statement); }
 .shot { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--surface); }
-.detail { display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start; }
-.detail main { flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 56px; }
-.facts { flex: 1 1 260px; background: var(--surface); margin: 0; padding: 8px 0; }
-.facts div { display: flex; flex-direction: column; gap: 2px; padding: 12px 22px; }
+/* Facts run across the page above the rest, so a page with little else has no empty middle. */
+.detail { display: flex; flex-direction: column; gap: 56px; }
+.detail main { min-width: 0; display: flex; flex-direction: column; gap: 56px; }
+.facts { order: -1; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); background: var(--surface); margin: 0; padding: 8px 0; }
+.facts div { display: flex; flex-direction: column; gap: 2px; padding: 14px 22px; }
 .facts dt { font-size: var(--step-small); color: var(--muted); }
 .facts dd { margin: 0; }
 .table-box { overflow-x: auto; background: var(--surface); }
 table { width: 100%; border-collapse: collapse; font-size: var(--step-body); font-variant-numeric: tabular-nums; }
 th, td { padding: 12px 18px; text-align: left; border-top: 1px solid var(--surface-2); }
 thead th { border-top: 0; font-size: var(--step-small); font-weight: 500; color: var(--muted); }
-.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 8px; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 8px; }
 .trailer { position: relative; display: block; }
 .trailer .pill { position: absolute; left: 20px; bottom: 20px; }
 

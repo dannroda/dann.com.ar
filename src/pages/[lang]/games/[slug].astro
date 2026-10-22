@@ -35,7 +35,7 @@ const facts = [
 	[s.release, d.release_date],
 	[s.platforms, d.platforms?.map((p) => ({ windows: 'Windows', mac: 'macOS', linux: 'Linux' })[p] ?? p).join(', ')],
 	[s.price, d.price],
-	[s.authors, d.authors?.map((a) => a.name).join(', ')],
+	[s.credits, d.authors?.map((a) => a.name).join(', ')],
 	[s.language, d.language],
 	[s.license, d.license],
 	[s.created, d.created && fmtDate(new Date(d.created), lang)],

@@ -115,6 +115,7 @@ async function itch(url) {
 	const [data, page] = [await get(`${url}/data.json`), await get(url, 'text')];
 	const jamUrl = page.match(/href="(https:\/\/itch\.io\/jam\/[^"/]+)\/rate\/\d+"/)?.[1] ?? null;
 	const ldPath = page.match(/ldjam\.com\/events\/ludum-dare\/(\d+\/[a-z0-9-]+)/)?.[1];
+	const cover = ogImage(page) || data.cover_image || null;
 	return {
 		source: 'itch',
 		id: data.id,
@@ -124,7 +125,8 @@ async function itch(url) {
 		tags: data.tags ?? [],
 		info: itchInfo(page),
 		jam: ldPath ? await ludumDare(ldPath) : jamUrl ? { name: pageTitle(await get(jamUrl, 'text')), url: jamUrl } : null,
-		images: { cover: ogImage(page) || data.cover_image || null, screenshots: data.screenshots?.length ? data.screenshots : itchShots(page) }
+		// The page's list often repeats the cover as its first picture.
+		images: { cover, screenshots: (data.screenshots?.length ? data.screenshots : itchShots(page)).filter((u) => u !== cover) }
 	};
 }
 

@@ -16,9 +16,7 @@
 	"id": 2047839,
 	"images": {
 		"cover": "https://img.itch.zone/aW1nLzEyMDQ0NjMxLnBuZw==/original/t%2FjlD7.png",
-		"screenshots": [
-			"https://img.itch.zone/aW1nLzEyMDQ0NjMxLnBuZw==/original/t%2FjlD7.png"
-		]
+		"screenshots": []
 	},
 	"info": {
 		"Authors": [
@@ -90,13 +88,11 @@
 	},
 	"local_images": {
 		"cover": "/games/robot-factory/cover.png",
-		"screenshots": [
-			"/games/robot-factory/shot-1.png"
-		],
+		"screenshots": [],
 		"trailer": null
 	},
 	"source": "itch",
-	"synced_at": "2026-10-21T21:12:12.001Z",
+	"synced_at": "2026-10-22T01:04:17.309Z",
 	"tags": [
 		"ludum-dare-53"
 	],
