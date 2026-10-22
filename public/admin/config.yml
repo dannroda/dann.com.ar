@@ -141,12 +141,23 @@ collections:
             label_singular: Repositorio
             widget: list
             required: false
-            hint: Link del repositorio (o usuario/repo). Aparece en Proyectos.
+            hint: Link del repositorio (o usuario/repo). Aparece en Proyectos; si el README tiene imágenes, la primera es la portada.
             field:
               name: url
               label: Link
               widget: string
               pattern: ['^\s*(https://github\.com/)?[\w.-]+/[\w.-]+/?\s*$', 'Un link de github.com/usuario/repo']
+          - name: assetlib
+            label: Godot Asset Library
+            label_singular: Asset
+            widget: list
+            required: false
+            hint: Link del asset (o solo su número). Aparece en Proyectos.
+            field:
+              name: url
+              label: Link
+              widget: string
+              pattern: ['^\s*(\d+|https://godotengine\.org/asset-library/asset/\d+\S*)\s*$', 'Un link de godotengine.org/asset-library/asset/… o el número del asset']
       - name: profile
         label: Links
         file: content/profile.json

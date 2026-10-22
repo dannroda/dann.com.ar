@@ -9,11 +9,13 @@ const images = z.object({ cover: z.string().nullable(), trailer: z.string().null
 const store = defineCollection({
 	loader: glob({ pattern: '*.json', base: './content/store' }),
 	schema: z.object({
-		source: z.enum(['steam', 'itch', 'github']),
+		source: z.enum(['steam', 'itch', 'github', 'assetlib']),
 		id: z.number(),
 		url: z.string().url(),
 		title: z.string(),
 		local_images: images,
+		// remote originals; only the cover's address is read, to tell GitHub's generated card apart
+		images: z.object({ cover: z.string().nullable() }).passthrough().optional(),
 		synced_at: z.string(),
 		// steam
 		short: i18n.optional(),
@@ -32,8 +34,12 @@ const store = defineCollection({
 		archived: z.boolean().optional(),
 		license: z.string().nullable().optional(),
 		created: z.string().optional(),
+		// Godot Asset Library
+		godot_version: z.string().optional(),
+		version: z.string().optional(),
+		category: z.string().optional(),
 		// itch
-		authors: z.array(z.object({ name: z.string(), url: z.string() })).optional(),
+		authors: z.array(z.object({ name: z.string(), url: z.string().optional() })).optional(),
 		info: z.record(z.string(), z.unknown()).optional(),
 		jam: z
 			.object({

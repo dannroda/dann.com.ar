@@ -109,13 +109,12 @@ p { margin: 0; }
 
 /* Fracas takes half the grid over two rows; the jams fill the other half two by two. */
 .works { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-.works.projects { grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
 .work { display: flex; flex-direction: column; gap: 6px; padding: 0 0 20px; background: var(--surface); color: var(--ink); transition: background-color 0.2s, opacity 0.35s var(--ease); }
 a.work:hover, .work.lead:hover { background: var(--surface-2); color: var(--ink); }
 .work > :not(.work-img) { padding: 0 20px; }
 .work-img { position: relative; display: block; aspect-ratio: 63 / 50; overflow: hidden; background: var(--surface-2); margin-bottom: 10px; }
-.projects .work-img { aspect-ratio: 2 / 1; }
 .work-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
+.work-img img.card { object-position: left center; }
 .work:hover .work-img img { transform: scale(1.03); }
 .work-title { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 12px; }
 .work-name, .work h3 { font-size: var(--step-lead); font-weight: 500; line-height: 1.15; }
@@ -129,7 +128,7 @@ a.work:hover, .work.lead:hover { background: var(--surface-2); color: var(--ink)
 .work.lead .work-text { color: var(--ink); max-width: 60ch; }
 .work.lead .pills { margin-top: 6px; }
 @media (max-width: 1100px) {
-	.works:not(.projects) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.works { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 	.work.lead { grid-row: auto; }
 	.work.lead .work-img { flex: none; aspect-ratio: 16 / 9; min-height: 0; }
 }

@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import AiTag from '../../components/AiTag.astro';
 import Monument from '../../components/Monument.astro';
 import profile from '../../../content/profile.json';
-import { games, list, type Game } from '../../games';
+import { games, list, storeName, isCard, type Game } from '../../games';
 import { posts, slugOf } from '../../posts';
 import { t, url, other, langPaths, type Lang } from '../../i18n';
 
@@ -110,20 +110,19 @@ const names = [...projects, ...otherGames];
 				<section id="projects" class="works-sec" aria-labelledby="h-projects">
 					<div class="works-head">
 						<h2 id="h-projects" data-rise>{s.projects}</h2>
-						<p class="small">{s.projectsCount(projects.length, otherGames.length)}</p>
 					</div>
-					<div class="works projects">
+					<div class="works">
 						{names.map((g) => (
 							<a class="work" href={href(g)} data-ai={ai(g)} data-rise>
 								<span class="work-img">
-									{g.data.local_images.cover && <img src={url(g.data.local_images.cover)} alt="" loading="lazy" width="1200" height="600" />}
+									{g.data.local_images.cover && <img class:list={{ card: isCard(g) }} src={url(g.data.local_images.cover)} alt="" loading="lazy" width="630" height="500" />}
 								</span>
 								<span class="work-title">
 									<span class="work-name">{g.data.title}</span>
 									<AiTag lang={lang} level={g.own?.ai} />
 								</span>
-								<span class="small">{[g.data.language ?? list(g.data.info?.['Made with']), g.data.created?.slice(0, 4)].filter(Boolean).join(' · ')}</span>
-								{blurb(g) && <span class="work-text">{blurb(g)}</span>}
+								<span class="small">{[storeName[g.data.source], g.data.language ?? list(g.data.info?.['Made with']), g.data.created?.slice(0, 4)].filter(Boolean).join(' · ')}</span>
+								{g.own?.role[lang] && <span class="small">{s.role}: {g.own.role[lang]}</span>}
 							</a>
 						))}
 					</div>

@@ -1,7 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import AiTag from '../../../components/AiTag.astro';
-import { games, list, storeName, type Game } from '../../../games';
+import { games, list, storeName, isCard, type Game } from '../../../games';
 import { t, url, langs, term, fmtDate, type Lang } from '../../../i18n';
 
 export async function getStaticPaths() {
@@ -38,6 +38,8 @@ const facts = [
 	[s.credits, d.authors?.map((a) => a.name).join(', ')],
 	[s.language, d.language],
 	[s.license, d.license],
+	['Godot', d.godot_version],
+	[s.version, d.version],
 	[s.created, d.created && fmtDate(new Date(d.created), lang)],
 	[s.status, d.archived ? s.archived : null],
 	...itchFacts.map(([label, key]) => [label, key === 'Made with' ? list(d.info?.[key]) : tr(d.info?.[key])])
@@ -57,12 +59,12 @@ const entries = d.jam?.entries;
 			{short && <p class="lead-text" lang={fallback ? 'en' : lang} data-rise>{short}</p>}
 			{fallback && <p class="small">{s.onlyIn}</p>}
 			<div class="pills" data-rise>
-				<a class="pill primary" href={d.url}>{d.source === 'github' ? s.viewOn : s.play} {storeName[d.source]} ↗</a>
+				<a class="pill primary" href={d.url}>{d.source === 'github' || d.source === 'assetlib' ? s.viewOn : s.play} {storeName[d.source]} ↗</a>
 				{d.homepage && <a class="pill" href={d.homepage}>{s.website} ↗</a>}
 				{d.jam && <a class="pill" href={d.jam.url}>{d.jam.name} ↗</a>}
 			</div>
 		</div>
-		{d.local_images.cover && <img class:list={["detail-cover", { wide: d.source === "github" }]} src={url(d.local_images.cover)} alt="" data-rise />}
+		{d.local_images.cover && <img class:list={["detail-cover", { wide: isCard(game) }]} src={url(d.local_images.cover)} alt="" data-rise />}
 	</section>
 
 	<div class="detail">

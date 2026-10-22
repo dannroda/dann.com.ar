@@ -1,4 +1,4 @@
-// Pulls store data (Steam, itch.io, GitHub) into content/store/<slug>.json and images into public/games/<slug>/.
+// Pulls store data (Steam, itch.io, GitHub, Godot Asset Library) into content/store/<slug>.json and images into public/games/<slug>/.
 // Only store-owned fields live here; your own fields (AI label, authorship, texts) go in separate files the sync never touches.
 // Usage: node scripts/sync-games.mjs
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
@@ -11,10 +11,12 @@ const sources = JSON.parse(await readFile('content/sources.json', 'utf8'));
 export const steamId = (v) => Number(String(v).match(/(?:app\/)?(\d+)/)?.[1]);
 export const itchUrl = (v) => String(v).trim().replace(/\/$/, '');
 export const githubRepo = (v) => String(v).trim().replace(/^https:\/\/github\.com\//, '').replace(/\/$/, '');
+export const assetId = (v) => Number(String(v).match(/(?:asset\/)?(\d+)/)?.[1]);
 const wanted = {
 	steam: (sources.steam ?? []).map(steamId).filter(Boolean),
 	itch: (sources.itch ?? []).map(itchUrl).filter(Boolean),
-	github: (sources.github ?? []).map(githubRepo).filter(Boolean)
+	github: (sources.github ?? []).map(githubRepo).filter(Boolean),
+	assetlib: (sources.assetlib ?? []).map(assetId).filter(Boolean)
 };
 
 // The Actions GITHUB_TOKEN lifts the GitHub API's anonymous rate limit; optional locally.
@@ -131,8 +133,18 @@ async function itch(url) {
 }
 
 // "owner/repo". No pushed_at: it changes on every push and would make each sync a new commit.
+// Pictures in a README, in order, without badges or vector logos; relative paths resolve against the README's folder, rooted ones against the repo.
+export function readmeImages(md, base, root) {
+	const srcs = [...md.matchAll(/!\[[^\]]*\]\(\s*<?([^)\s>]+)|<img[^>]+src=["']([^"']+)/g)].map((m) => m[1] ?? m[2]);
+	return [...new Set(srcs.map((s) => new URL(/^\/(?!\/)/.test(s) ? s.slice(1) : s, /^\/(?!\/)/.test(s) ? root : base).href.replace(/^https:\/\/github\.com\/([^/]+\/[^/]+)\/(?:blob|raw)\//, 'https://raw.githubusercontent.com/$1/')))]
+		.filter((u) => /^https:/.test(u) && !/shields\.io|badge|\/workflows\/|\.svg(\?|$)/i.test(u));
+}
+
 async function github(repo) {
 	const r = await get(`https://api.github.com/repos/${repo}`);
+	const readme = await get(`https://api.github.com/repos/${repo}/readme`).catch(() => null);
+	const root = `https://raw.githubusercontent.com/${r.full_name}/${r.default_branch}/`;
+	const pics = readme ? readmeImages(Buffer.from(readme.content, 'base64').toString(), root + readme.path, root) : [];
 	return {
 		source: 'github',
 		id: r.id,
@@ -146,7 +158,27 @@ async function github(repo) {
 		archived: r.archived,
 		license: r.license?.spdx_id ?? null,
 		created: r.created_at.slice(0, 10),
-		images: { cover: `https://opengraph.githubassets.com/1/${r.full_name}`, screenshots: [] }
+		// The README's first picture is the cover; GitHub's generated card only when it has none.
+		images: { cover: pics[0] ?? `https://opengraph.githubassets.com/1/${r.full_name}`, screenshots: pics.slice(1, 7) }
+	};
+}
+
+async function assetlib(id) {
+	const a = await get(`https://godotengine.org/asset-library/api/asset/${id}`);
+	const pics = (a.previews ?? []).filter((p) => p.type === 'image').map((p) => p.link);
+	return {
+		source: 'assetlib',
+		id: Number(a.asset_id),
+		url: `https://godotengine.org/asset-library/asset/${a.asset_id}`,
+		title: a.title,
+		description: a.description,
+		homepage: a.browse_url || null,
+		license: a.cost,
+		godot_version: a.godot_version,
+		version: a.version_string,
+		category: a.category,
+		authors: [{ name: a.author }],
+		images: { cover: pics[0] ?? a.icon_url ?? null, screenshots: pics.slice(1, 7) }
 	};
 }
 
@@ -154,7 +186,7 @@ async function github(repo) {
 const sorted = (_, v) => (v && typeof v === 'object' && !Array.isArray(v) ? Object.fromEntries(Object.entries(v).sort(([a], [b]) => a.localeCompare(b))) : v);
 const json = (v) => JSON.stringify(v, sorted, '\t');
 
-const slugOf = (g) => (g.source !== 'steam' ? basename(g.url).toLowerCase() : g.title.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+const slugOf = (g) => (g.source === 'itch' || g.source === 'github' ? basename(g.url).toLowerCase() : g.title.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
 
 // Only a starting value for a new game's own file; the CMS owns it afterwards.
 export function suggestAi(info = {}) {
@@ -212,6 +244,7 @@ async function prune() {
 	const keep = (d) =>
 		d.source === 'steam' ? wanted.steam.includes(d.id)
 		: d.source === 'itch' ? wanted.itch.includes(d.url)
+		: d.source === 'assetlib' ? wanted.assetlib.includes(d.id)
 		: wanted.github.some((r) => d.url.toLowerCase() === `https://github.com/${r}`.toLowerCase());
 	for (const f of await readdir('content/store').catch(() => [])) {
 		if (!f.endsWith('.json')) continue;
@@ -227,6 +260,11 @@ async function prune() {
 if (import.meta.url === `file://${process.argv[1]}`) {
 	console.assert(steamId('https://store.steampowered.com/app/2824960/Fracas/') === 2824960 && steamId(2824960) === 2824960);
 	console.assert(githubRepo('https://github.com/dannroda/itchy-api/') === 'dannroda/itchy-api');
+	console.assert(assetId('https://godotengine.org/asset-library/asset/1918') === 1918 && assetId('1918') === 1918);
+	{
+		const pics = readmeImages('![b](https://img.shields.io/x) ![s](docs/shot.png) <img src="logo.svg"> ![g](https://github.com/o/r/blob/main/a.gif) ![r](/media/b.png)', 'https://raw.githubusercontent.com/o/r/main/docs/README.md', 'https://raw.githubusercontent.com/o/r/main/');
+		console.assert(JSON.stringify(pics) === '["https://raw.githubusercontent.com/o/r/main/docs/docs/shot.png","https://raw.githubusercontent.com/o/r/main/a.gif","https://raw.githubusercontent.com/o/r/main/media/b.png"]', pics);
+	}
 	console.assert(itchUrl(' https://emarod.itch.io/mr-duck/ ') === 'https://emarod.itch.io/mr-duck');
 	console.assert(pageTitle('<title>Bahía Game Jam 2022 - itch.io</title>') === 'Bahía Game Jam 2022');
 	console.assert(ogImage('<meta property="og:image" content="a.png"/>') === 'a.png');
@@ -253,6 +291,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 	for (const id of wanted.steam) await run(`steam ${id}`, () => steam(id));
 	for (const url of wanted.itch) await run(url, () => itch(url));
 	for (const repo of wanted.github) await run(`github ${repo}`, () => github(repo));
+	for (const id of wanted.assetlib) await run(`assetlib ${id}`, () => assetlib(id));
 	await prune();
 	process.exit(failed ? 1 : 0);
 }

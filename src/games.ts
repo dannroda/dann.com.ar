@@ -18,11 +18,14 @@ export async function games() {
 		published: rest.filter((g) => g.data.source === 'steam'),
 		jams: rest.filter((g) => g.data.source === 'itch' && g.data.jam),
 		other: rest.filter((g) => g.data.source === 'itch' && !g.data.jam),
-		projects: rest.filter((g) => g.data.source === 'github')
+		projects: rest.filter((g) => g.data.source === 'github' || g.data.source === 'assetlib')
 	};
 }
 
-export const storeName = { steam: 'Steam', itch: 'itch.io', github: 'GitHub' } as const;
+// GitHub's generated preview: 2:1 with the repo name on its left, so it is cropped from that side.
+export const isCard = (g: Game) => !!g.data.images?.cover?.startsWith('https://opengraph.githubassets.com/');
+
+export const storeName = { steam: 'Steam', itch: 'itch.io', github: 'GitHub', assetlib: 'Asset Library' } as const;
 
 // itch "More information" rows are strings or string lists.
 export const list = (v: unknown) => (Array.isArray(v) ? v.join(', ') : typeof v === 'string' ? v : null);
