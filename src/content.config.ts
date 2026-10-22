@@ -67,6 +67,8 @@ const games = defineCollection({
 		hidden: z.boolean().default(false),
 		role: text,
 		summary: text,
+		// public source of a game published elsewhere: "owner/repo" or its github.com link
+		repo: z.string().nullish(),
 		authorship: z
 			.array(z.object({ area: z.enum(areas), who: z.enum(authors), note: text }))
 			.nullish()

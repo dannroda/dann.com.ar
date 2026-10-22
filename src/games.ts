@@ -8,6 +8,8 @@ export async function games() {
 	const all: Game[] = (await getCollection('store'))
 		.map((g) => ({ ...g, own: own.get(g.id) }))
 		.filter((g) => !g.own?.hidden)
+		// A repo already linked from another game's page is not listed again as a project.
+		.filter((g, _, all) => g.data.source !== 'github' || !all.some((o) => repoOf(o) && `https://github.com/${repoOf(o)}` === g.data.url.toLowerCase()))
 		.sort((a, b) => Number(!!b.own?.featured) - Number(!!a.own?.featured) || b.data.id - a.data.id);
 	// Vibe-coded work only shows in the Lab, whatever its source.
 	const lab = all.filter((g) => g.own?.ai === 'vibe');
@@ -21,6 +23,9 @@ export async function games() {
 		projects: rest.filter((g) => g.data.source === 'github' || g.data.source === 'assetlib')
 	};
 }
+
+// "owner/repo", lowercased, from the CMS field that takes a link or a bare repo.
+export const repoOf = (g: Game) => g.own?.repo?.trim().replace(/^https:\/\/github\.com\//, '').replace(/\/$/, '').toLowerCase() || null;
 
 // GitHub's generated preview: 2:1 with the repo name on its left, so it is cropped from that side.
 export const isCard = (g: Game) => !!g.data.images?.cover?.startsWith('https://opengraph.githubassets.com/');
