@@ -1,14 +1,15 @@
 {
-	"ai": "",
-	"authorship": [],
-	"featured": false,
-	"hidden": false,
-	"role": {
-		"en": "",
-		"es": ""
-	},
-	"summary": {
-		"en": "",
-		"es": ""
-	}
+  "ai": "vibe",
+  "featured": false,
+  "hidden": false,
+  "role": {
+    "es": "",
+    "en": ""
+  },
+  "summary": {
+    "es": "",
+    "en": ""
+  },
+  "repo": "",
+  "authorship": []
 }
