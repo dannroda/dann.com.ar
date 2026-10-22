@@ -221,19 +221,21 @@ Dirección 'name-as-monument' (taste-skill): DANN a todo el ancho, grafito y nar
 
 **Notas:** Quedan avisos por contenido: fichas de itch/GitHub con 1-2 imágenes, blog sin posts, sin video (Steam solo da HLS).
 
-## M5 — Dominio propio  (0/2)
+## M5 — Dominio propio  (1/2)
 
 El sitio en un dominio propio en lugar de github.io.
 
 **Hecho cuando:**
 - El sitio responde en el dominio propio con HTTPS.
 
-### 5.1 Elegir y comprar dominio · Pendiente
+### 5.1 Elegir y comprar dominio · Hecho
 
-**Tamaño:** S · **Etiquetas:** `infra`
+**Terminada:** 2026-10-21 · **Tamaño:** S · **Etiquetas:** `infra`
 
 Candidatos libres: dannroda.com, dannroda.dev, dann.games, dannroda.games; dann.gd fuera de Hostinger.
 
-### 5.2 CNAME y DNS hacia GitHub Pages · Pendiente
+**Notas:** Comprado dann.com.ar; DNS en Cloudflare (pat/jim.ns.cloudflare.com).
+
+### 5.2 CNAME y DNS hacia GitHub Pages · En curso
 
 **Tamaño:** S · **Etiquetas:** `infra`
