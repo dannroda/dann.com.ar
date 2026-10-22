@@ -10,10 +10,10 @@
   ],
   "github": [
     "dannroda/dannroda.github.io",
-    "https://github.com/dannroda/godot-agent",
-    "https://github.com/dannroda/godot-agent",
-    "https://github.com/dannroda/Asteroids",
-    "https://github.com/dannroda/project-epiphany",
+    "dannroda/godot-agent",
+    "dannroda/godot-agent",
+    "dannroda/Asteroids",
+    "dannroda/project-epiphany",
     "lonewolftechnology/godot-dojo"
   ],
   "assetlib": [],
