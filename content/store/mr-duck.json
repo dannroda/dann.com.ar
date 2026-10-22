@@ -54,7 +54,9 @@
 		],
 		"Inputs": [
 			"Keyboard",
-			"Gamepad (any)"
+			"Xbox controller",
+			"Gamepad (any)",
+			"Playstation controller"
 		],
 		"Languages": [
 			"English"
@@ -91,7 +93,8 @@
 			"Retro",
 			"Side Scroller",
 			"Singleplayer"
-		]
+		],
+		"Updated": "22 October 2026 @ 18:12 UTC"
 	},
 	"jam": {
 		"entries": 736,
@@ -109,7 +112,7 @@
 		"trailer": null
 	},
 	"source": "itch",
-	"synced_at": "2026-10-21T21:12:18.170Z",
+	"synced_at": "2026-10-22T21:18:39.436Z",
 	"tags": [
 		"2d",
 		"3d",
