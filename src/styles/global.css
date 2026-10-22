@@ -238,3 +238,16 @@ thead th { border-top: 0; font-size: var(--step-small); font-weight: 500; color:
 	.detail-hero { min-height: 0; }
 	.detail-hero .intro-block, .detail-cover { grid-column: 1 / -1; }
 }
+
+/* Wiki: the page list beside the doc; after it on a phone, so the doc comes first. */
+.wiki { display: grid; grid-template-columns: minmax(180px, 240px) minmax(0, 1fr); gap: 24px 56px; align-items: start; }
+.wiki-nav { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 2px; }
+.wiki-nav a { padding: 8px 12px; color: var(--muted); }
+.wiki-nav a:hover, .wiki-nav a[aria-current='page'] { background: var(--surface); color: var(--ink); }
+.wiki-nav .wiki-root { font-weight: 500; color: var(--ink); }
+.wiki-doc > .small { margin: 12px 0 40px; }
+.prose img { max-width: 100%; height: auto; }
+@media (max-width: 800px) {
+	.wiki { grid-template-columns: minmax(0, 1fr); }
+	.wiki-nav { position: static; order: 1; }
+}

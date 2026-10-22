@@ -39,6 +39,22 @@ collections:
       - { name: draft, label: Borrador, widget: boolean, i18n: duplicate, default: false }
       - { name: body, label: Texto, widget: markdown, i18n: true }
 
+  # Served at /<lang>/<slug>/; blog, games, wiki and links are taken.
+  - name: pages
+    label: Páginas
+    label_singular: Página
+    folder: content/pages
+    create: true
+    i18n: true
+    slug: '{{slug}}'
+    summary: '{{title}}'
+    fields:
+      - { name: title, label: Título, widget: string, i18n: true }
+      - { name: description, label: Bajada, widget: text, i18n: true, required: false }
+      - { name: project, label: Proyecto, widget: string, i18n: duplicate, required: false, hint: 'Opcional. El nombre del archivo del juego o proyecto (por ejemplo godot-dojo); su ficha linkea a esta página.' }
+      - { name: draft, label: Borrador, widget: boolean, i18n: duplicate, default: false }
+      - { name: body, label: Texto, widget: markdown, i18n: true }
+
   # One file per game, created by the store sync; store data itself lives in content/store/ and is not editable here.
   - name: games
     label: Juegos y proyectos
@@ -158,6 +174,17 @@ collections:
               label: Link
               widget: string
               pattern: ['^\s*(\d+|https://godotengine\.org/asset-library/asset/\d+\S*)\s*$', 'Un link de godotengine.org/asset-library/asset/… o el número del asset']
+          - name: wikis
+            label: Wikis (desde un repo)
+            label_singular: Wiki
+            widget: list
+            required: false
+            hint: 'usuario/repo usa su carpeta docs/; para otra carpeta, pegá su link (github.com/usuario/repo/tree/main/carpeta). Se publica en /wiki/<repo>/ y la ficha del proyecto con ese repo la linkea.'
+            field:
+              name: url
+              label: Repo o carpeta
+              widget: string
+              pattern: ['^\s*(https://github\.com/)?[\w.-]+/[\w.-]+(/tree/\S+)?/?\s*$', 'usuario/repo o un link de github.com/usuario/repo/tree/…']
       - name: profile
         label: Links
         file: content/profile.json

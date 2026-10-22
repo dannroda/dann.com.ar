@@ -2,7 +2,7 @@
 // Only store-owned fields live here; your own fields (AI label, authorship, texts) go in separate files the sync never touches.
 // Usage: node scripts/sync-games.mjs
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
-import { basename } from 'node:path';
+import { basename, posix } from 'node:path';
 
 const UA = { 'user-agent': 'dann.com.ar game sync' };
 const sources = JSON.parse(await readFile('content/sources.json', 'utf8'));
@@ -12,11 +12,18 @@ export const steamId = (v) => Number(String(v).match(/(?:app\/)?(\d+)/)?.[1]);
 export const itchUrl = (v) => String(v).trim().replace(/\/$/, '');
 export const githubRepo = (v) => String(v).trim().replace(/^https:\/\/github\.com\//, '').replace(/\/$/, '');
 export const assetId = (v) => Number(String(v).match(/(?:asset\/)?(\d+)/)?.[1]);
+// "owner/repo" (its docs/ folder) or a folder link "https://github.com/owner/repo/tree/<branch>/<folder>".
+// shortcut: a branch with "/" in its name reads as branch + folder; fine until such a branch is used.
+export function wikiSource(v) {
+	const m = String(v).trim().replace(/\/$/, '').match(/^(?:https:\/\/github\.com\/)?([\w.-]+\/[\w.-]+?)(?:\.git)?(?:\/tree\/([^/]+)(?:\/(.+))?)?$/);
+	return m && { repo: m[1], ref: m[2] ?? null, dir: m[3] ?? (m[2] ? '' : 'docs'), slug: basename(m[1]).toLowerCase() };
+}
 const wanted = {
 	steam: (sources.steam ?? []).map(steamId).filter(Boolean),
 	itch: (sources.itch ?? []).map(itchUrl).filter(Boolean),
 	github: (sources.github ?? []).map(githubRepo).filter(Boolean),
-	assetlib: (sources.assetlib ?? []).map(assetId).filter(Boolean)
+	assetlib: (sources.assetlib ?? []).map(assetId).filter(Boolean),
+	wikis: (sources.wikis ?? []).map(wikiSource).filter(Boolean)
 };
 
 // The Actions GITHUB_TOKEN lifts the GitHub API's anonymous rate limit; optional locally.
@@ -182,6 +189,57 @@ async function assetlib(id) {
 	};
 }
 
+// A doc's address inside its wiki: "guide/Setup.md" -> "guide/setup", a folder's README or index -> the folder.
+export const wikiPath = (rel) =>
+	rel.replace(/\.md$/i, '').split('/').filter((p, i, a) => i < a.length - 1 || !/^(readme|index)$/i.test(p)).map((p) => p.toLowerCase().replace(/[^a-z0-9_-]+/g, '-')).join('/');
+
+// Links between docs become links between site pages (relative, so they work under either language); anything else points at the repo.
+export function wikiLinks(md, rel, base, root) {
+	return md.replace(/(\]\(\s*<?|<(?:img|a)\b[^>]*?(?:src|href)=["'])([^)\s>"']+)/g, (all, pre, target) => {
+		if (/^([a-z][\w+.-]*:|#|\/\/)/i.test(target)) return all;
+		const [path, hash = ''] = target.split(/(?=#)/);
+		const to = posix.normalize(posix.join(posix.dirname(rel), path));
+		if (/\.md$/i.test(path) && !path.startsWith('/') && !to.startsWith('..')) {
+			return pre + (posix.relative('/' + wikiPath(rel), '/' + wikiPath(to)) || '.') + '/' + hash;
+		}
+		return pre + (path.startsWith('/') ? new URL(target.slice(1), root) : new URL(target, base + rel)).href;
+	});
+}
+
+// shortcut: one tree call lists up to ~100k files; enough for docs folders, not for monorepos.
+async function wiki({ repo, ref, dir }) {
+	const branch = ref ?? (await get(`https://api.github.com/repos/${repo}`)).default_branch;
+	const tree = await get(`https://api.github.com/repos/${repo}/git/trees/${branch}?recursive=1`);
+	const prefix = dir ? dir + '/' : '';
+	const files = tree.tree.filter((f) => f.type === 'blob' && f.path.startsWith(prefix) && /\.md$/i.test(f.path)).map((f) => f.path.slice(prefix.length));
+	if (!files.length) throw new Error(`no .md files in ${repo}/${dir}`);
+	const root = `https://raw.githubusercontent.com/${repo}/${branch}/`;
+	return Promise.all(files.map(async (rel) => {
+		const md = await get(root + prefix + rel, 'text');
+		// The first heading is the page title; the site prints it itself.
+		const h1 = md.match(/^#[ \t]+(.+?)[ \t#]*$/m);
+		return {
+			rel,
+			title: h1?.[1] ?? (wikiPath(rel) ? basename(rel, '.md') : basename(repo)),
+			source: `https://github.com/${repo}/blob/${branch}/${prefix}${rel}`,
+			body: wikiLinks(h1 ? md.replace(h1[0], '') : md, rel, root + prefix, root)
+		};
+	}));
+}
+
+// Rewritten whole on every sync; unchanged docs come out byte-identical, so git sees no change.
+async function saveWiki(w, docs) {
+	const dir = `content/wiki/${w.slug}`;
+	await rm(dir, { recursive: true, force: true });
+	for (const d of docs) {
+		const meta = { title: d.title, slug: [w.slug, wikiPath(d.rel)].filter(Boolean).join('/'), wiki: w.slug, repo: w.repo, source: d.source };
+		await mkdir(posix.dirname(`${dir}/${d.rel}`), { recursive: true });
+		// JSON strings are valid YAML scalars.
+		await writeFile(`${dir}/${d.rel}`, `---\n${Object.entries(meta).map(([k, v]) => `${k}: ${JSON.stringify(v)}`).join('\n')}\n---\n${d.body}`);
+	}
+	console.log(`~ wiki ${w.slug} (${docs.length})`);
+}
+
 // itch.io also shuffles JSON key order per response; sorted keys keep comparisons and git diffs stable.
 const sorted = (_, v) => (v && typeof v === 'object' && !Array.isArray(v) ? Object.fromEntries(Object.entries(v).sort(([a], [b]) => a.localeCompare(b))) : v);
 const json = (v) => JSON.stringify(v, sorted, '\t');
@@ -255,6 +313,11 @@ async function prune() {
 		await rm(`public/games/${slug}`, { recursive: true, force: true });
 		console.log(`- ${slug}`);
 	}
+	for (const d of await readdir('content/wiki').catch(() => [])) {
+		if (wanted.wikis.some((w) => w.slug === d)) continue;
+		await rm(`content/wiki/${d}`, { recursive: true, force: true });
+		console.log(`- wiki ${d}`);
+	}
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
@@ -264,6 +327,13 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 	{
 		const pics = readmeImages('![b](https://img.shields.io/x) ![s](docs/shot.png) <img src="logo.svg"> ![g](https://github.com/o/r/blob/main/a.gif) ![r](/media/b.png)', 'https://raw.githubusercontent.com/o/r/main/docs/README.md', 'https://raw.githubusercontent.com/o/r/main/');
 		console.assert(JSON.stringify(pics) === '["https://raw.githubusercontent.com/o/r/main/docs/docs/shot.png","https://raw.githubusercontent.com/o/r/main/a.gif","https://raw.githubusercontent.com/o/r/main/media/b.png"]', pics);
+	}
+	console.assert(JSON.stringify(wikiSource('https://github.com/o/My.Repo/tree/main/docs/en')) === '{"repo":"o/My.Repo","ref":"main","dir":"docs/en","slug":"my.repo"}');
+	console.assert(wikiSource('o/r').dir === 'docs' && wikiSource('https://github.com/o/r/tree/dev').dir === '' && wikiSource('nope') === null);
+	console.assert(wikiPath('README.md') === '' && wikiPath('guide/Getting Started.md') === 'guide/getting-started' && wikiPath('guide/index.md') === 'guide');
+	{
+		const md = wikiLinks('[a](api.md#x) [b](../README.md) ![c](img/c.png) [d](/src/x.gd) [e](https://x.org) [f](#top)', 'guide/setup.md', 'https://raw.githubusercontent.com/o/r/main/docs/', 'https://raw.githubusercontent.com/o/r/main/');
+		console.assert(md === '[a](../api/#x) [b](../../) ![c](https://raw.githubusercontent.com/o/r/main/docs/guide/img/c.png) [d](https://raw.githubusercontent.com/o/r/main/src/x.gd) [e](https://x.org) [f](#top)', md);
 	}
 	console.assert(itchUrl(' https://emarod.itch.io/mr-duck/ ') === 'https://emarod.itch.io/mr-duck');
 	console.assert(pageTitle('<title>Bahía Game Jam 2022 - itch.io</title>') === 'Bahía Game Jam 2022');
@@ -292,6 +362,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 	for (const url of wanted.itch) await run(url, () => itch(url));
 	for (const repo of wanted.github) await run(`github ${repo}`, () => github(repo));
 	for (const id of wanted.assetlib) await run(`assetlib ${id}`, () => assetlib(id));
+	for (const w of wanted.wikis) await run(`wiki ${w.repo}`, async () => (await saveWiki(w, await wiki(w)), []));
 	await prune();
 	process.exit(failed ? 1 : 0);
 }

@@ -86,4 +86,22 @@ const blog = defineCollection({
 	})
 });
 
-export const collections = { store, games, blog };
+// content/pages/<lang>/<slug>.md, from the CMS: landing pages and anything else that is not a post. Served at /<lang>/<slug>/.
+const pages = defineCollection({
+	loader: glob({ pattern: '*/*.md', base: './content/pages' }),
+	schema: z.object({
+		title: z.string(),
+		description: z.string().optional(),
+		// a game or project's file name; its page then links here
+		project: z.string().nullish(),
+		draft: z.boolean().default(false)
+	})
+});
+
+// Written by scripts/sync-games.mjs from a repo's docs folder; never edit by hand.
+const wiki = defineCollection({
+	loader: glob({ pattern: '**/*.md', base: './content/wiki' }),
+	schema: z.object({ title: z.string(), wiki: z.string(), repo: z.string(), source: z.string().url() })
+});
+
+export const collections = { store, games, blog, pages, wiki };

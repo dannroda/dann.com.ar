@@ -76,6 +76,10 @@ export const t = {
 		jamsHeading: 'Jams: un fin de semana, un juego',
 		entries: 'Entradas',
 		labEmpty: 'Todavía no hay nada acá.',
+		projectPage: 'Página del proyecto',
+		wiki: 'Wiki',
+		wikiPages: 'Páginas',
+		wikiSource: 'De la documentación del repo, en su idioma.',
 		about: 'Sobre mí',
 		aboutText: [
 			'Soy Daniel Rodriguez Aires, DTO en los créditos de las jams. Desde Argentina hago juegos en Godot y herramientas para el editor, en GDScript y en C++ con GDExtension.',
@@ -162,6 +166,10 @@ export const t = {
 		filterAi: 'With AI',
 		jamsHeading: 'Jams: one weekend, one game',
 		entries: 'Entries',
+		projectPage: 'Project page',
+		wiki: 'Wiki',
+		wikiPages: 'Pages',
+		wikiSource: "From the repo's docs, in their own language.",
 		labEmpty: 'Nothing here yet.',
 		about: 'About',
 		aboutText: [

@@ -8,4 +8,8 @@ export async function posts(lang: Lang) {
 	);
 }
 
+export async function pages(lang: Lang) {
+	return getCollection('pages', (p) => p.id.startsWith(`${lang}/`) && (import.meta.env.DEV || !p.data.draft));
+}
+
 export const slugOf = (id: string) => id.split('/').slice(1).join('/');

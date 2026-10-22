@@ -1,0 +1,40 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import { t, url, langs, type Lang } from '../../../i18n';
+
+export async function getStaticPaths() {
+	const docs = await getCollection('wiki');
+	// A docs folder without a README gets a plain index of its pages.
+	const roots = [...new Set(docs.map((d) => d.data.wiki))].filter((w) => !docs.some((d) => d.id === w));
+	const all = [...docs, ...roots.map((w) => ({ id: w, data: docs.find((d) => d.data.wiki === w)!.data, index: true }))];
+	return langs.flatMap((lang) =>
+		all.map((doc) => ({
+			params: { lang, slug: doc.id },
+			props: { doc, siblings: docs.filter((d) => d.data.wiki === doc.data.wiki && d.id !== d.data.wiki).sort((a, b) => a.id.localeCompare(b.id)) }
+		}))
+	);
+}
+
+const lang = Astro.params.lang as Lang;
+const s = t[lang];
+const { doc, siblings } = Astro.props;
+const index = 'index' in doc;
+const { Content } = index ? { Content: null } : await render(doc);
+const root = doc.data.wiki;
+---
+
+<Base lang={lang} title={index ? `${s.wiki} · ${root}` : doc.data.title} path={`wiki/${doc.id}/`}>
+	<div class:list={['section', { wiki: !index }]}>
+		{!index && <nav class="wiki-nav" aria-label={s.wikiPages}>
+			<a class="wiki-root" href={url(`/${lang}/wiki/${root}/`)} aria-current={doc.id === root ? 'page' : undefined}>{s.wiki} · {root}</a>
+			{siblings.map((d) => <a href={url(`/${lang}/wiki/${d.id}/`)} aria-current={d.id === doc.id ? 'page' : undefined}>{d.data.title}</a>)}
+		</nav>}
+		<article class="wiki-doc">
+			<h1 class="lede-h1">{index ? `${s.wiki} · ${root}` : doc.data.title}</h1>
+			<p class="small">{s.wikiSource} <a href={index ? `https://github.com/${doc.data.repo}` : doc.data.source}>GitHub ↗</a></p>
+			{Content && <div class="prose" lang="und"><Content /></div>}
+			{index && <ul class="prose" lang="und">{siblings.map((d) => <li><a href={url(`/${lang}/wiki/${d.id}/`)}>{d.data.title}</a></li>)}</ul>}
+		</article>
+	</div>
+</Base>

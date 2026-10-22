@@ -1,6 +1,8 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
 import AiTag from '../../../components/AiTag.astro';
+import { pages, slugOf } from '../../../posts';
 import { games, list, storeName, isCard, type Game } from '../../../games';
 import { t, url, langs, term, fmtDate, type Lang } from '../../../i18n';
 
@@ -46,6 +48,8 @@ const facts = [
 ].filter(([, v]) => v) as [string, string][];
 const synced = new Date(d.synced_at).toLocaleDateString(s.dateLocale, { dateStyle: 'long' });
 const entries = d.jam?.entries;
+const landing = (await pages(lang)).find((p) => p.data.project === game.id);
+const wiki = (await getCollection('wiki', (w) => w.data.wiki === game.id)).length > 0;
 ---
 
 <Base lang={lang} title={d.title} description={short ?? undefined} image={d.local_images.cover ?? undefined} path={`games/${game.id}/`}>
@@ -60,6 +64,8 @@ const entries = d.jam?.entries;
 			{fallback && <p class="small">{s.onlyIn}</p>}
 			<div class="pills" data-rise>
 				<a class="pill primary" href={d.url}>{d.source === 'github' || d.source === 'assetlib' ? s.viewOn : s.play} {storeName[d.source]} ↗</a>
+				{landing && <a class="pill" href={url(`/${lang}/${slugOf(landing.id)}/`)}>{s.projectPage}</a>}
+				{wiki && <a class="pill" href={url(`/${lang}/wiki/${game.id}/`)}>{s.wiki}</a>}
 				{d.homepage && <a class="pill" href={d.homepage}>{s.website} ↗</a>}
 				{d.jam && <a class="pill" href={d.jam.url}>{d.jam.name} ↗</a>}
 			</div>

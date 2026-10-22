@@ -38,7 +38,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Commit synced data
         run: |
-          git add content/store content/games public/games
+          git add content/store content/games content/wiki public/games
           git diff --cached --quiet && exit 0
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
