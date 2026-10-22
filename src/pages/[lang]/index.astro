@@ -67,7 +67,7 @@ const names = [...projects, ...otherGames];
 									<h3><a href={href(lead)}>{lead.data.title}</a></h3>
 									<AiTag lang={lang} level={lead.own?.ai} />
 								</div>
-								<p class="small">{s.published} · {lead.data.release_date?.slice(-4)}</p>
+								<p class="small">{[s.published, lead.data.release_date?.slice(-4), lead.own?.role[lang]].filter(Boolean).join(' · ')}</p>
 								<p class="work-text" lang={lead.own?.summary[lang] || lead.data.short?.[lang] ? lang : 'en'}>{blurb(lead)}</p>
 								<span class="pills">
 									<a class="pill primary" href={lead.data.url}>Steam ↗</a>
@@ -97,6 +97,7 @@ const names = [...projects, ...otherGames];
 								{g.data.jam?.name}
 								{g.data.jam?.theme && ` · “${g.data.jam.theme}”`}
 							</span>
+							{g.own?.role[lang] && <span class="small">{s.role}: {g.own.role[lang]}</span>}
 						</a>
 					))
 				}
