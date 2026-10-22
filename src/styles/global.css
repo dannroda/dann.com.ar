@@ -70,7 +70,11 @@ p { margin: 0; }
 .work .tag[data-tip]::after { left: auto; right: 0; }
 
 /* ---------- Home ---------- */
-.hero { display: grid; padding: var(--m); gap: clamp(32px, 5vw, 72px); }
+.hero { position: relative; isolation: isolate; display: grid; padding: var(--m); gap: clamp(32px, 5vw, 72px); }
+/* Godot's node icons drift diagonally behind the name: the layer is turned 45° and slides one tile along its own x axis, so the loop is seamless. */
+.hero-bg { position: absolute; z-index: -1; inset: 0; overflow: hidden; mask-image: linear-gradient(to bottom, #000 55%, transparent); pointer-events: none; }
+.hero-bg::before { content: ''; position: absolute; inset: -100%; background: var(--pattern) 0 0 / 288px; opacity: 0.06; transform: rotate(-45deg); animation: pattern-drift 40s linear infinite; pointer-events: none; }
+@keyframes pattern-drift { to { transform: rotate(-45deg) translateX(288px); } }
 .hero-top, .hero-bottom { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
 .hero-bottom { align-items: flex-end; }
 .hero-intro { max-width: 36ch; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
@@ -212,7 +216,7 @@ thead th { border-top: 0; font-size: var(--step-small); font-weight: 500; color:
 @media (prefers-reduced-motion: reduce) {
 	html { scroll-behavior: auto; }
 	.js [data-rise] { transform: none; transition: opacity 0.4s; }
-	.monument { animation: none !important; }
+	.monument, .hero-bg::before { animation: none !important; }
 	.work, .work-img img, .filter button, .pill { transition: none; }
 }
 

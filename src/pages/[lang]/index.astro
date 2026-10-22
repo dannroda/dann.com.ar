@@ -25,7 +25,8 @@ const names = [...projects, ...otherGames];
 
 <Base lang={lang} mode="home">
 	<div class="home">
-		<section class="hero" aria-label="dann">
+		<section class="hero" aria-label="dann" style={`--pattern: url(${url('/godot-pattern.svg')})`}>
+			<div class="hero-bg" aria-hidden="true"></div>
 			<div class="hero-top">
 				<div class="hero-intro">
 					<p>{s.heroIntro}</p>
